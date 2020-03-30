@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>9.6. Bit String Functions and Operators</title><link rel="stylesheet" type="text/css" href="stylesheet.css" /><link rev="made" href="pgsql-docs@lists.postgresql.org" /><meta name="generator" content="DocBook XSL Stylesheets V1.79.1" /><link rel="prev" href="functions-binarystring.html" title="9.5. Binary String Functions and Operators" /><link rel="next" href="functions-matching.html" title="9.7. Pattern Matching" /></head><body><div xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="5" align="center">9.6. Bit String Functions and Operators</th></tr><tr><td width="10%" align="left"><a accesskey="p" href="functions-binarystring.html" title="9.5. Binary String Functions and Operators">Prev</a> </td><td width="10%" align="left"><a accesskey="u" href="functions.html" title="Chapter 9. Functions and Operators">Up</a></td><th width="60%" align="center">Chapter 9. Functions and Operators</th><td width="10%" align="right"><a accesskey="h" href="index.html" title="PostgreSQL 12.2 Documentation">Home</a></td><td width="10%" align="right"> <a accesskey="n" href="functions-matching.html" title="9.7. Pattern Matching">Next</a></td></tr></table><hr></hr></div><div class="sect1" id="FUNCTIONS-BITSTRING"><div class="titlepage"><div><div><h2 class="title" style="clear: both">9.6. Bit String Functions and Operators</h2></div></div></div><a id="id-1.5.8.11.2" class="indexterm"></a><p>
+    This section describes functions and operators for examining and
+    manipulating bit strings, that is values of the types
+    <code class="type">bit</code> and <code class="type">bit varying</code>.  Aside from the
+    usual comparison operators, the operators
+    shown in <a class="xref" href="functions-bitstring.html#FUNCTIONS-BIT-STRING-OP-TABLE" title="Table 9.14. Bit String Operators">Table 9.14</a> can be used.
+    Bit string operands of <code class="literal">&amp;</code>, <code class="literal">|</code>,
+    and <code class="literal">#</code> must be of equal length.  When bit
+    shifting, the original length of the string is preserved, as shown
+    in the examples.
+   </p><div class="table" id="FUNCTIONS-BIT-STRING-OP-TABLE"><p class="title"><strong>Table 9.14. Bit String Operators</strong></p><div class="table-contents"><table class="table" summary="Bit String Operators" border="1"><colgroup><col /><col /><col /><col /></colgroup><thead><tr><th>Operator</th><th>Description</th><th>Example</th><th>Result</th></tr></thead><tbody><tr><td> <code class="literal">||</code> </td><td>concatenation</td><td><code class="literal">B'10001' || B'011'</code></td><td><code class="literal">10001011</code></td></tr><tr><td> <code class="literal">&amp;</code> </td><td>bitwise AND</td><td><code class="literal">B'10001' &amp; B'01101'</code></td><td><code class="literal">00001</code></td></tr><tr><td> <code class="literal">|</code> </td><td>bitwise OR</td><td><code class="literal">B'10001' | B'01101'</code></td><td><code class="literal">11101</code></td></tr><tr><td> <code class="literal">#</code> </td><td>bitwise XOR</td><td><code class="literal">B'10001' # B'01101'</code></td><td><code class="literal">11100</code></td></tr><tr><td> <code class="literal">~</code> </td><td>bitwise NOT</td><td><code class="literal">~ B'10001'</code></td><td><code class="literal">01110</code></td></tr><tr><td> <code class="literal">&lt;&lt;</code> </td><td>bitwise shift left</td><td><code class="literal">B'10001' &lt;&lt; 3</code></td><td><code class="literal">01000</code></td></tr><tr><td> <code class="literal">&gt;&gt;</code> </td><td>bitwise shift right</td><td><code class="literal">B'10001' &gt;&gt; 2</code></td><td><code class="literal">00100</code></td></tr></tbody></table></div></div><br class="table-break" /><p>
+    The following <acronym class="acronym">SQL</acronym>-standard functions work on bit
+    strings as well as character strings:
+    <code class="literal"><code class="function">length</code></code>,
+    <code class="literal"><code class="function">bit_length</code></code>,
+    <code class="literal"><code class="function">octet_length</code></code>,
+    <code class="literal"><code class="function">position</code></code>,
+    <code class="literal"><code class="function">substring</code></code>,
+    <code class="literal"><code class="function">overlay</code></code>.
+   </p><p>
+    The following functions work on bit strings as well as binary
+    strings:
+    <code class="literal"><code class="function">get_bit</code></code>,
+    <code class="literal"><code class="function">set_bit</code></code>.
+    When working with a bit string, these functions number the first
+    (leftmost) bit of the string as bit 0.
+   </p><p>
+    In addition, it is possible to cast integral values to and from type
+    <code class="type">bit</code>.
+    Some examples:
+</p><pre class="programlisting">
+44::bit(10)                    <em class="lineannotation"><span class="lineannotation">0000101100</span></em>
+44::bit(3)                     <em class="lineannotation"><span class="lineannotation">100</span></em>
+cast(-44 as bit(12))           <em class="lineannotation"><span class="lineannotation">111111010100</span></em>
+'1110'::bit(4)::integer        <em class="lineannotation"><span class="lineannotation">14</span></em>
+</pre><p>
+    Note that casting to just <span class="quote">“<span class="quote">bit</span>”</span> means casting to
+    <code class="literal">bit(1)</code>, and so will deliver only the least significant
+    bit of the integer.
+   </p><div class="note"><h3 class="title">Note</h3><p>
+      Casting an integer to <code class="type">bit(n)</code> copies the rightmost
+      <code class="literal">n</code> bits.  Casting an integer to a bit string width wider
+      than the integer itself will sign-extend on the left.
+     </p></div></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="functions-binarystring.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="functions.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="functions-matching.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">9.5. Binary String Functions and Operators </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 9.7. Pattern Matching</td></tr></table></div></body></html>

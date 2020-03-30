@@ -1,0 +1,401 @@
+
+
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Query Tool Toolbar &#8212; pgAdmin 4 4.19 documentation</title>
+    <link rel="stylesheet" href="_static/style.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    
+    <script src="_static/sidebar.js"></script>
+    
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="View/Edit Data" href="editgrid.html" />
+    <link rel="prev" title="Query Tool" href="query_tool.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="editgrid.html" title="View/Edit Data"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="query_tool.html" title="Query Tool"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pgAdmin 4 4.19 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="developer_tools.html" >Developer Tools</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="query_tool.html" accesskey="U">Query Tool</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="query-tool-toolbar">
+<span id="id1"></span><h1><span class="target" id="index-0"></span>Query Tool Toolbar<a class="headerlink" href="#query-tool-toolbar" title="Permalink to this headline">¶</a></h1>
+<p>The <em>Query Tool</em> toolbar uses context-sensitive icons that provide shortcuts to
+frequently performed tasks. If an icon is highlighted, the option is enabled;
+if the icon is grayed-out, the task is disabled.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <a class="reference internal" href="query_tool.html#query-tool"><span class="std std-ref">Query Tool</span></a> and
+<a class="reference internal" href="editgrid.html#editgrid"><span class="std std-ref">View/Edit Data</span></a> tools are actually different operating
+modes of the same tool. Some controls will be disabled in either mode.</p>
+</div>
+<img alt="Query tool toolbar" class="align-center" src="_images/query_toolbar.png" />
+<p>Hover over an icon in pgAdmin to display a tooltip that describes the icon’s
+functionality.</p>
+<div class="section" id="file-options">
+<h2>File Options<a class="headerlink" href="#file-options" title="Permalink to this headline">¶</a></h2>
+<table class="longtable colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 67%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Icon</p></th>
+<th class="head"><p>Behavior</p></th>
+<th class="head"><p>Shortcut</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><em>Open File</em></p></td>
+<td><p>Click the <em>Open File</em> icon to display a previously saved query in the SQL Editor.</p></td>
+<td><p>Accesskey + O</p></td>
+</tr>
+<tr class="row-odd"><td><p><em>Save File</em></p></td>
+<td><p>Click the <em>Save</em> icon to perform a quick-save of a previously saved query, or to access the
+<em>Save</em> menu:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Select <em>Save</em> to save the selected content of the SQL Editor panel in a  file.</p></li>
+<li><p>Select <em>Save As</em> to open a new browser dialog and specify a new location to which to save the
+selected content of the SQL Editor panel.</p></li>
+</ul>
+</div></blockquote>
+</td>
+<td><p>Accesskey + S</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="editing-options">
+<h2>Editing Options<a class="headerlink" href="#editing-options" title="Permalink to this headline">¶</a></h2>
+<table class="longtable colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 67%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Icon</p></th>
+<th class="head"><p>Behavior</p></th>
+<th class="head"><p>Shortcut</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><em>Save Data Changes</em></p></td>
+<td><p>Click the <em>Save Data Changes</em> icon to save data changes (insert, update, or delete) in the Data
+Output Panel to the server.</p></td>
+<td><p>F6</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="8"><p><em>Find</em></p></td>
+<td><p>Use the <em>Find</em> menu to search, replace, or navigate the code displayed in the SQL Editor:</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Select <em>Find</em> to provide a search target, and search the SQL Editor contents.</p></td>
+<td><p>Cmd+F</p></td>
+</tr>
+<tr class="row-odd"><td><p>Select <em>Find next</em> to locate the next occurrence of the search target.</p></td>
+<td><p>Cmd+G</p></td>
+</tr>
+<tr class="row-even"><td><p>Select <em>Find previous</em> to move to the last occurrence of the search target.</p></td>
+<td><p>Cmd+Shift+G</p></td>
+</tr>
+<tr class="row-odd"><td><p>Select <em>Persistent find</em> to identify all occurrences of the search target within the editor.</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Select <em>Replace</em> to locate and replace (with prompting) individual occurrences of the target.</p></td>
+<td><p>Cmd+Shift+F</p></td>
+</tr>
+<tr class="row-odd"><td><p>Select <em>Replace all</em> to locate and replace all occurrences of the target within the editor.</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Select <em>Jump</em> to navigate to the next occurrence of the search target.</p></td>
+<td><p>Alt+G</p></td>
+</tr>
+<tr class="row-odd"><td><p><em>Copy</em></p></td>
+<td><p>Click the <em>Copy</em> icon to copy the content with or without header:</p>
+<blockquote>
+<div><ul class="simple">
+<li><dl class="simple">
+<dt>Click the <em>Copy</em> icon to copy the content that is currently highlighted in the Data Output</dt><dd><p>panel.</p>
+</dd>
+</dl>
+</li>
+<li><p>Click <em>Copy with headers</em> to copy the highlighted content along with the header.</p></li>
+</ul>
+</div></blockquote>
+</td>
+<td><p>Accesskey + C</p></td>
+</tr>
+<tr class="row-even"><td><p><em>Paste</em></p></td>
+<td><p>Click the <em>Paste</em> icon to paste a previously copied row into a new row.</p></td>
+<td><p>Accesskey + P</p></td>
+</tr>
+<tr class="row-odd"><td><p><em>Delete</em></p></td>
+<td><p>Click the <em>Delete</em> icon to mark the selected rows for deletion. These marked rows get deleted
+when you click the <em>Save Data Changes</em> icon.</p></td>
+<td><p>Accesskey + D</p></td>
+</tr>
+<tr class="row-even"><td rowspan="6"><p><em>Edit</em></p></td>
+<td><p>Use options on the <em>Edit</em> menu to access text editing tools; the options operate on the text
+displayed in the SQL Editor panel when in Query Tool mode:</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Select <em>Indent Selection</em> to indent the currently selected text.</p></td>
+<td><p>Tab</p></td>
+</tr>
+<tr class="row-even"><td><p>Select <em>Unindent Selection</em> to remove indentation from the currently selected text.</p></td>
+<td><p>Shift+Tab</p></td>
+</tr>
+<tr class="row-odd"><td><p>Select <em>Inline Comment Selection</em> to enclose any lines that contain the selection in SQL style
+comment notation.</p></td>
+<td><p>Cmd+/</p></td>
+</tr>
+<tr class="row-even"><td><p>Select <em>Inline Uncomment Selection</em> to remove SQL style comment notation from the selected line.</p></td>
+<td><p>Cmd+.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Select <em>Block Comment</em> to enclose all lines that contain the selection in C style comment
+notation.  This option acts as a toggle.</p></td>
+<td><p>Shift+Cmd+/</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="view-edit-data-resultset-control">
+<h2>View/Edit Data Resultset Control<a class="headerlink" href="#view-edit-data-resultset-control" title="Permalink to this headline">¶</a></h2>
+<table class="longtable colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 67%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Icon</p></th>
+<th class="head"><p>Behavior</p></th>
+<th class="head"><p>Shortcut</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><em>Filter</em></p></td>
+<td><p>Click the <em>Filter</em> icon to set filtering and sorting criteria for the data when in View/Edit data
+mode. Click the down arrow to access other filtering and sorting options:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Click <em>Sort/Filter</em> to open the sorting and filtering dialogue. In the <em>SQL Filter</em>, you can
+enter a SQL query as filtering criteria. In <em>Data Sorting</em>, you can select the column and
+specify the order for sorting.</p></li>
+<li><p>Click <em>Filter by Selection</em> to show only the rows containing the values in the selected cells.</p></li>
+<li><p>Click <em>Exclude by Selection</em> to show only the rows that do not contain the values in the
+selected cells.</p></li>
+<li><p>Click <em>Remove Sort/Filter</em> to remove any previously selected sort or filtering options.</p></li>
+</ul>
+</div></blockquote>
+</td>
+<td><p>Accesskey + F</p></td>
+</tr>
+<tr class="row-odd"><td><p>Limit Selector</p></td>
+<td><p>Select a value in the <em>Limit Selector</em> to limit the size of the dataset to a number of rows.</p></td>
+<td><p>Accesskey + R</p></td>
+</tr>
+<tr class="row-even"><td><p><em>Stop</em></p></td>
+<td><p>Click the <em>Stop</em> icon to cancel the execution of the currently running query.</p></td>
+<td><p>Accesskey + Q</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="query-execution">
+<h2>Query Execution<a class="headerlink" href="#query-execution" title="Permalink to this headline">¶</a></h2>
+<table class="longtable colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 67%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Icon</p></th>
+<th class="head"><p>Behavior</p></th>
+<th class="head"><p>Shortcut</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><em>Execute/Refresh</em></p></td>
+<td><p>Click the <em>Execute/Refresh</em> icon to either execute or refresh the query highlighted in the SQL
+editor panel. Click the down arrow to access other execution options:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Add a check next to <em>Auto-Rollback</em> to instruct the server to automatically roll back a
+transaction if an error occurs during the transaction.</p></li>
+<li><p>Add a check next to <em>Auto-Commit</em> to instruct the server to automatically commit each
+transaction.  Any changes made by the transaction will be visible to others, and
+durable in the event of a crash.</p></li>
+</ul>
+</div></blockquote>
+</td>
+<td><p>F5</p></td>
+</tr>
+<tr class="row-odd"><td><p><em>Explain</em></p></td>
+<td><p>Click the <em>Explain</em> icon to view an explanation plan for the current query. The result of the
+EXPLAIN is displayed graphically on the <em>Explain</em> tab of the output panel, and in text
+form on the <em>Data Output</em> tab.</p></td>
+<td><p>F7</p></td>
+</tr>
+<tr class="row-even"><td><p><em>Explain analyze</em></p></td>
+<td><p>Click the <em>Explain analyze</em> icon to invoke an EXPLAIN ANALYZE command on the current query.</p>
+<p>Navigate through the <em>Explain Options</em> menu to select options for the EXPLAIN command:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Select <em>Verbose</em> to display additional information regarding the query plan.</p></li>
+<li><p>Select <em>Costs</em> to include information on the estimated startup and total cost of each
+plan node, as well as the estimated number of rows and the estimated width of each
+row.</p></li>
+<li><p>Select <em>Buffers</em> to include information on buffer usage.</p></li>
+<li><p>Select <em>Timing</em> to include information about the startup time and the amount of time
+spent in each node of the query.</p></li>
+<li><p>Select <em>Summary</em> to include the summary information about the query plan.</p></li>
+</ul>
+</div></blockquote>
+</td>
+<td><p>Shift+F7</p></td>
+</tr>
+<tr class="row-odd"><td><p><em>Commit</em></p></td>
+<td><p>Click the <em>Commit</em> icon to commit the transaction.</p></td>
+<td><p>Shift+CTRL+M</p></td>
+</tr>
+<tr class="row-even"><td><p><em>Rollback</em></p></td>
+<td><p>Click the <em>Rollback</em> icon to rollback the transaction.</p></td>
+<td><p>Shift+CTRL+R</p></td>
+</tr>
+<tr class="row-odd"><td><p><em>Clear</em></p></td>
+<td><p>Use options on the <em>Clear</em> drop-down menu to erase display contents:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Select <em>Clear Query Window</em> to erase the content of the SQL Editor panel.</p></li>
+<li><p>Select <em>Clear History</em> to erase the content of the <em>History</em> tab.</p></li>
+</ul>
+</div></blockquote>
+</td>
+<td><p>Accesskey + L</p></td>
+</tr>
+<tr class="row-even"><td><p><em>Download as CSV</em></p></td>
+<td><p>Click the <em>Download as CSV</em> icon to download the result set of the current query to a
+comma-separated list. You can specify the CSV settings through
+<em>Preferences -&gt; SQL Editor -&gt; CSV output</em> dialogue.</p></td>
+<td><p>F8</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Query Tool Toolbar</a><ul>
+<li><a class="reference internal" href="#file-options">File Options</a></li>
+<li><a class="reference internal" href="#editing-options">Editing Options</a></li>
+<li><a class="reference internal" href="#view-edit-data-resultset-control">View/Edit Data Resultset Control</a></li>
+<li><a class="reference internal" href="#query-execution">Query Execution</a></li>
+</ul>
+</li>
+</ul>
+
+<h3><a href="index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="connecting.html">Connecting To A Server</a></li>
+<li class="toctree-l1"><a class="reference internal" href="managing_cluster_objects.html">Managing Cluster Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="managing_database_objects.html">Managing Database Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modifying_tables.html">Creating or Modifying a Table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="management_basics.html">Management Basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backup_and_restore.html">Backup and Restore</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="developer_tools.html">Developer Tools</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="debugger.html">Debugger</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="query_tool.html">Query Tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="editgrid.html">View/Edit Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="schema_diff.html">Schema Diff</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pgagent.html">pgAgent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributions.html">pgAdmin Project Contributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="licence.html">Licence</a></li>
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="editgrid.html" title="View/Edit Data"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="query_tool.html" title="Query Tool"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pgAdmin 4 4.19 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="developer_tools.html" >Developer Tools</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="query_tool.html" >Query Tool</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        <div class="related" role="navigation" aria-label="related navigation">
+          <ul>
+              <li class="left" style="margin-left: 10px">&#169; Copyright (C) 2013 - 2020, The pgAdmin Development Team.</li>
+            <li class="right" style="margin-right: 10px"><a href="genindex.html" title="General Index" accesskey="I">index</a></li>
+            <li class="right" ><a href="editgrid.html" title="View/Edit Data" accesskey="N">next</a> |</li>
+            <li class="right" ><a href="query_tool.html" title="Query Tool" accesskey="P">previous</a> |</li>
+          </ul>
+        </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,396 @@
+
+
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Server Deployment &#8212; pgAdmin 4 4.19 documentation</title>
+    <link rel="stylesheet" href="_static/style.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    
+    <script src="_static/sidebar.js"></script>
+    
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Container Deployment" href="container_deployment.html" />
+    <link rel="prev" title="Desktop Deployment" href="desktop_deployment.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="container_deployment.html" title="Container Deployment"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="desktop_deployment.html" title="Desktop Deployment"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pgAdmin 4 4.19 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="getting_started.html" >Getting Started</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="deployment.html" accesskey="U">Deployment</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="server-deployment">
+<span id="id1"></span><h1><span class="target" id="index-0"></span>Server Deployment<a class="headerlink" href="#server-deployment" title="Permalink to this headline">¶</a></h1>
+<p>pgAdmin may be deployed as a web application by configuring the app to run in
+server mode and then deploying it either behind a webserver running as a reverse
+proxy, or using the WSGI interface.</p>
+<p>The following instructions demonstrate how pgAdmin may be run as a WSGI
+application under <code class="docutils literal notranslate"><span class="pre">Apache</span> <span class="pre">HTTPD</span></code>, using <code class="docutils literal notranslate"><span class="pre">mod_wsgi</span></code>, standalone using <code class="docutils literal notranslate"><span class="pre">uWSGI</span></code>
+or <code class="docutils literal notranslate"><span class="pre">Gunicorn</span></code>, or under <code class="docutils literal notranslate"><span class="pre">NGINX</span></code> using using <code class="docutils literal notranslate"><span class="pre">uWSGI</span></code> or <code class="docutils literal notranslate"><span class="pre">Gunicorn</span></code>.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>For detailed instructions on building and configuring pgAdmin from
+scratch, please see the README file in the top level directory of the source code.
+For convenience, you can find the latest version of the file
+<a class="reference external" href="https://git.postgresql.org/gitweb/?p=pgadmin4.git;a=blob_plain;f=README">here</a>,
+but be aware that this may differ from the version included with the source code
+for a specific version of pgAdmin.</p>
+</div>
+<div class="section" id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<p><strong>Important</strong>: Some components of pgAdmin require the ability to maintain affinity
+between client sessions and a specific database connection (for example, the
+Query Tool in which the user might run a BEGIN command followed by a number of
+DML SQL statements, and then a COMMIT). pgAdmin has been designed with built-in
+connection management to handle this, however it requires that only a single
+Python process is used because it is not easily possible to maintain affinity
+between a client session and one of multiple WSGI worker processes.</p>
+<p>On Windows systems, the Apache HTTP server uses a single process, multi-threaded
+architecture. WSGI applications run in <code class="docutils literal notranslate"><span class="pre">embedded</span></code> mode, which means that only
+a single process will be present on this platform in all cases.</p>
+<p>On Unix systems, the Apache HTTP server typically uses a multi-process, single
+threaded architecture (this is dependent on the <code class="docutils literal notranslate"><span class="pre">MPM</span></code> that is chosen at
+compile time). If <code class="docutils literal notranslate"><span class="pre">embedded</span></code> mode is chosen for the WSGI application, then
+there will be one Python environment for each Apache process, each with it’s own
+connection manager which will lead to loss of connection affinity. Therefore
+one should use <code class="docutils literal notranslate"><span class="pre">mod_wsgi</span></code>’s <code class="docutils literal notranslate"><span class="pre">daemon</span></code> mode, configured to use a single
+process. This will launch a single instance of the WSGI application which is
+utilised by all the Apache worker processes.</p>
+<p>Whilst it is true that this is a potential performance bottleneck, in reality
+pgAdmin is not a web application that’s ever likely to see heavy traffic
+unlike a busy website, so in practice should not be an issue.</p>
+<p>Future versions of pgAdmin may introduce a shared connection manager process to
+overcome this limitation, however that is a significant amount of work for
+little practical gain.</p>
+</div>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>In order to configure pgAdmin to run in server mode, it may be necessary to
+configure the Python code to run in multi-user mode, and then to configure the
+web server to find and execute the code.</p>
+<p>See <a class="reference internal" href="config_py.html#config-py"><span class="std std-ref">The config.py File</span></a> for more information on configuration settings.</p>
+<div class="section" id="python">
+<h3>Python<a class="headerlink" href="#python" title="Permalink to this headline">¶</a></h3>
+<p>From pgAdmin 4 v2 onwards, server mode is the default configuration. If running under
+the desktop runtime, this is overridden automatically. There should typically be no
+need to modify the configuration simply to enable server mode to work, however it may
+be desirable to adjust some of the paths used.</p>
+<p>In order to configure the Python code, follow these steps:</p>
+<ol class="arabic">
+<li><p>Create a <code class="docutils literal notranslate"><span class="pre">config_local.py</span></code> file alongside the existing <code class="docutils literal notranslate"><span class="pre">config.py</span></code> file.</p></li>
+<li><p>Edit <code class="docutils literal notranslate"><span class="pre">config_local.py</span></code> and add the following settings. In most cases, the default
+file locations should be appropriate:</p>
+<p><em>NOTE: You must ensure the directories specified are writeable by
+the user that the web server processes will be running as, e.g. apache or www-data.</em></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">LOG_FILE</span> <span class="o">=</span> <span class="s1">&#39;/var/log/pgadmin4/pgadmin4.log&#39;</span>
+<span class="n">SQLITE_PATH</span> <span class="o">=</span> <span class="s1">&#39;/var/lib/pgadmin4/pgadmin4.db&#39;</span>
+<span class="n">SESSION_DB_PATH</span> <span class="o">=</span> <span class="s1">&#39;/var/lib/pgadmin4/sessions&#39;</span>
+<span class="n">STORAGE_DIR</span> <span class="o">=</span> <span class="s1">&#39;/var/lib/pgadmin4/storage&#39;</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<ol class="arabic" start="4">
+<li><p>Run the following command to create the configuration database:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># python setup.py</span>
+</pre></div>
+</div>
+</li>
+<li><p>Change the ownership of the configuration database to the user that the web server
+processes will run as, for example, assuming that the web server runs as user
+www-data in group www-data, and that the SQLite path is <code class="docutils literal notranslate"><span class="pre">/var/lib/pgadmin4/pgadmin4.db</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># chown www-data:www-data /var/lib/pgadmin4/pgadmin4.db</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="section" id="hosting">
+<h2>Hosting<a class="headerlink" href="#hosting" title="Permalink to this headline">¶</a></h2>
+<p>There are many possible ways to host pgAdmin in server mode. Some examples are
+given below:</p>
+<div class="section" id="apache-httpd-configuration-windows">
+<h3>Apache HTTPD Configuration (Windows)<a class="headerlink" href="#apache-httpd-configuration-windows" title="Permalink to this headline">¶</a></h3>
+<p>Once Apache HTTP has been configured to support <code class="docutils literal notranslate"><span class="pre">mod_wsgi</span></code>, the pgAdmin
+application may be configured similarly to the example below:</p>
+<div class="highlight-apache notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;VirtualHost</span> <span class="s">*</span><span class="nt">&gt;</span>
+    <span class="nb">ServerName</span> pgadmin.example.com
+    <span class="nb">WSGIScriptAlias</span> / <span class="s2">&quot;C:\Program Files\pgAdmin4\web\pgAdmin4.wsgi&quot;</span>
+    <span class="nt">&lt;Directory</span> <span class="s">&quot;C:\Program Files\pgAdmin4\web&quot;</span><span class="nt">&gt;</span>
+            <span class="nb">Order</span> deny,allow
+            <span class="nb">Allow</span> from <span class="k">all</span>
+    <span class="nt">&lt;/Directory&gt;</span>
+<span class="nt">&lt;/VirtualHost&gt;</span>
+</pre></div>
+</div>
+<p>Now open the file <code class="docutils literal notranslate"><span class="pre">C:\Program</span> <span class="pre">Files\pgAdmin4\web\pgAdmin4.wsgi</span></code> with your favorite editor and add the code
+below which will activate Python virtual environment when Apache server runs.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">activate_this</span> <span class="o">=</span> <span class="s1">&#39;C:\Program Files\pgAdmin4</span><span class="se">\v</span><span class="s1">env\Scripts</span><span class="se">\a</span><span class="s1">ctivate_this.py&#39;</span>
+<span class="n">exec</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">activate_this</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+</pre></div>
+</div>
+<p><strong>Note:</strong> The changes made in <code class="docutils literal notranslate"><span class="pre">pgAdmin4.wsgi</span></code> file will revert when pgAdmin4 is either upgraded or downgraded.</p>
+</div>
+<div class="section" id="apache-httpd-configuration-linux-unix">
+<h3>Apache HTTPD Configuration (Linux/Unix)<a class="headerlink" href="#apache-httpd-configuration-linux-unix" title="Permalink to this headline">¶</a></h3>
+<p>Once Apache HTTP has been configured to support <code class="docutils literal notranslate"><span class="pre">mod_wsgi</span></code>, the pgAdmin
+application may be configured similarly to the example below:</p>
+<div class="highlight-apache notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;VirtualHost</span> <span class="s">*</span><span class="nt">&gt;</span>
+    <span class="nb">ServerName</span> pgadmin.example.com
+
+    <span class="nb">WSGIDaemonProcess</span> pgadmin processes=1 threads=25 python-home=/path/to/python/virtualenv
+    <span class="nb">WSGIScriptAlias</span> / <span class="sx">/opt/pgAdmin4/web/pgAdmin4.wsgi</span>
+
+    <span class="nt">&lt;Directory</span> <span class="s">/opt/pgAdmin4/web</span><span class="nt">&gt;</span>
+        <span class="nb">WSGIProcessGroup</span> pgadmin
+        <span class="nb">WSGIApplicationGroup</span> %{GLOBAL}
+        <span class="nb">Order</span> deny,allow
+        <span class="nb">Allow</span> from <span class="k">all</span>
+    <span class="nt">&lt;/Directory&gt;</span>
+<span class="nt">&lt;/VirtualHost&gt;</span>
+</pre></div>
+</div>
+<p><strong>Note:</strong> If you’re using Apache HTTPD 2.4 or later, replace the lines:</p>
+<div class="highlight-apache notranslate"><div class="highlight"><pre><span></span><span class="nb">Order</span> deny,allow
+<span class="nb">Allow</span> from <span class="k">all</span>
+</pre></div>
+</div>
+<p>with:</p>
+<div class="highlight-apache notranslate"><div class="highlight"><pre><span></span><span class="nb">Require</span> <span class="k">all</span> granted
+</pre></div>
+</div>
+<p>Adjust as needed to suit your access control requirements.</p>
+</div>
+<div class="section" id="standalone-gunicorn-configuration">
+<h3>Standalone Gunicorn Configuration<a class="headerlink" href="#standalone-gunicorn-configuration" title="Permalink to this headline">¶</a></h3>
+<p>pgAdmin may be hosted by Gunicorn directly simply by running a command such as
+the one shown below. Note that this example assumes pgAdmin was installed using
+the Python Wheel (you may need to adjust the path to suit your installation):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>gunicorn  --bind <span class="m">0</span>.0.0.0:80 <span class="se">\</span>
+          --workers<span class="o">=</span><span class="m">1</span> <span class="se">\</span>
+          --threads<span class="o">=</span><span class="m">25</span> <span class="se">\</span>
+          --chdir /usr/lib/python3.7/dist-packages/pgadmin4 <span class="se">\</span>
+          pgAdmin4:app
+</pre></div>
+</div>
+</div>
+<div class="section" id="standalone-uwsgi-configuration">
+<h3>Standalone uWSGI Configuration<a class="headerlink" href="#standalone-uwsgi-configuration" title="Permalink to this headline">¶</a></h3>
+<p>pgAdmin may be hosted by uWSGI directly simply by running a command such as
+the one shown below. Note that this example assumes pgAdmin was installed using
+the Python Wheel (you may need to adjust the path to suit your installation):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uwsgi --http-socket <span class="m">0</span>.0.0.0:80 <span class="se">\</span>
+      --processes <span class="m">1</span> <span class="se">\</span>
+      --threads <span class="m">25</span> <span class="se">\</span>
+      --chdir /usr/lib/python3.7/dist-packages/pgadmin4/ <span class="se">\</span>
+      --mount /<span class="o">=</span>pgAdmin4:app
+</pre></div>
+</div>
+</div>
+<div class="section" id="nginx-configuration-with-gunicorn">
+<h3>NGINX Configuration with Gunicorn<a class="headerlink" href="#nginx-configuration-with-gunicorn" title="Permalink to this headline">¶</a></h3>
+<p>pgAdmin can be hosted by Gunicorn, with NGINX in front of it. Note that these
+examples assume pgAdmin was installed using the Python Wheel (you may need to
+adjust the path to suit your installation).</p>
+<p>To run with pgAdmin in the root directory of the server, start Gunicorn using a
+command similar to:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>gunicorn --bind unix:/tmp/pgadmin4.sock <span class="se">\</span>
+         --workers<span class="o">=</span><span class="m">1</span> <span class="se">\</span>
+         --threads<span class="o">=</span><span class="m">25</span> <span class="se">\</span>
+         --chdir /usr/lib/python3.7/dist-packages/pgadmin4 <span class="se">\</span>
+         pgAdmin4:app
+</pre></div>
+</div>
+<p>And configure NGINX:</p>
+<div class="highlight-nginx notranslate"><div class="highlight"><pre><span></span><span class="k">location</span> <span class="s">/</span> <span class="p">{</span>
+    <span class="kn">include</span> <span class="s">proxy_params</span><span class="p">;</span>
+    <span class="kn">proxy_pass</span> <span class="s">http://unix:/tmp/pgadmin4.sock</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Alternatively, pgAdmin can be hosted in a sub-directory (/pgadmin4 in this case)
+on the server. Start Gunicorn as when using the root directory, but configure
+NGINX as follows:</p>
+<div class="highlight-nginx notranslate"><div class="highlight"><pre><span></span><span class="k">location</span> <span class="s">/pgadmin4/</span> <span class="p">{</span>
+    <span class="kn">include</span> <span class="s">proxy_params</span><span class="p">;</span>
+    <span class="kn">proxy_pass</span> <span class="s">http://unix:/tmp/pgadmin4.sock</span><span class="p">;</span>
+    <span class="kn">proxy_set_header</span> <span class="s">X-Script-Name</span> <span class="s">/pgadmin4</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="nginx-configuration-with-uwsgi">
+<h3>NGINX Configuration with uWSGI<a class="headerlink" href="#nginx-configuration-with-uwsgi" title="Permalink to this headline">¶</a></h3>
+<p>pgAdmin can be hosted by uWSGI, with NGINX in front of it. Note that these
+examples assume pgAdmin was installed using the Python Wheel (you may need to
+adjust the path to suit your installation).</p>
+<p>To run with pgAdmin in the root directory of the server, start Gunicorn using a
+command similar to:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uwsgi --socket /tmp/pgadmin4.sock <span class="se">\</span>
+      --processes <span class="m">1</span> <span class="se">\</span>
+      --threads <span class="m">25</span> <span class="se">\</span>
+      --chdir /usr/lib/python3.7/dist-packages/pgadmin4/ <span class="se">\</span>
+      --manage-script-name <span class="se">\</span>
+      --mount /<span class="o">=</span>pgAdmin4:app
+</pre></div>
+</div>
+<p>And configure NGINX:</p>
+<div class="highlight-nginx notranslate"><div class="highlight"><pre><span></span><span class="k">location</span> <span class="s">/</span> <span class="p">{</span> <span class="kn">try_files</span> <span class="nv">$uri</span> <span class="s">@pgadmin4</span><span class="p">;</span> <span class="p">}</span>
+<span class="k">location</span> <span class="s">@pgadmin4</span> <span class="p">{</span>
+    <span class="kn">include</span> <span class="s">uwsgi_params</span><span class="p">;</span>
+    <span class="kn">uwsgi_pass</span> <span class="s">unix:/tmp/pgadmin4.sock</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Alternatively, pgAdmin can be hosted in a sub-directory (/pgadmin4 in this case)
+on the server. Start uWSGI, noting that the directory name is specified in the
+<code class="docutils literal notranslate"><span class="pre">mount</span></code> parameter:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uwsgi --socket /tmp/pgadmin4.sock <span class="se">\</span>
+      --processes <span class="m">1</span> <span class="se">\</span>
+      --threads <span class="m">25</span> <span class="se">\</span>
+      --chdir /usr/lib/python3.7/dist-packages/pgadmin4/ <span class="se">\</span>
+      --manage-script-name <span class="se">\</span>
+      --mount /pgadmin4<span class="o">=</span>pgAdmin4:app
+</pre></div>
+</div>
+<p>Then, configure NGINX:</p>
+<div class="highlight-nginx notranslate"><div class="highlight"><pre><span></span><span class="k">location</span> <span class="p">=</span> <span class="s">/pgadmin4</span> <span class="p">{</span> <span class="kn">rewrite</span> <span class="s">^</span> <span class="s">/pgadmin4/</span><span class="p">;</span> <span class="p">}</span>
+<span class="k">location</span> <span class="s">/pgadmin4</span> <span class="p">{</span> <span class="kn">try_files</span> <span class="nv">$uri</span> <span class="s">@pgadmin4</span><span class="p">;</span> <span class="p">}</span>
+<span class="k">location</span> <span class="s">@pgadmin4</span> <span class="p">{</span>
+  <span class="kn">include</span> <span class="s">uwsgi_params</span><span class="p">;</span>
+  <span class="kn">uwsgi_pass</span> <span class="s">unix:/tmp/pgadmin4.sock</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Server Deployment</a><ul>
+<li><a class="reference internal" href="#requirements">Requirements</a></li>
+<li><a class="reference internal" href="#configuration">Configuration</a><ul>
+<li><a class="reference internal" href="#python">Python</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#hosting">Hosting</a><ul>
+<li><a class="reference internal" href="#apache-httpd-configuration-windows">Apache HTTPD Configuration (Windows)</a></li>
+<li><a class="reference internal" href="#apache-httpd-configuration-linux-unix">Apache HTTPD Configuration (Linux/Unix)</a></li>
+<li><a class="reference internal" href="#standalone-gunicorn-configuration">Standalone Gunicorn Configuration</a></li>
+<li><a class="reference internal" href="#standalone-uwsgi-configuration">Standalone uWSGI Configuration</a></li>
+<li><a class="reference internal" href="#nginx-configuration-with-gunicorn">NGINX Configuration with Gunicorn</a></li>
+<li><a class="reference internal" href="#nginx-configuration-with-uwsgi">NGINX Configuration with uWSGI</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+<h3><a href="index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="getting_started.html">Getting Started</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="deployment.html">Deployment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html">Login Dialog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_management.html">User Management Dialog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="change_user_password.html">Change User Password Dialog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_interface.html">User Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="menu_bar.html">Menu Bar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="toolbar.html">Toolbar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tabbed_browser.html">Tabbed Browser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tree_control.html">Tree Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preferences.html">Preferences Dialog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keyboard_shortcuts.html">Keyboard Shortcuts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="connecting.html">Connecting To A Server</a></li>
+<li class="toctree-l1"><a class="reference internal" href="managing_cluster_objects.html">Managing Cluster Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="managing_database_objects.html">Managing Database Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modifying_tables.html">Creating or Modifying a Table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="management_basics.html">Management Basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backup_and_restore.html">Backup and Restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developer_tools.html">Developer Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pgagent.html">pgAgent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributions.html">pgAdmin Project Contributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="licence.html">Licence</a></li>
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="container_deployment.html" title="Container Deployment"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="desktop_deployment.html" title="Desktop Deployment"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pgAdmin 4 4.19 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="getting_started.html" >Getting Started</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="deployment.html" >Deployment</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        <div class="related" role="navigation" aria-label="related navigation">
+          <ul>
+              <li class="left" style="margin-left: 10px">&#169; Copyright (C) 2013 - 2020, The pgAdmin Development Team.</li>
+            <li class="right" style="margin-right: 10px"><a href="genindex.html" title="General Index" accesskey="I">index</a></li>
+            <li class="right" ><a href="container_deployment.html" title="Container Deployment" accesskey="N">next</a> |</li>
+            <li class="right" ><a href="desktop_deployment.html" title="Desktop Deployment" accesskey="P">previous</a> |</li>
+          </ul>
+        </div>
+    </div>
+  </body>
+</html>

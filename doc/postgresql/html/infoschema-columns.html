@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>36.17. columns</title><link rel="stylesheet" type="text/css" href="stylesheet.css" /><link rev="made" href="pgsql-docs@lists.postgresql.org" /><meta name="generator" content="DocBook XSL Stylesheets V1.79.1" /><link rel="prev" href="infoschema-column-udt-usage.html" title="36.16. column_udt_usage" /><link rel="next" href="infoschema-constraint-column-usage.html" title="36.18. constraint_column_usage" /></head><body><div xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="5" align="center">36.17. <code xmlns="http://www.w3.org/1999/xhtml" class="literal">columns</code></th></tr><tr><td width="10%" align="left"><a accesskey="p" href="infoschema-column-udt-usage.html" title="36.16. column_udt_usage">Prev</a> </td><td width="10%" align="left"><a accesskey="u" href="information-schema.html" title="Chapter 36. The Information Schema">Up</a></td><th width="60%" align="center">Chapter 36. The Information Schema</th><td width="10%" align="right"><a accesskey="h" href="index.html" title="PostgreSQL 12.2 Documentation">Home</a></td><td width="10%" align="right"> <a accesskey="n" href="infoschema-constraint-column-usage.html" title="36.18. constraint_column_usage">Next</a></td></tr></table><hr></hr></div><div class="sect1" id="INFOSCHEMA-COLUMNS"><div class="titlepage"><div><div><h2 class="title" style="clear: both">36.17. <code class="literal">columns</code></h2></div></div></div><p>
+   The view <code class="literal">columns</code> contains information about all
+   table columns (or view columns) in the database.  System columns
+   (<code class="literal">ctid</code>, etc.) are not included.  Only those columns are
+   shown that the current user has access to (by way of being the
+   owner or having some privilege).
+  </p><div class="table" id="id-1.7.6.21.3"><p class="title"><strong>Table 36.15. <code class="literal">columns</code> Columns</strong></p><div class="table-contents"><table class="table" summary="columns Columns" border="1"><colgroup><col /><col /><col /></colgroup><thead><tr><th>Name</th><th>Data Type</th><th>Description</th></tr></thead><tbody><tr><td><code class="literal">table_catalog</code></td><td><code class="type">sql_identifier</code></td><td>Name of the database containing the table (always the current database)</td></tr><tr><td><code class="literal">table_schema</code></td><td><code class="type">sql_identifier</code></td><td>Name of the schema containing the table</td></tr><tr><td><code class="literal">table_name</code></td><td><code class="type">sql_identifier</code></td><td>Name of the table</td></tr><tr><td><code class="literal">column_name</code></td><td><code class="type">sql_identifier</code></td><td>Name of the column</td></tr><tr><td><code class="literal">ordinal_position</code></td><td><code class="type">cardinal_number</code></td><td>Ordinal position of the column within the table (count starts at 1)</td></tr><tr><td><code class="literal">column_default</code></td><td><code class="type">character_data</code></td><td>Default expression of the column</td></tr><tr><td><code class="literal">is_nullable</code></td><td><code class="type">yes_or_no</code></td><td>
+       <code class="literal">YES</code> if the column is possibly nullable,
+       <code class="literal">NO</code> if it is known not nullable.  A not-null
+       constraint is one way a column can be known not nullable, but
+       there can be others.
+      </td></tr><tr><td><code class="literal">data_type</code></td><td><code class="type">character_data</code></td><td>
+       Data type of the column, if it is a built-in type, or
+       <code class="literal">ARRAY</code> if it is some array (in that case, see
+       the view <code class="literal">element_types</code>), else
+       <code class="literal">USER-DEFINED</code> (in that case, the type is
+       identified in <code class="literal">udt_name</code> and associated
+       columns).  If the column is based on a domain, this column
+       refers to the type underlying the domain (and the domain is
+       identified in <code class="literal">domain_name</code> and associated
+       columns).
+      </td></tr><tr><td><code class="literal">character_maximum_length</code></td><td><code class="type">cardinal_number</code></td><td>
+       If <code class="literal">data_type</code> identifies a character or bit
+       string type, the declared maximum length; null for all other
+       data types or if no maximum length was declared.
+      </td></tr><tr><td><code class="literal">character_octet_length</code></td><td><code class="type">cardinal_number</code></td><td>
+       If <code class="literal">data_type</code> identifies a character type,
+       the maximum possible length in octets (bytes) of a datum; null
+       for all other data types.  The maximum octet length depends on
+       the declared character maximum length (see above) and the
+       server encoding.
+      </td></tr><tr><td><code class="literal">numeric_precision</code></td><td><code class="type">cardinal_number</code></td><td>
+       If <code class="literal">data_type</code> identifies a numeric type, this
+       column contains the (declared or implicit) precision of the
+       type for this column.  The precision indicates the number of
+       significant digits.  It can be expressed in decimal (base 10)
+       or binary (base 2) terms, as specified in the column
+       <code class="literal">numeric_precision_radix</code>.  For all other data
+       types, this column is null.
+      </td></tr><tr><td><code class="literal">numeric_precision_radix</code></td><td><code class="type">cardinal_number</code></td><td>
+       If <code class="literal">data_type</code> identifies a numeric type, this
+       column indicates in which base the values in the columns
+       <code class="literal">numeric_precision</code> and
+       <code class="literal">numeric_scale</code> are expressed.  The value is
+       either 2 or 10.  For all other data types, this column is null.
+      </td></tr><tr><td><code class="literal">numeric_scale</code></td><td><code class="type">cardinal_number</code></td><td>
+       If <code class="literal">data_type</code> identifies an exact numeric
+       type, this column contains the (declared or implicit) scale of
+       the type for this column.  The scale indicates the number of
+       significant digits to the right of the decimal point.  It can
+       be expressed in decimal (base 10) or binary (base 2) terms, as
+       specified in the column
+       <code class="literal">numeric_precision_radix</code>.  For all other data
+       types, this column is null.
+      </td></tr><tr><td><code class="literal">datetime_precision</code></td><td><code class="type">cardinal_number</code></td><td>
+       If <code class="literal">data_type</code> identifies a date, time,
+       timestamp, or interval type, this column contains the (declared
+       or implicit) fractional seconds precision of the type for this
+       column, that is, the number of decimal digits maintained
+       following the decimal point in the seconds value.  For all
+       other data types, this column is null.
+      </td></tr><tr><td><code class="literal">interval_type</code></td><td><code class="type">character_data</code></td><td>
+       If <code class="literal">data_type</code> identifies an interval type,
+       this column contains the specification which fields the
+       intervals include for this column, e.g., <code class="literal">YEAR TO
+       MONTH</code>, <code class="literal">DAY TO SECOND</code>, etc.  If no
+       field restrictions were specified (that is, the interval
+       accepts all fields), and for all other data types, this field
+       is null.
+      </td></tr><tr><td><code class="literal">interval_precision</code></td><td><code class="type">cardinal_number</code></td><td>
+       Applies to a feature not available
+       in <span class="productname">PostgreSQL</span>
+       (see <code class="literal">datetime_precision</code> for the fractional
+       seconds precision of interval type columns)
+      </td></tr><tr><td><code class="literal">character_set_catalog</code></td><td><code class="type">sql_identifier</code></td><td>Applies to a feature not available in <span class="productname">PostgreSQL</span></td></tr><tr><td><code class="literal">character_set_schema</code></td><td><code class="type">sql_identifier</code></td><td>Applies to a feature not available in <span class="productname">PostgreSQL</span></td></tr><tr><td><code class="literal">character_set_name</code></td><td><code class="type">sql_identifier</code></td><td>Applies to a feature not available in <span class="productname">PostgreSQL</span></td></tr><tr><td><code class="literal">collation_catalog</code></td><td><code class="type">sql_identifier</code></td><td>
+       Name of the database containing the collation of the column
+       (always the current database), null if default or the data type
+       of the column is not collatable
+      </td></tr><tr><td><code class="literal">collation_schema</code></td><td><code class="type">sql_identifier</code></td><td>
+       Name of the schema containing the collation of the column, null
+       if default or the data type of the column is not collatable
+      </td></tr><tr><td><code class="literal">collation_name</code></td><td><code class="type">sql_identifier</code></td><td>
+       Name of the collation of the column, null if default or the
+       data type of the column is not collatable
+      </td></tr><tr><td><code class="literal">domain_catalog</code></td><td><code class="type">sql_identifier</code></td><td>
+       If the column has a domain type, the name of the database that
+       the domain is defined in (always the current database), else
+       null.
+      </td></tr><tr><td><code class="literal">domain_schema</code></td><td><code class="type">sql_identifier</code></td><td>
+       If the column has a domain type, the name of the schema that
+       the domain is defined in, else null.
+      </td></tr><tr><td><code class="literal">domain_name</code></td><td><code class="type">sql_identifier</code></td><td>If the column has a domain type, the name of the domain, else null.</td></tr><tr><td><code class="literal">udt_catalog</code></td><td><code class="type">sql_identifier</code></td><td>
+       Name of the database that the column data type (the underlying
+       type of the domain, if applicable) is defined in (always the
+       current database)
+      </td></tr><tr><td><code class="literal">udt_schema</code></td><td><code class="type">sql_identifier</code></td><td>
+       Name of the schema that the column data type (the underlying
+       type of the domain, if applicable) is defined in
+      </td></tr><tr><td><code class="literal">udt_name</code></td><td><code class="type">sql_identifier</code></td><td>
+       Name of the column data type (the underlying type of the
+       domain, if applicable)
+      </td></tr><tr><td><code class="literal">scope_catalog</code></td><td><code class="type">sql_identifier</code></td><td>Applies to a feature not available in <span class="productname">PostgreSQL</span></td></tr><tr><td><code class="literal">scope_schema</code></td><td><code class="type">sql_identifier</code></td><td>Applies to a feature not available in <span class="productname">PostgreSQL</span></td></tr><tr><td><code class="literal">scope_name</code></td><td><code class="type">sql_identifier</code></td><td>Applies to a feature not available in <span class="productname">PostgreSQL</span></td></tr><tr><td><code class="literal">maximum_cardinality</code></td><td><code class="type">cardinal_number</code></td><td>Always null, because arrays always have unlimited maximum cardinality in <span class="productname">PostgreSQL</span></td></tr><tr><td><code class="literal">dtd_identifier</code></td><td><code class="type">sql_identifier</code></td><td>
+       An identifier of the data type descriptor of the column, unique
+       among the data type descriptors pertaining to the table.  This
+       is mainly useful for joining with other instances of such
+       identifiers.  (The specific format of the identifier is not
+       defined and not guaranteed to remain the same in future
+       versions.)
+      </td></tr><tr><td><code class="literal">is_self_referencing</code></td><td><code class="type">yes_or_no</code></td><td>Applies to a feature not available in <span class="productname">PostgreSQL</span></td></tr><tr><td><code class="literal">is_identity</code></td><td><code class="type">yes_or_no</code></td><td>
+       If the column is an identity column, then <code class="literal">YES</code>,
+       else <code class="literal">NO</code>.
+      </td></tr><tr><td><code class="literal">identity_generation</code></td><td><code class="type">character_data</code></td><td>
+       If the column is an identity column, then <code class="literal">ALWAYS</code>
+       or <code class="literal">BY DEFAULT</code>, reflecting the definition of the
+       column.
+      </td></tr><tr><td><code class="literal">identity_start</code></td><td><code class="type">character_data</code></td><td>
+       If the column is an identity column, then the start value of the
+       internal sequence, else null.
+      </td></tr><tr><td><code class="literal">identity_increment</code></td><td><code class="type">character_data</code></td><td>
+       If the column is an identity column, then the increment of the internal
+       sequence, else null.
+      </td></tr><tr><td><code class="literal">identity_maximum</code></td><td><code class="type">character_data</code></td><td>
+       If the column is an identity column, then the maximum value of the
+       internal sequence, else null.
+      </td></tr><tr><td><code class="literal">identity_minimum</code></td><td><code class="type">character_data</code></td><td>
+       If the column is an identity column, then the minimum value of the
+       internal sequence, else null.
+      </td></tr><tr><td><code class="literal">identity_cycle</code></td><td><code class="type">yes_or_no</code></td><td>
+       If the column is an identity column, then <code class="literal">YES</code> if the
+       internal sequence cycles or <code class="literal">NO</code> if it does not;
+       otherwise null.
+      </td></tr><tr><td><code class="literal">is_generated</code></td><td><code class="type">character_data</code></td><td>
+       If the column is a generated column, then <code class="literal">ALWAYS</code>,
+       else <code class="literal">NEVER</code>.
+      </td></tr><tr><td><code class="literal">generation_expression</code></td><td><code class="type">character_data</code></td><td>
+       If the column is a generated column, then the generation expression,
+       else null.
+      </td></tr><tr><td><code class="literal">is_updatable</code></td><td><code class="type">yes_or_no</code></td><td>
+       <code class="literal">YES</code> if the column is updatable,
+       <code class="literal">NO</code> if not (Columns in base tables are always
+       updatable, columns in views not necessarily)
+      </td></tr></tbody></table></div></div><br class="table-break" /><p>
+   Since data types can be defined in a variety of ways in SQL, and
+   <span class="productname">PostgreSQL</span> contains additional ways to
+   define data types, their representation in the information schema
+   can be somewhat difficult.  The column <code class="literal">data_type</code>
+   is supposed to identify the underlying built-in type of the column.
+   In <span class="productname">PostgreSQL</span>, this means that the type
+   is defined in the system catalog schema
+   <code class="literal">pg_catalog</code>.  This column might be useful if the
+   application can handle the well-known built-in types specially (for
+   example, format the numeric types differently or use the data in
+   the precision columns).  The columns <code class="literal">udt_name</code>,
+   <code class="literal">udt_schema</code>, and <code class="literal">udt_catalog</code>
+   always identify the underlying data type of the column, even if the
+   column is based on a domain.  (Since
+   <span class="productname">PostgreSQL</span> treats built-in types like
+   user-defined types, built-in types appear here as well.  This is an
+   extension of the SQL standard.)  These columns should be used if an
+   application wants to process data differently according to the
+   type, because in that case it wouldn't matter if the column is
+   really based on a domain.  If the column is based on a domain, the
+   identity of the domain is stored in the columns
+   <code class="literal">domain_name</code>, <code class="literal">domain_schema</code>,
+   and <code class="literal">domain_catalog</code>.  If you want to pair up
+   columns with their associated data types and treat domains as
+   separate types, you could write <code class="literal">coalesce(domain_name,
+   udt_name)</code>, etc.
+  </p></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="infoschema-column-udt-usage.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="information-schema.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="infoschema-constraint-column-usage.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">36.16. <code class="literal">column_udt_usage</code> </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 36.18. <code class="literal">constraint_column_usage</code></td></tr></table></div></body></html>

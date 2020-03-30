@@ -1,0 +1,21 @@
+$theme-colors: (
+  "primary": $color-primary,
+  "danger": $color-danger,
+  "success": $color-success,
+  "warning": $color-warning,
+);
+
+@import "node_modules/bootstrap/scss/bootstrap";
+
+@import 'webcabin.pgadmin';
+@import 'bootstrap.overrides';
+@import 'backgrid.overrides';
+@import 'aci_tree.overrides';
+@import 'select2.overrides';
+@import 'codemirror.overrides';
+@import 'alert';
+@import 'alertify.overrides';
+@import 'backform.overrides';
+@import 'pgadmin.grid';
+@import 'pgadmin.style';
+@import 'bootstrap4-toggle.overrides';

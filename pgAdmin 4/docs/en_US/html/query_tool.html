@@ -1,0 +1,356 @@
+
+
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Query Tool &#8212; pgAdmin 4 4.19 documentation</title>
+    <link rel="stylesheet" href="_static/style.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    
+    <script src="_static/sidebar.js"></script>
+    
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Query Tool Toolbar" href="query_tool_toolbar.html" />
+    <link rel="prev" title="Debugger" href="debugger.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="query_tool_toolbar.html" title="Query Tool Toolbar"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="debugger.html" title="Debugger"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pgAdmin 4 4.19 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="developer_tools.html" accesskey="U">Developer Tools</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="query-tool">
+<span id="id1"></span><h1><span class="target" id="index-0"></span>Query Tool<a class="headerlink" href="#query-tool" title="Permalink to this headline">¶</a></h1>
+<p>The Query Tool is a powerful, feature-rich environment that allows you to
+execute arbitrary SQL commands and review the result set.  You can access the
+Query Tool via the <em>Query Tool</em> menu option on the <em>Tools</em> menu, or through the
+context menu of select nodes of the Browser tree control.  The Query Tool
+allows you to:</p>
+<ul class="simple">
+<li><p>Issue ad-hoc SQL queries.</p></li>
+<li><p>Execute arbitrary SQL commands.</p></li>
+<li><p>Edit the result set of a SELECT query if it is
+<a class="reference internal" href="#updatable-result-set"><span class="std std-ref">updatable</span></a>.</p></li>
+<li><p>Displays current connection and transaction status as configured by the user.</p></li>
+<li><p>Save the data displayed in the output panel to a CSV file.</p></li>
+<li><p>Review the execution plan of a SQL statement in either a text, a graphical
+format or a table format (similar to <a class="reference external" href="https://explain.depesz.com">https://explain.depesz.com</a>).</p></li>
+<li><p>View analytical information about a SQL statement.</p></li>
+</ul>
+<img alt="Query tool window" class="align-center" src="_images/query_tool.png" />
+<p>You can open multiple copies of the Query tool in individual tabs
+simultaneously.  To close a copy of the Query tool, click the <em>X</em> in the
+upper-right hand corner of the tab bar.</p>
+<p>The Query Tool features two panels:</p>
+<ul class="simple">
+<li><p>The upper panel displays the <em>SQL Editor</em>. You can use the panel to enter,
+edit, or execute a query. It also shows the <em>History</em> tab which can be used
+to view the queries that have been executed in the session, and a <em>Scratch Pad</em>
+which can be used to hold text snippets during editing. If the Scratch Pad is
+closed, it can be re-opened (or additional ones opened) by right-clicking in
+the SQL Editor and other panels and adding a new panel.</p></li>
+<li><p>The lower panel displays the <em>Data Output</em> panel. The tabbed panel displays
+the result set returned by a query, information about a query’s execution plan,
+server messages related to the query’s execution and any asynchronous
+notifications received from the server.</p></li>
+</ul>
+<div class="section" id="toolbar">
+<h2>Toolbar<a class="headerlink" href="#toolbar" title="Permalink to this headline">¶</a></h2>
+<p>The toolbar is described in the following subsections.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="query_tool_toolbar.html">Query Tool Toolbar</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="query_tool_toolbar.html#file-options">File Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_tool_toolbar.html#editing-options">Editing Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_tool_toolbar.html#view-edit-data-resultset-control">View/Edit Data Resultset Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query_tool_toolbar.html#query-execution">Query Execution</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="the-sql-editor-panel">
+<h2>The SQL Editor Panel<a class="headerlink" href="#the-sql-editor-panel" title="Permalink to this headline">¶</a></h2>
+<p>The <em>SQL editor</em> panel is a workspace where you can manually provide a query,
+copy a query from another source, or read a query from a file. The SQL editor
+features syntax coloring and autocompletion.</p>
+<img alt="Query tool editor" class="align-center" src="_images/query_sql_editor.png" />
+<p>To use autocomplete, begin typing your query; when you would like the Query
+editor to suggest object names or commands that might be next in your query,
+press the Control+Space key combination. For example, type “*SELECT * FROM* ”
+(without quotes, but with a trailing space), and then press the Control+Space
+key combination to select from a popup menu of autocomplete options.</p>
+<img alt="Query tool autocomplete feature" class="align-center" src="_images/query_autocomplete.png" />
+<p>After entering a query, select the <em>Execute/Refresh</em> icon from the toolbar. The
+complete contents of the SQL editor panel will be sent to the database server
+for execution. To execute only a section of the code that is displayed in the
+SQL editor, highlight the text that you want the server to execute, and click
+the <em>Execute/Refresh</em> icon.</p>
+<img alt="Query tool execute query section" class="align-center" src="_images/query_execute_section.png" />
+<p>The message returned by the server when a command executes is displayed on the
+<em>Messages</em> tab.  If the command is successful, the <em>Messages</em> tab displays
+execution details.</p>
+<img alt="Query tool message panel" class="align-center" src="_images/query_tool_message.png" />
+<p>Options on the <em>Edit</em> menu offer functionality that helps with code formatting
+and commenting:</p>
+<ul class="simple">
+<li><p>The auto-indent feature will automatically indent text to the same depth as
+the previous line when you press the Return key.</p></li>
+<li><p>Block indent text by selecting two or more lines and pressing the Tab key.</p></li>
+<li><p>Implement or remove SQL style or toggle C style comment notation within your
+code.</p></li>
+</ul>
+<p>You can also <strong>drag and drop</strong> certain objects from the treeview which
+can save time in typing long object names. Text containing the object name will be
+fully qualified with schema. Double quotes will be added if required.
+For functions and procedures, the function name along with parameter names will
+be pasted in the Query Tool.</p>
+</div>
+<div class="section" id="the-data-output-panel">
+<h2>The Data Output Panel<a class="headerlink" href="#the-data-output-panel" title="Permalink to this headline">¶</a></h2>
+<p>The <em>Data Output</em> panel displays data and statistics generated by the most
+recently executed query.</p>
+<img alt="Query tool output panel" class="align-center" src="_images/query_output_data.png" />
+<p>The <em>Data Output</em> tab displays the result set of the query in a table format.
+You can:</p>
+<ul class="simple">
+<li><p>Select and copy from the displayed result set.</p></li>
+<li><p>Use the <em>Execute/Refresh</em> options to retrieve query execution information and
+set query execution options.</p></li>
+<li><p>Use the <em>Download as CSV</em> icon to download the content of the <em>Data Output</em>
+tab as a comma-delimited file.</p></li>
+<li><p>Edit the data in the result set of a SELECT query if it is updatable.</p></li>
+</ul>
+<p id="updatable-result-set">A result set is updatable if:</p>
+<ul class="simple">
+<li><p>All columns are either selected directly from a single table, or
+are not table columns at all (e.g. concatenation of 2 columns).
+Only columns that are selected directly from the table are
+editable, other columns are read-only.</p></li>
+<li><p>All the primary key columns or OIDs of the table are selected in the
+result set.</p></li>
+</ul>
+<p>Any columns that are renamed or selected more than once are also read-only.</p>
+<p>Editable and read-only columns are identified using pencil and lock icons
+(respectively) in the column headers.</p>
+<img alt="Query tool editable and read-only columns" class="align-center" src="_images/query_tool_editable_columns.png" />
+<p>The  psycopg2 driver version should be equal to or above 2.8 for updatable
+query result sets to work.</p>
+<p>An updatable result set is identical to the <a class="reference internal" href="editgrid.html#data-grid"><span class="std std-ref">Data Grid</span></a> in
+View/Edit Data mode, and can be modified in the same way.</p>
+<p>If Auto-commit is off, the data changes are made as part of the ongoing
+transaction, if no transaction is ongoing a new one is initiated. The data
+changes are not committed to the database unless the transaction is committed.</p>
+<p>If any errors occur during saving (for example, trying to save NULL into a
+column with NOT NULL constraint) the data changes are rolled back to an
+automatically created SAVEPOINT to ensure any previously executed queries in
+the ongoing transaction are not rolled back.</p>
+<p>All rowsets from previous queries or commands that are displayed in the <em>Data
+Output</em> panel will be discarded when you invoke another query; open another
+Query Tool tab to keep your previous results available.</p>
+</div>
+<div class="section" id="explain-panel">
+<h2>Explain Panel<a class="headerlink" href="#explain-panel" title="Permalink to this headline">¶</a></h2>
+<p>To generate the <em>Explain</em> or <em>Explain Analyze</em> plan of a query, click on
+<em>Explain</em> or <em>Explain Analyze</em> button in the toolbar.</p>
+<p>More options related to <em>Explain</em> and <em>Explain Analyze</em> can be selected from
+the drop down on the right side of <em>Explain Analyze</em> button in the toolbar.</p>
+<img alt="Query tool toolbar explain button" class="align-center" src="_images/query_toolbar_explain.png" />
+<p>Please note that pgAdmin generates the <em>Explain [Analyze]</em> plan in JSON format.</p>
+<p>On successful generation of <em>Explain</em> plan, it will create three tabs/panels
+under the Explain panel.</p>
+<ul class="simple">
+<li><p>Graphical</p></li>
+</ul>
+<p>Please note that <em>EXPLAIN VERBOSE</em> cannot be displayed graphically. Hover over
+an icon on the <em>Graphical</em> tab to review information about that item; a popup
+window will display information about the selected object. For information on
+JIT statistics, triggers and a summary, hover over the icon on top-right
+corner; a similar popup window will be displayed when appropriate.</p>
+<p>Use the download button on top left corner of the <em>Explain</em> canvas to download
+the plan as an SVG file.</p>
+<p><strong>Note:</strong> Download as SVG is not supported on Internet Explorer.</p>
+<img alt="Query tool graphical explain plan" class="align-center" src="_images/query_output_explain_details.png" />
+<p>Note that the query plan that accompanies the <em>Explain analyze</em> is available on
+the <em>Data Output</em> tab.</p>
+<ul class="simple">
+<li><p>Table</p></li>
+</ul>
+<p><em>Table</em> tab shows the plan details in table format, it generates table format
+similar to <em>explain.depsez.com</em>. Each row of the table represent the data for a
+<em>Explain Plan Node</em>. It may contain the node information, exclusive timing,
+inclusive timing, actual vs planned rows differences, actual rows, planned
+rows, loops.</p>
+<p>background color of the exclusive, inclusive, and Rows X columns may vary based on the
+difference between actual vs planned.</p>
+<p>If percentage of the exclusive/inclusive timings of the total query time is:
+&gt; 90 - Red color
+&gt; 50 - Orange (between red and yellow) color
+&gt; 10 - Yellow color</p>
+<p>If planner mis-estimated number of rows (actual vs planned) by
+10 times - Yellow color
+100 times - Orange (between Red and Yellow) color
+1000 times - Red color</p>
+<img alt="Query tool explain plan table" class="align-center" src="_images/query_explain_analyze_table.png" />
+<ul class="simple">
+<li><p>Statistics</p></li>
+</ul>
+<p><em>Statistics</em> tab shows two tables:
+1. Statistics per Plan Node Type
+2. Statistics per Table</p>
+<img alt="Query tool explain plan statistics" class="align-center" src="_images/query_explain_analyze_statistics.png" />
+</div>
+<div class="section" id="messages-panel">
+<h2>Messages Panel<a class="headerlink" href="#messages-panel" title="Permalink to this headline">¶</a></h2>
+<p>Use the <em>Messages</em> tab to view information about the most recently executed
+query:</p>
+<img alt="Query tool output messages" class="align-center" src="_images/query_output_error.png" />
+<p>If the server returns an error, the error message will be displayed on the
+<em>Messages</em> tab, and the syntax that caused the error will be underlined in the
+SQL editor.  If a query succeeds, the <em>Messages</em> tab displays how long the
+query took to complete and how many rows were retrieved:</p>
+<img alt="Query tool output information" class="align-center" src="_images/query_output_messages.png" />
+</div>
+<div class="section" id="query-history-panel">
+<h2>Query History Panel<a class="headerlink" href="#query-history-panel" title="Permalink to this headline">¶</a></h2>
+<p>Use the <em>Query History</em> tab to review activity for the current session:</p>
+<img alt="Query tool history panel" class="align-center" src="_images/query_output_history.png" />
+<p>The Query History tab displays information about recent commands:</p>
+<ul class="simple">
+<li><p>The date and time that a query was invoked.</p></li>
+<li><p>The text of the query.</p></li>
+<li><p>The number of rows returned by the query.</p></li>
+<li><p>The amount of time it took the server to process the query and return a
+result set.</p></li>
+<li><p>Messages returned by the server (not noted on the <em>Messages</em> tab).</p></li>
+<li><p>The source of the query (indicated by icons corresponding to the toolbar).</p></li>
+</ul>
+<p>You can show or hide the queries generated internally by pgAdmin (during
+‘View/Edit Data’ or ‘Save Data’ operations).</p>
+<p>To erase the content of the <em>Query History</em> tab, select <em>Clear history</em> from
+the <em>Clear</em> drop-down menu.</p>
+<p>Query History is maintained across sessions for each database on a per-user
+basis when running in Query Tool mode. In View/Edit Data mode, history is not
+retained. By default, the last 20 queries are stored for each database. This
+can be adjusted in <cite>config_local.py</cite> by overriding the <cite>MAX_QUERY_HIST_STORED</cite>
+value. See the <a class="reference internal" href="deployment.html#deployment"><span class="std std-ref">Deployment</span></a> section for more information.</p>
+</div>
+<div class="section" id="connection-status">
+<h2>Connection Status<a class="headerlink" href="#connection-status" title="Permalink to this headline">¶</a></h2>
+<p>Use the <em>Connection status</em> feature to view the current connection and
+transaction status by clicking on the status icon in the Query Tool:</p>
+<img alt="Query tool connection and transaction statuses" class="align-center" src="_images/query_tool_connection_status.png" />
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Query Tool</a><ul>
+<li><a class="reference internal" href="#toolbar">Toolbar</a></li>
+<li><a class="reference internal" href="#the-sql-editor-panel">The SQL Editor Panel</a></li>
+<li><a class="reference internal" href="#the-data-output-panel">The Data Output Panel</a></li>
+<li><a class="reference internal" href="#explain-panel">Explain Panel</a></li>
+<li><a class="reference internal" href="#messages-panel">Messages Panel</a></li>
+<li><a class="reference internal" href="#query-history-panel">Query History Panel</a></li>
+<li><a class="reference internal" href="#connection-status">Connection Status</a></li>
+</ul>
+</li>
+</ul>
+
+<h3><a href="index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="connecting.html">Connecting To A Server</a></li>
+<li class="toctree-l1"><a class="reference internal" href="managing_cluster_objects.html">Managing Cluster Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="managing_database_objects.html">Managing Database Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modifying_tables.html">Creating or Modifying a Table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="management_basics.html">Management Basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backup_and_restore.html">Backup and Restore</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="developer_tools.html">Developer Tools</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="debugger.html">Debugger</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Query Tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="editgrid.html">View/Edit Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="schema_diff.html">Schema Diff</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pgagent.html">pgAgent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributions.html">pgAdmin Project Contributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="licence.html">Licence</a></li>
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="query_tool_toolbar.html" title="Query Tool Toolbar"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="debugger.html" title="Debugger"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pgAdmin 4 4.19 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="developer_tools.html" >Developer Tools</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        <div class="related" role="navigation" aria-label="related navigation">
+          <ul>
+              <li class="left" style="margin-left: 10px">&#169; Copyright (C) 2013 - 2020, The pgAdmin Development Team.</li>
+            <li class="right" style="margin-right: 10px"><a href="genindex.html" title="General Index" accesskey="I">index</a></li>
+            <li class="right" ><a href="query_tool_toolbar.html" title="Query Tool Toolbar" accesskey="N">next</a> |</li>
+            <li class="right" ><a href="debugger.html" title="Debugger" accesskey="P">previous</a> |</li>
+          </ul>
+        </div>
+    </div>
+  </body>
+</html>

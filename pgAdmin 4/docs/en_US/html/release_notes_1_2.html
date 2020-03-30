@@ -1,0 +1,264 @@
+
+
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Version 1.2 &#8212; pgAdmin 4 4.19 documentation</title>
+    <link rel="stylesheet" href="_static/style.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    
+    <script src="_static/sidebar.js"></script>
+    
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Version 1.1" href="release_notes_1_1.html" />
+    <link rel="prev" title="Version 1.3" href="release_notes_1_3.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="release_notes_1_1.html" title="Version 1.1"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="release_notes_1_3.html" title="Version 1.3"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pgAdmin 4 4.19 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="release_notes.html" accesskey="U">Release Notes</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="version-1-2">
+<h1>Version 1.2<a class="headerlink" href="#version-1-2" title="Permalink to this headline">¶</a></h1>
+<p>Release date: 2017-02-10</p>
+<p>This release contains a number of features and fixes reported since the release
+of pgAdmin4 1.1.</p>
+<div class="section" id="features">
+<h2>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h2>
+<div class="line-block">
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1375">Issue #1375</a> - Migrate the runtime to QtWebEngine from QtWebKit</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1765">Issue #1765</a> - Find and replace functionality with regexp and group replacement</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1789">Issue #1789</a> - Column width of data output panel should fit to data (as pgAdmin III)</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1790">Issue #1790</a> - [Web] Support setting a field’s value to “null”</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1848">Issue #1848</a> - macOS appbundle is missing postgresql binaries for import etc.</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1910">Issue #1910</a> - Remember last used directory in the file manager</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1911">Issue #1911</a> - Direct path navigation in the file manager</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1922">Issue #1922</a> - Improve handling of corrupt configuration databases</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1963">Issue #1963</a> - Add a Chinese (Simplified) translation</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1964">Issue #1964</a> - Create a docs tarball along with the source tarball</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/2025">Issue #2025</a> - Allow the SQL Editors to word-wrap</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/2124">Issue #2124</a> - Create a template loader to simplify SQL template location, and remove duplicate templates</div>
+</div>
+</div>
+<div class="section" id="bug-fixes">
+<h2>Bug fixes<a class="headerlink" href="#bug-fixes" title="Permalink to this headline">¶</a></h2>
+<div class="line-block">
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1227">Issue #1227</a> - Display improved error message for Debugger listener starting error and reset between executions</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1267">Issue #1267</a> - Fix issue where MINIFY_HTML doesn’t work with the docs</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1364">Issue #1364</a> - Ensure dialogue control buttons are consistent</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1394">Issue #1394</a> - Fix Table dialogue column specification issues</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1432">Issue #1432</a> - Enhanced OSX File Browser</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1585">Issue #1585</a> - Cannot save scripts to the network</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1599">Issue #1599</a> - Ensure the grant wizard works with objects with special characters in the name</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1603">Issue #1603</a> - Fix quoting of objects names for external utilities.</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1679">Issue #1679</a> - Re-engineer the background process executor to avoid using sqlite as some builds of components it relies on do not support working in forked children</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1680">Issue #1680</a> - Render column headers at the correct width in the Query Tool under Firefox</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1729">Issue #1729</a> - Improve display of role options</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1730">Issue #1730</a> - Improve the display of role membership on both the properties panel and role dialogue</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1745">Issue #1745</a> - Ensure breakpoints are cleared properly when working with Debugger</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1747">Issue #1747</a> - Add newly created triggers to the treeview</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1780">Issue #1780</a> - Properly size the SQL Editor gutter as the width of the line numbers increases</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1792">Issue #1792</a> - List files and folders alphabetically</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1800">Issue #1800</a> - Handle the template property on databases appropriately</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1801">Issue #1801</a> - Handle databases with datallowconn == false</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1807">Issue #1807</a> - Properly detect when files have changed in the Query Tool and set flag accordingly</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1830">Issue #1830</a> - Fix a SQL error when reverse-engineering ROLE SQL on EPAS servers</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1832">Issue #1832</a> - Prevent attempts to access what may be an empty list in Dependancies tab</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1840">Issue #1840</a> - Enable/disable NULLs and ASC/DESC options for index columns and exclusion constraints appropriately</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1842">Issue #1842</a> - Show index columns in the correct order in RE-SQL</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1855">Issue #1855</a> - Ensure dialogue panels show their errors themselves, and not in the properties panel when creating Trigger Function</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1865">Issue #1865</a> - Properly schema qualify domains when reverse engineering SQL</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1874">Issue #1874</a> - Add file resources to the windows runtime</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1893">Issue #1893</a> - Fix refreshing of Unique constraints</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1896">Issue #1896</a> - Use the correct OID for retrieving properties of freshly created exclusion constraints</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1899">Issue #1899</a> - Properly quote role names when specifying function ownership</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1909">Issue #1909</a> - Handle startup errors more gracefully in the runtime</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1912">Issue #1912</a> - Properly format arguments passed by triggers to functions</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1919">Issue #1919</a> - Ensure all changes to rows are stored in the data editor</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1924">Issue #1924</a> - Ensure the check_option is only set when editing views when appropriate</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1936">Issue #1936</a> - Don’t strip rn from “Download as CSV” batches of rows, as it leads to malformed data</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1937">Issue #1937</a> - Generate mSQL for new schemas correctly</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1938">Issue #1938</a> - Fix sorting of numerics in the statistics grids</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1939">Issue #1939</a> - Updated dynamic default for the window size (90% x 90%)</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1949">Issue #1949</a> - Ensure trigger function names are schema qualified in trigger RE-SQL</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1951">Issue #1951</a> - Fix issue where nnable to browse table columns when oid values exceeed max int</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1953">Issue #1953</a> - Add display messages and notices received in the Query Tool</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1961">Issue #1961</a> - Fix upgrade check on Python 3</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1962">Issue #1962</a> - Ensure treeview collection nodes are translated in the UI</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1967">Issue #1967</a> - Store layout changes on each adjustment</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1976">Issue #1976</a> - Prevent users selecting elements of the UI that shouldn’t be selectable</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1979">Issue #1979</a> - Deal with Function arguments correctly in the properties dialogue</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1986">Issue #1986</a> - Fix various encoding issues with multibyte paths and filenames resulting in empty file save</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1992">Issue #1992</a> - Quote identifiers correctly in auto-complete</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1994">Issue #1994</a> - Update to show modifications in edit grid</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/2000">Issue #2000</a> - Allow setting of effective_io_concurrency on tablespaces in 9.6+</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/2005">Issue #2005</a> - Fix various mis-spellings of VACUUM</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/2006">Issue #2006</a> - Fix error when modifying table name or set schema on tables with postgis geometry column</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/2007">Issue #2007</a> - Correctly sort rows by the pkey when viewing first/last 100</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/2009">Issue #2009</a> - Reset the column list properly if the access method is changed on an index to ensure error handling works correctly</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/2012">Issue #2012</a> - Prevent attempts to create server groups with no name</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/2015">Issue #2015</a> - Enable trigger option when user tries to change Row trigger value through properties section</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/2024">Issue #2024</a> - Properly handle setting comments and other options on databases with allowconn = False</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/2026">Issue #2026</a> - Improve detection of the pldbgapi extension and functions before allowing debugging</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/2027">Issue #2027</a> - Fix inconsistent table styling</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/2028">Issue #2028</a> - Fix display of double scrollbars on the grant wizard</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/2032">Issue #2032</a> - Fix time formatting on dashboards</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/2033">Issue #2033</a> - Show icons for unique and exclusion constraints in the dependency/dependents panels</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/2045">Issue #2045</a> - Update copyright year on doc page</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/2046">Issue #2046</a> - Fix error when setting up regression on Windows for pgadmin4</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/2047">Issue #2047</a> - Ensure dialogues cannot be moved under the navbar</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/2061">Issue #2061</a> - Enable/disable NULLs and ASC/DESC options for index columns and exclusion constraints appropriately</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/2065">Issue #2065</a> - Improve display of columns of exclusion contraints and foreign keys in the properties lists</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/2069">Issue #2069</a> - Correct tablespace displayed in table properties</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/2076">Issue #2076</a> - Handle sized time/timestamp columns correctly</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/2109">Issue #2109</a> - Update copyright year</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/2110">Issue #2110</a> - Handle saved directories that no longer exist gracefully</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/2026">Issue #2112</a> - Enable comments on Initial database through right Click</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/2133">Issue #2133</a> - Fix display of graphical query plans for UPDATE/DELETE queries</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/2138">Issue #2138</a> - Fix display of zeros in read-only grid editors</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/2139">Issue #2139</a> - Fixed issue causing Message (Connection to the server has been lost.) displayed with Materialized view and view under sql tab</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/2152">Issue #2152</a> - Fix handling of “char” columns</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/2156">Issue #2156</a> - Added compatibility fixes for newer versions of Jinja2 (e.g. 2.9.5+)</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Version 1.2</a><ul>
+<li><a class="reference internal" href="#features">Features</a></li>
+<li><a class="reference internal" href="#bug-fixes">Bug fixes</a></li>
+</ul>
+</li>
+</ul>
+
+<h3><a href="index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="connecting.html">Connecting To A Server</a></li>
+<li class="toctree-l1"><a class="reference internal" href="managing_cluster_objects.html">Managing Cluster Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="managing_database_objects.html">Managing Database Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modifying_tables.html">Creating or Modifying a Table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="management_basics.html">Management Basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backup_and_restore.html">Backup and Restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developer_tools.html">Developer Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pgagent.html">pgAgent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributions.html">pgAdmin Project Contributions</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="release_notes.html">Release Notes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_19.html">Version 4.19</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_18.html">Version 4.18</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_17.html">Version 4.17</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_16.html">Version 4.16</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_15.html">Version 4.15</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_14.html">Version 4.14</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_13.html">Version 4.13</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_12.html">Version 4.12</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_11.html">Version 4.11</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_10.html">Version 4.10</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_9.html">Version 4.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_8.html">Version 4.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_7.html">Version 4.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_6.html">Version 4.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_5.html">Version 4.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_4.html">Version 4.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_3.html">Version 4.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_2.html">Version 4.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_1.html">Version 4.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_0.html">Version 4.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_3_6.html">Version 3.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_3_5.html">Version 3.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_3_4.html">Version 3.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_3_3.html">Version 3.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_3_2.html">Version 3.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_3_1.html">Version 3.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_3_0.html">Version 3.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_2_1.html">Version 2.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_2_0.html">Version 2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_1_6.html">Version 1.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_1_5.html">Version 1.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_1_4.html">Version 1.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_1_3.html">Version 1.3</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Version 1.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_1_1.html">Version 1.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_1_0.html">Version 1.0</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="licence.html">Licence</a></li>
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="release_notes_1_1.html" title="Version 1.1"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="release_notes_1_3.html" title="Version 1.3"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pgAdmin 4 4.19 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="release_notes.html" >Release Notes</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        <div class="related" role="navigation" aria-label="related navigation">
+          <ul>
+              <li class="left" style="margin-left: 10px">&#169; Copyright (C) 2013 - 2020, The pgAdmin Development Team.</li>
+            <li class="right" style="margin-right: 10px"><a href="genindex.html" title="General Index" accesskey="I">index</a></li>
+            <li class="right" ><a href="release_notes_1_1.html" title="Version 1.1" accesskey="N">next</a> |</li>
+            <li class="right" ><a href="release_notes_1_3.html" title="Version 1.3" accesskey="P">previous</a> |</li>
+          </ul>
+        </div>
+    </div>
+  </body>
+</html>

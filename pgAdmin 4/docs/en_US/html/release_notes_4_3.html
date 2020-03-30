@@ -1,0 +1,214 @@
+
+
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Version 4.3 &#8212; pgAdmin 4 4.19 documentation</title>
+    <link rel="stylesheet" href="_static/style.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    
+    <script src="_static/sidebar.js"></script>
+    
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Version 4.2" href="release_notes_4_2.html" />
+    <link rel="prev" title="Version 4.4" href="release_notes_4_4.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="release_notes_4_2.html" title="Version 4.2"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="release_notes_4_4.html" title="Version 4.4"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pgAdmin 4 4.19 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="release_notes.html" accesskey="U">Release Notes</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="version-4-3">
+<h1>Version 4.3<a class="headerlink" href="#version-4-3" title="Permalink to this headline">¶</a></h1>
+<p>Release date: 2019-03-07</p>
+<p>This release contains a number of new features and fixes reported since the
+release of pgAdmin4 4.2</p>
+<div class="section" id="features">
+<h2>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h2>
+<div class="line-block">
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/1825">Issue #1825</a> - Install a script to start pgAdmin (pgadmin4) from the command line when installed from the Python wheel.</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/2233">Issue #2233</a> - Add a “scratch pad” to the Query Tool to hold text snippets whilst editing.</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/2418">Issue #2418</a> - Add Commit and Rollback buttons to the Query Tool.</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/3439">Issue #3439</a> - Allow X-FRAME-OPTIONS to be set for security. Default to SAMEORIGIN.</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/3559">Issue #3559</a> - Automatically expand child nodes as well as the selected node on the treeview if there is only one.</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/3886">Issue #3886</a> - Include multiple versions of the PG utilties in containers.</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/3991">Issue #3991</a> - Update Alpine Linux version in the docker container.</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/4034">Issue #4034</a> - Support double-click on Query Tool result grid column resize handles to auto-size to the content.</div>
+</div>
+</div>
+<div class="section" id="bug-fixes">
+<h2>Bug fixes<a class="headerlink" href="#bug-fixes" title="Permalink to this headline">¶</a></h2>
+<div class="line-block">
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/3096">Bug #3096</a> - Ensure size stats are prettified on the statistics tab when the UI language is not English.</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/3352">Bug #3352</a> - Handle display of roles with expiration set to infinity correctly.</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/3418">Bug #3418</a> - Allow editing of values in columns with the oid datatype which are not an actual row OID.</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/3544">Bug #3544</a> - Make the Query Tool tab titles more concise and useful.</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/3587">Bug #3587</a> - Fix support for bigint’s in JSONB data.</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/3583">Bug #3583</a> - Update CodeMirror to 5.43.0 to resolve issues with auto-indent.</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/3600">Bug #3600</a> - Ensure JSON data isn’t modified in-flight by psycopg2 when using View/Edit data.</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/3673">Bug #3673</a> - Modify the Download as CSV option to use the same connection as the Query Tool its running in so temporary tables etc. can be used.</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/3873">Bug #3873</a> - Fix context sub-menu alignment on Safari.</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/3890">Bug #3890</a> - Update documentation screenshots as per new design.</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/3906">Bug #3906</a> - Fix alignment of Close and Maximize button of Grant Wizard.</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/3911">Bug #3911</a> - Add full support and testsfor all PG server side encodings.</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/3912">Bug #3912</a> - Fix editing of table data with a JSON primary key.</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/3933">Bug #3933</a> - Ignore exceptions in the logger.</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/3942">Bug #3942</a> - Close connections gracefully when the user logs out of pgAdmin.</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/3946">Bug #3946</a> - Fix alignment of checkbox to drop multiple schedules of pgAgent job.</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/3958">Bug #3958</a> - Don’t exclude SELECT statements from transaction management in the Query Tool in case they call data-modifying functions.</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/3959">Bug #3959</a> - Optimise display of Dependencies and Dependents, and use on-demand loading of rows in batches of 100.</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/3963">Bug #3963</a> - Fix alignment of import/export toggle switch.</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/3970">Bug #3970</a> - Prevent an error when closing the Sort/Filter dialogue with an empty filter string.</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/3974">Bug #3974</a> - Fix alignment of Connection type toggle switch of pgagent.</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/3981">Bug #3981</a> - Fix the query to set bytea_output so that read-only standbys don’t consider it a write query.</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/3982">Bug #3982</a> - Add full support and testsfor all PG server side encodings.</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/3985">Bug #3985</a> - Don’t embed docs and external sites in iframes, to allow the external sites to set X-FRAME-OPTIONS = DENY for security.</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/3992">Bug #3992</a> - Add full support and testsfor all PG server side encodings.</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/3998">Bug #3998</a> - Custom-encode forward slashes in URL parameters as Apache HTTPD doesn’t allow them in some cases.</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/4000">Bug #4000</a> - Update CodeMirror to 5.43.0 to resolve issues with tab indent with use spaces enabled.</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/4013">Bug #4013</a> - Ensure long queries don’t cause errors when downloading CSV in the Query Tool.</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/4021">Bug #4021</a> - Disable the editor and execute functions whilst queries are executing.</div>
+<div class="line"><a class="reference external" href="https://redmine.postgresql.org/issues/4022">Bug #4022</a> - Fix an issue where importing servers fails if a group already exists for a different user.</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Version 4.3</a><ul>
+<li><a class="reference internal" href="#features">Features</a></li>
+<li><a class="reference internal" href="#bug-fixes">Bug fixes</a></li>
+</ul>
+</li>
+</ul>
+
+<h3><a href="index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="connecting.html">Connecting To A Server</a></li>
+<li class="toctree-l1"><a class="reference internal" href="managing_cluster_objects.html">Managing Cluster Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="managing_database_objects.html">Managing Database Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modifying_tables.html">Creating or Modifying a Table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="management_basics.html">Management Basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backup_and_restore.html">Backup and Restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developer_tools.html">Developer Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pgagent.html">pgAgent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributions.html">pgAdmin Project Contributions</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="release_notes.html">Release Notes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_19.html">Version 4.19</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_18.html">Version 4.18</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_17.html">Version 4.17</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_16.html">Version 4.16</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_15.html">Version 4.15</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_14.html">Version 4.14</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_13.html">Version 4.13</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_12.html">Version 4.12</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_11.html">Version 4.11</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_10.html">Version 4.10</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_9.html">Version 4.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_8.html">Version 4.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_7.html">Version 4.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_6.html">Version 4.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_5.html">Version 4.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_4.html">Version 4.4</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Version 4.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_2.html">Version 4.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_1.html">Version 4.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_0.html">Version 4.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_3_6.html">Version 3.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_3_5.html">Version 3.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_3_4.html">Version 3.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_3_3.html">Version 3.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_3_2.html">Version 3.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_3_1.html">Version 3.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_3_0.html">Version 3.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_2_1.html">Version 2.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_2_0.html">Version 2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_1_6.html">Version 1.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_1_5.html">Version 1.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_1_4.html">Version 1.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_1_3.html">Version 1.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_1_2.html">Version 1.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_1_1.html">Version 1.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_1_0.html">Version 1.0</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="licence.html">Licence</a></li>
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="release_notes_4_2.html" title="Version 4.2"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="release_notes_4_4.html" title="Version 4.4"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pgAdmin 4 4.19 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="release_notes.html" >Release Notes</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        <div class="related" role="navigation" aria-label="related navigation">
+          <ul>
+              <li class="left" style="margin-left: 10px">&#169; Copyright (C) 2013 - 2020, The pgAdmin Development Team.</li>
+            <li class="right" style="margin-right: 10px"><a href="genindex.html" title="General Index" accesskey="I">index</a></li>
+            <li class="right" ><a href="release_notes_4_2.html" title="Version 4.2" accesskey="N">next</a> |</li>
+            <li class="right" ><a href="release_notes_4_4.html" title="Version 4.4" accesskey="P">previous</a> |</li>
+          </ul>
+        </div>
+    </div>
+  </body>
+</html>

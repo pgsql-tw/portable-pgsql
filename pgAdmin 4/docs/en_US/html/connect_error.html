@@ -1,0 +1,174 @@
+
+
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Connection Error &#8212; pgAdmin 4 4.19 documentation</title>
+    <link rel="stylesheet" href="_static/style.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    
+    <script src="_static/sidebar.js"></script>
+    
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Import/Export Servers" href="import_export_servers.html" />
+    <link rel="prev" title="Connect to Server" href="connect_to_server.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="import_export_servers.html" title="Import/Export Servers"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="connect_to_server.html" title="Connect to Server"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pgAdmin 4 4.19 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="connecting.html" accesskey="U">Connecting To A Server</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="connection-error">
+<span id="connect-error"></span><h1><span class="target" id="index-0"></span>Connection Error<a class="headerlink" href="#connection-error" title="Permalink to this headline">¶</a></h1>
+<p>When connecting to a PostgreSQL server, you may get an error message. If you
+encounter an error message, please review the message  carefully; each error
+message attempts to incorporate the information you’ll need to resolve the
+problem.  For more details about specific errors, please locate the error
+message in the list below:</p>
+<p><strong>Connection to the server has been lost</strong></p>
+<img alt="Connection to the server has been lost" class="align-center" src="_images/ce_timeout.png" />
+<p>This error message indicates that the connection attempt has taken longer than
+the specified threshold; there may be a problem with the connection properties
+provided on the <em>Server</em> dialog, network connectivity issues, or the server may
+not be running.</p>
+<p><strong>could not connect to Server: Connection refused</strong></p>
+<img alt="Could not connect to server" class="align-center" src="_images/ce_not_running.png" />
+<dl class="simple">
+<dt>If pgAdmin displays this message, there are two possible reasons for this:</dt><dd><ul class="simple">
+<li><p>the database server isn’t running - simply start it.</p></li>
+<li><p>the server isn’t configured to accept TCP/IP requests on the address shown.</p></li>
+</ul>
+</dd>
+</dl>
+<p>For security reasons, a PostgreSQL server “out of the box” doesn’t listen on
+TCP/IP ports. Instead, it must be enabled to listen for TCP/IP requests. This
+can be done by adding <strong>listen_addresses=’*’</strong>; this will make the server accept
+connections on any IP interface.</p>
+<p>For further information, please refer to the PostgreSQL documentation about
+<a class="reference external" href="https://www.postgresql.org/docs/current/runtime-config.html">runtime configuration</a>.</p>
+<p><strong>FATAL: no pg_hba.conf entry</strong></p>
+<img alt="No pg_hba.conf entry" class="align-center" src="_images/ce_error_hba.png" />
+<p>If pgAdmin displays this message when connecting, your server can be contacted
+correctly over the network, but is not configured to accept your connection.
+Your client has not been detected as a legal user for the database.</p>
+<p>To connect to a server, the pg_hba.conf file on the database server must be
+configured to accept connections from the host of the pgAdmin client. Modify
+the pg_hba.conf file on the database server host, and add an entry in the form:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>host template1 postgres 192.168.0.0/24 md5</strong> for an IPV4 network</p></li>
+<li><p><strong>host template1 postgres ::ffff:192.168.0.0/120 md5</strong> for an IPV6 network</p></li>
+</ul>
+</div></blockquote>
+<p>For more information, please refer to the PostgreSQL documentation about
+<a class="reference external" href="https://www.postgresql.org/docs/current/client-authentication.html">client authentication</a>.</p>
+<p><strong>FATAL: password authentication failed</strong></p>
+<img alt="Password authentication failed" class="align-center" src="_images/ce_password_failed.png" />
+<p>The <em>password authentication failed for user</em> error message indicates there
+may be a problem with the password you entered. Retry the password to confirm
+you entered it correctly. If the error message returns, make sure that you have
+the correct password, that you are authorized to access the server, and that
+the access has been correctly configured in the server’s postgresql.conf
+configuration file.</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="connecting.html">Connecting To A Server</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="server_group_dialog.html">Server Group Dialog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="server_dialog.html">Server Dialog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="master_password.html">Master Password</a></li>
+<li class="toctree-l2"><a class="reference internal" href="connect_to_server.html">Connect to Server</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Connection Error</a></li>
+<li class="toctree-l2"><a class="reference internal" href="import_export_servers.html">Import/Export Servers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="managing_cluster_objects.html">Managing Cluster Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="managing_database_objects.html">Managing Database Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modifying_tables.html">Creating or Modifying a Table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="management_basics.html">Management Basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backup_and_restore.html">Backup and Restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developer_tools.html">Developer Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pgagent.html">pgAgent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributions.html">pgAdmin Project Contributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="licence.html">Licence</a></li>
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="import_export_servers.html" title="Import/Export Servers"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="connect_to_server.html" title="Connect to Server"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pgAdmin 4 4.19 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="connecting.html" >Connecting To A Server</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        <div class="related" role="navigation" aria-label="related navigation">
+          <ul>
+              <li class="left" style="margin-left: 10px">&#169; Copyright (C) 2013 - 2020, The pgAdmin Development Team.</li>
+            <li class="right" style="margin-right: 10px"><a href="genindex.html" title="General Index" accesskey="I">index</a></li>
+            <li class="right" ><a href="import_export_servers.html" title="Import/Export Servers" accesskey="N">next</a> |</li>
+            <li class="right" ><a href="connect_to_server.html" title="Connect to Server" accesskey="P">previous</a> |</li>
+          </ul>
+        </div>
+    </div>
+  </body>
+</html>

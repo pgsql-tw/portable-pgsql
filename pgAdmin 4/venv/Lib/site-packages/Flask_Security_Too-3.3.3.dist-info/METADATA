@@ -1,0 +1,184 @@
+Metadata-Version: 2.1
+Name: Flask-Security-Too
+Version: 3.3.3
+Summary: Simple security for Flask apps.
+Home-page: https://github.com/jwag956/flask-security
+Author: Matt Wright & Chris Wagner
+Author-email: jwag.wagner+github@gmail.com
+License: MIT
+Project-URL: Documentation, https://flask-security-too.readthedocs.io
+Project-URL: Releases, https://pypi.org/project/Flask-Security-Too/
+Project-URL: Code, https://github.com/jwag956/flask-security
+Project-URL: Issue tracker, https://github.com/jwag956/flask-security/issues
+Keywords: flask security
+Platform: any
+Classifier: Environment :: Web Environment
+Classifier: Framework :: Flask
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Classifier: Development Status :: 4 - Beta
+Requires-Python: >=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*
+Requires-Dist: Flask (>=1.0.2)
+Requires-Dist: Flask-Login (>=0.4.1)
+Requires-Dist: Flask-Mail (>=0.9.1)
+Requires-Dist: Flask-Principal (>=0.4.0)
+Requires-Dist: Flask-WTF (>=0.14.2)
+Requires-Dist: Flask-BabelEx (>=0.9.3)
+Requires-Dist: itsdangerous (>=1.1.0)
+Requires-Dist: passlib (>=1.7.1)
+Provides-Extra: all
+Requires-Dist: Pallets-Sphinx-Themes (>=1.2.0) ; extra == 'all'
+Requires-Dist: Sphinx (>=1.8.5) ; extra == 'all'
+Requires-Dist: sphinx-issues (>=1.2.0) ; extra == 'all'
+Requires-Dist: Flask-Mongoengine (>=0.9.5) ; extra == 'all'
+Requires-Dist: peewee (>=3.11.2) ; extra == 'all'
+Requires-Dist: Flask-SQLAlchemy (>=2.3) ; extra == 'all'
+Requires-Dist: argon2-cffi (>=19.1.0) ; extra == 'all'
+Requires-Dist: bcrypt (>=3.1.5) ; extra == 'all'
+Requires-Dist: cachetools (>=3.1.0) ; extra == 'all'
+Requires-Dist: check-manifest (>=0.25) ; extra == 'all'
+Requires-Dist: coverage (>=4.5.4) ; extra == 'all'
+Requires-Dist: cryptography (>=2.3.1) ; extra == 'all'
+Requires-Dist: isort (>=4.2.2) ; extra == 'all'
+Requires-Dist: mock (>=1.3.0) ; extra == 'all'
+Requires-Dist: mongoengine (>=0.15.3) ; extra == 'all'
+Requires-Dist: mongomock (>=3.14.0) ; extra == 'all'
+Requires-Dist: msgcheck (>=2.9) ; extra == 'all'
+Requires-Dist: pony (>=0.7.11) ; extra == 'all'
+Requires-Dist: psycopg2 (>=2.8.4) ; extra == 'all'
+Requires-Dist: pydocstyle (>=1.0.0) ; extra == 'all'
+Requires-Dist: pymysql (>=0.9.3) ; extra == 'all'
+Requires-Dist: pyqrcode (>=1.2) ; extra == 'all'
+Requires-Dist: pytest-black (>=0.3.7) ; extra == 'all'
+Requires-Dist: pytest-cache (>=1.0) ; extra == 'all'
+Requires-Dist: pytest-cov (>=2.5.1) ; extra == 'all'
+Requires-Dist: pytest-flake8 (>=1.0.4) ; extra == 'all'
+Requires-Dist: pytest-mongo (>=1.2.1) ; extra == 'all'
+Requires-Dist: pytest (>=3.5.1) ; extra == 'all'
+Requires-Dist: sqlalchemy (>=1.2.6) ; extra == 'all'
+Requires-Dist: sqlalchemy-utils (>=0.33.0) ; extra == 'all'
+Requires-Dist: werkzeug (>=0.15.5) ; extra == 'all'
+Provides-Extra: docs
+Requires-Dist: Pallets-Sphinx-Themes (>=1.2.0) ; extra == 'docs'
+Requires-Dist: Sphinx (>=1.8.5) ; extra == 'docs'
+Requires-Dist: sphinx-issues (>=1.2.0) ; extra == 'docs'
+Provides-Extra: tests
+Requires-Dist: Flask-Mongoengine (>=0.9.5) ; extra == 'tests'
+Requires-Dist: peewee (>=3.11.2) ; extra == 'tests'
+Requires-Dist: Flask-SQLAlchemy (>=2.3) ; extra == 'tests'
+Requires-Dist: argon2-cffi (>=19.1.0) ; extra == 'tests'
+Requires-Dist: bcrypt (>=3.1.5) ; extra == 'tests'
+Requires-Dist: cachetools (>=3.1.0) ; extra == 'tests'
+Requires-Dist: check-manifest (>=0.25) ; extra == 'tests'
+Requires-Dist: coverage (>=4.5.4) ; extra == 'tests'
+Requires-Dist: cryptography (>=2.3.1) ; extra == 'tests'
+Requires-Dist: isort (>=4.2.2) ; extra == 'tests'
+Requires-Dist: mock (>=1.3.0) ; extra == 'tests'
+Requires-Dist: mongoengine (>=0.15.3) ; extra == 'tests'
+Requires-Dist: mongomock (>=3.14.0) ; extra == 'tests'
+Requires-Dist: msgcheck (>=2.9) ; extra == 'tests'
+Requires-Dist: pony (>=0.7.11) ; extra == 'tests'
+Requires-Dist: psycopg2 (>=2.8.4) ; extra == 'tests'
+Requires-Dist: pydocstyle (>=1.0.0) ; extra == 'tests'
+Requires-Dist: pymysql (>=0.9.3) ; extra == 'tests'
+Requires-Dist: pyqrcode (>=1.2) ; extra == 'tests'
+Requires-Dist: pytest-black (>=0.3.7) ; extra == 'tests'
+Requires-Dist: pytest-cache (>=1.0) ; extra == 'tests'
+Requires-Dist: pytest-cov (>=2.5.1) ; extra == 'tests'
+Requires-Dist: pytest-flake8 (>=1.0.4) ; extra == 'tests'
+Requires-Dist: pytest-mongo (>=1.2.1) ; extra == 'tests'
+Requires-Dist: pytest (>=3.5.1) ; extra == 'tests'
+Requires-Dist: sqlalchemy (>=1.2.6) ; extra == 'tests'
+Requires-Dist: sqlalchemy-utils (>=0.33.0) ; extra == 'tests'
+Requires-Dist: werkzeug (>=0.15.5) ; extra == 'tests'
+
+Flask-Security
+===================
+
+.. image:: https://travis-ci.org/jwag956/flask-security.svg?branch=master
+    :target: https://travis-ci.org/jwag956/flask-security
+
+.. image:: https://coveralls.io/repos/github/jwag956/flask-security/badge.svg?branch=master
+    :target: https://coveralls.io/github/jwag956/flask-security?branch=master
+
+.. image:: https://img.shields.io/github/tag/jwag956/flask-security.svg
+    :target: https://github.com/jwag956/flask-security/releases
+
+.. image:: https://img.shields.io/pypi/dm/flask-security-too.svg
+    :target: https://pypi.python.org/pypi/flask-security-too
+    :alt: Downloads
+
+.. image:: https://img.shields.io/github/license/jwag956/flask-security.svg
+    :target: https://github.com/jwag956/flask-security/blob/master/LICENSE
+    :alt: License
+
+.. image:: https://readthedocs.org/projects/flask-security-too/badge/?version=latest
+    :target: https://flask-security-too.readthedocs.io/en/latest/?badge=latest
+    :alt: Documentation Status
+
+.. image:: https://img.shields.io/badge/code%20style-black-000000.svg
+    :target: https://github.com/python/black
+
+Quickly add security features to your Flask application.
+
+Notes on this repo
+------------------
+This is a independently maintained version of Flask-Security based on the 3.0.0
+version of the `Original <https://github.com/mattupstate/flask-security>`_
+
+Goals
++++++
+* Regain momentum for this critical piece of the Flask eco-system. To that end the
+  the plan is to put out small, frequent releases starting with pulling the simplest
+  and most obvious changes that have already been vetted in the upstream version, as
+  well as other pull requests. This was completed with the June 29 2019 3.2.0 release.
+* Continue work to get Flask-Security to be usable from Single Page Applications,
+  such as those built with Vue and Angular, that have no html forms. This is true as of the 3.3.0
+  release.
+* Use `OWASP <https://github.com/OWASP/ASVS>`_ to guide best practice and default configurations.
+* Migrate to more modern paradigms such as using oauth2 and JWT for token acquisition.
+* Be more opinionated and 'batteries' included by reducing reliance on abandoned projects and
+  bundling in support for common use cases.
+* Follow the `Pallets <https://github.com/pallets>`_ lead on supported versions, documentation
+  standards and any other guidelines for extensions that they come up with.
+* Any other great ideas.
+
+Contributing
+++++++++++++
+Issues and pull requests are welcome. Other maintainers are also welcome. Unlike
+the original Flask-Security - issue pull requests against the *master* branch.
+Please consult these `contributing`_ guidelines.
+
+.. _contributing: https://github.com/jwag956/flask-security/blob/master/CONTRIBUTING.rst
+
+Installing
+----------
+Install and update using `pip <https://pip.pypa.io/en/stable/quickstart/>`_:
+
+::
+
+    pip install -U Flask-Security-Too
+
+
+Resources
+---------
+
+- `Documentation <https://flask-security-too.readthedocs.io/>`_
+- `Releases <https://pypi.org/project/Flask-Security-Too/>`_
+- `Issue Tracker <https://github.com/jwag956/flask-security/issues>`_
+- `Code <https://github.com/jwag956/flask-security/>`_
+
+

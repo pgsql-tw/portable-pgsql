@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>22.1. Overview</title><link rel="stylesheet" type="text/css" href="stylesheet.css" /><link rev="made" href="pgsql-docs@lists.postgresql.org" /><meta name="generator" content="DocBook XSL Stylesheets V1.79.1" /><link rel="prev" href="managing-databases.html" title="Chapter 22. Managing Databases" /><link rel="next" href="manage-ag-createdb.html" title="22.2. Creating a Database" /></head><body><div xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="5" align="center">22.1. Overview</th></tr><tr><td width="10%" align="left"><a accesskey="p" href="managing-databases.html" title="Chapter 22. Managing Databases">Prev</a> </td><td width="10%" align="left"><a accesskey="u" href="managing-databases.html" title="Chapter 22. Managing Databases">Up</a></td><th width="60%" align="center">Chapter 22. Managing Databases</th><td width="10%" align="right"><a accesskey="h" href="index.html" title="PostgreSQL 12.2 Documentation">Home</a></td><td width="10%" align="right"> <a accesskey="n" href="manage-ag-createdb.html" title="22.2. Creating a Database">Next</a></td></tr></table><hr></hr></div><div class="sect1" id="MANAGE-AG-OVERVIEW"><div class="titlepage"><div><div><h2 class="title" style="clear: both">22.1. Overview</h2></div></div></div><a id="id-1.6.9.4.2" class="indexterm"></a><p>
+   A database is a named collection of <acronym class="acronym">SQL</acronym> objects
+   (<span class="quote">“<span class="quote">database objects</span>”</span>).  Generally, every database
+   object (tables, functions, etc.) belongs to one and only one
+   database.  (However there are a few system catalogs, for example
+   <code class="literal">pg_database</code>, that belong to a whole cluster and
+   are accessible from each database within the cluster.)  More
+   accurately, a database is a collection of schemas and the schemas
+   contain the tables, functions, etc.  So the full hierarchy is:
+   server, database, schema, table (or some other kind of object,
+   such as a function).
+  </p><p>
+   When connecting to the database server, a client must specify in
+   its connection request the name of the database it wants to connect
+   to. It is not possible to access more than one database per
+   connection. However, an application is not restricted in the number of
+   connections it opens to the same or other databases.  Databases are
+   physically separated and access control is managed at the
+   connection level.  If one <span class="productname">PostgreSQL</span> server
+   instance is to house projects or users that should be separate and
+   for the most part unaware of each other, it is therefore
+   recommended to put them into separate databases.  If the projects
+   or users are interrelated and should be able to use each other's
+   resources, they should be put in the same database but possibly
+   into separate schemas.  Schemas are a purely logical structure and who can
+   access what is managed by the privilege system.  More information about
+   managing schemas is in <a class="xref" href="ddl-schemas.html" title="5.9. Schemas">Section 5.9</a>.
+  </p><p>
+   Databases are created with the <code class="command">CREATE DATABASE</code> command
+   (see <a class="xref" href="manage-ag-createdb.html" title="22.2. Creating a Database">Section 22.2</a>) and destroyed with the
+   <code class="command">DROP DATABASE</code> command
+   (see <a class="xref" href="manage-ag-dropdb.html" title="22.5. Destroying a Database">Section 22.5</a>).
+   To determine the set of existing databases, examine the
+   <code class="structname">pg_database</code> system catalog, for example
+</p><pre class="synopsis">
+SELECT datname FROM pg_database;
+</pre><p>
+   The <a class="xref" href="app-psql.html" title="psql"><span class="refentrytitle"><span class="application">psql</span></span></a> program's <code class="literal">\l</code> meta-command
+   and <code class="option">-l</code> command-line option are also useful for listing the
+   existing databases.
+  </p><div class="note"><h3 class="title">Note</h3><p>
+    The <acronym class="acronym">SQL</acronym> standard calls databases <span class="quote">“<span class="quote">catalogs</span>”</span>, but there
+    is no difference in practice.
+   </p></div></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="managing-databases.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="managing-databases.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="manage-ag-createdb.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter 22. Managing Databases </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 22.2. Creating a Database</td></tr></table></div></body></html>

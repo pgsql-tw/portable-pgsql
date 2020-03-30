@@ -1,0 +1,114 @@
+<div class="container-fluid dashboard-container negative-space">
+    <div id="dashboard-graphs" class="dashboard-hidden">
+        <div class="row dashboard-row">
+            <div class="col-md-6 col-12">
+                <div class="card" role="object-document" tabindex="0" aria-labelledby="database-session-graph">
+                    <div class="card-header" id="database-session-graph">
+                        {{ _('Database sessions') }}
+                    </div>
+                    <div class="card-body dashboard-graph-body">
+                        <div id="graph-sessions" class="graph-container"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-12">
+                <div class="card" role="object-document" tabindex="0" aria-labelledby="transactions-per-second-graph">
+                    <div class="card-header" id="transactions-per-second-graph">
+                        {{ _('Transactions per second') }}
+                    </div>
+                    <div class="card-body dashboard-graph-body">
+                        <div id="graph-tps" class="graph-container"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row dashboard-row">
+            <div class="col-md-4 col-12">
+                <div class="card" role="object-document" tabindex="0" aria-labelledby="tuples-in-graph">
+                    <div class="card-header" id="tuples-in-graph">
+                        {{ _('Tuples in') }}
+                    </div>
+                    <div class="card-body dashboard-graph-body">
+                        <div id="graph-ti" class="graph-container"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-12">
+                <div class="card" role="object-document" tabindex="0" aria-labelledby="tuples-out-graph">
+                    <div class="card-header" id="tuples-out-graph">
+                        {{ _('Tuples out') }}
+                    </div>
+                    <div class="card-body dashboard-graph-body">
+                        <div id="graph-to" class="graph-container"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-12">
+                <div class="card" role="object-document" tabindex="0" aria-labelledby="block-io-graph">
+                    <div class="card-header" id="block-io-graph">
+                        {{ _('Block I/O') }}
+                    </div>
+                    <div class="card-body dashboard-graph-body">
+                        <div id="graph-bio" class="graph-container"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="dashboard-activity" class="card dashboard-row dashboard-hidden">
+        <div class="card-header">
+            <span id="dashboard-activity-header">{{ _('Server activity') }}</span>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-9 col-12 pr-0">
+                    <ul class="nav nav-tabs" role="tablist" aria-labelledby="dashboard-activity-header">
+                        <li class="nav-item">
+                            <a class="nav-link active show" id="tab_panel_database_activity_tab" href="#tab_panel_database_activity" aria-controls="tab_database_activity"
+                                role="tab" data-toggle="tab">{{ _('Sessions') }}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="tab_panel_database_locks_tab" href="#tab_panel_database_locks" aria-controls="tab_database_locks"
+                               role="tab" data-toggle="tab">{{ _('Locks') }}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="tab_panel_database_prepared_tab" href="#tab_panel_database_prepared" aria-controls="tab_database_prepared"
+                               role="tab" data-toggle="tab">{{ _('Prepared Transactions') }}</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-3 col-12 pl-0 text-right">
+                    <div class="navtab-inline-controls">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text fa fa-search" id="labelSearch" aria-label="{{ _('Search') }}"></span>
+                            </div>
+                            <input type="search" class="form-control" id="txtGridSearch" placeholder="{{ _('Search') }}" aria-describedby="labelSearch" aria-labelledby="labelSearch">
+                        </div>
+                        <button id="btn_refresh" type="button" class="btn btn-secondary btn-navtab-inline" title="{{ _('Refresh') }}" aria-label="{{ _('Refresh') }}">
+                            <span class="fa fa-refresh" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Nav tabs -->
+
+
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane negative-space p-2 active show" id="tab_panel_database_activity" aria-labelledby="tab_panel_database_activity_tab">
+                    <div id="database_activity" class="grid-container"></div>
+                </div>
+                <div role="tabpanel" class="tab-pane negative-space p-2" id="tab_panel_database_locks" aria-labelledby="tab_panel_database_locks_tab">
+                    <div id="database_locks" class="grid-container"></div>
+                </div>
+                <div role="tabpanel" class="tab-pane negative-space p-2" id="tab_panel_database_prepared" aria-labelledby="tab_panel_database_prepared_tab">
+                    <div id="database_prepared" class="grid-container"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="dashboard-none-show" class="alert alert-info pg-panel-message dashboard-hidden" role="alert">
+        {{ _('All Dashboard elements are currently disabled.') }}
+    </div>
+</div>

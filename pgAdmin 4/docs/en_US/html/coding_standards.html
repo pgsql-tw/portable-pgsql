@@ -1,0 +1,311 @@
+
+
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Coding Standards &#8212; pgAdmin 4 4.19 documentation</title>
+    <link rel="stylesheet" href="_static/style.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    
+    <script src="_static/sidebar.js"></script>
+    
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Code Review Notes" href="code_review.html" />
+    <link rel="prev" title="Code Overview" href="code_overview.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="code_review.html" title="Code Review Notes"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="code_overview.html" title="Code Overview"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pgAdmin 4 4.19 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="contributions.html" accesskey="U">pgAdmin Project Contributions</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="coding-standards">
+<span id="id1"></span><h1><span class="target" id="index-0"></span>Coding Standards<a class="headerlink" href="#coding-standards" title="Permalink to this headline">¶</a></h1>
+<p>pgAdmin uses multiple technologies and multiple languages, each of which have
+their own coding standards.</p>
+<div class="section" id="general">
+<h2>General<a class="headerlink" href="#general" title="Permalink to this headline">¶</a></h2>
+<p>In all languages, indentations should be made with 4 spaces, and excessively long
+lines wrapped where appropriate to ensure they can be read on smaller displays
+(80 characters is used in many places, but this is not a required maximum size
+as it’s quite wasteful on modern displays). Typically lines should not be longer
+than 120 characters.</p>
+<p>Comments should be included in all code where required to explain its
+purpose or how it works if not obvious from a quick review of the code itself.</p>
+</div>
+<div class="section" id="css-3">
+<h2>CSS 3<a class="headerlink" href="#css-3" title="Permalink to this headline">¶</a></h2>
+<p>CSS3 is used for styling and layout throughout the application. Extensive use is
+made of the Bootstrap Framework to aid in that process, however additional
+styles must still be created from time to time.</p>
+<p>Most custom styling comes from individual modules which may advertise static
+stylesheets to be included in the module that is loading them via hooks.</p>
+<p>Styling overrides (for example, to alter the Bootstrap look and feel) will
+typically be found in the <strong>overrides.css</strong> file in the main static file
+directory for the application.</p>
+<p>Styling should never be applied inline in HTML, always through an external
+stylesheet, which should contain comments as appropriate to explain the usage
+or purpose for the style.</p>
+<p>Styles should be specified clearly, one per line. For example:</p>
+<div class="highlight-css notranslate"><div class="highlight"><pre><span></span><span class="c">/* iFrames should have no border */</span>
+<span class="nt">iframe</span> <span class="p">{</span>
+    <span class="k">border-width</span><span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c">/* Ensure the codemirror editor displays full height gutters when resized */</span>
+<span class="p">.</span><span class="nc">CodeMirror</span><span class="o">,</span> <span class="p">.</span><span class="nc">CodeMirror-gutters</span> <span class="p">{</span>
+    <span class="k">height</span><span class="p">:</span> <span class="mi">100</span><span class="kt">%</span> <span class="cp">!important</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>All stylesheets must be CSS3 compliant.</p>
+</div>
+<div class="section" id="html-5">
+<h2>HTML 5<a class="headerlink" href="#html-5" title="Permalink to this headline">¶</a></h2>
+<p>HTML 5 is used for page structure throughout the application, in most cases
+being rendered from templates by the Jinja2 template engine in Flask.</p>
+<p>All HTML must be HTML 5 compliant.</p>
+</div>
+<div class="section" id="javascript">
+<h2>Javascript<a class="headerlink" href="#javascript" title="Permalink to this headline">¶</a></h2>
+<p>Client-side code is written in Javascript using jQuery and various plugins.
+Whilst much of the code is rendered from static files, there is also code that
+is rendered from templates using Jinja2 (often to inject the users settings) or
+constructed on the fly from module hooks.</p>
+<p>A typical Javascript function might be formatted like this (this snipped is from
+a template):</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">// Delete a server group</span>
+<span class="kd">function</span> <span class="nx">delete_server_group</span><span class="p">(</span><span class="nx">item</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">alertify</span><span class="p">.</span><span class="nx">confirm</span><span class="p">(</span>
+        <span class="s1">&#39;Delete server group?&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Are you sure you wish to delete the server group &quot;{0}&quot;?&#39;</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="s1">&#39;{0}&#39;</span><span class="p">,</span> <span class="nx">tree</span><span class="p">.</span><span class="nx">getLabel</span><span class="p">(</span><span class="nx">item</span><span class="p">)),</span>
+        <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">id</span> <span class="o">=</span> <span class="nx">tree</span><span class="p">.</span><span class="nx">getId</span><span class="p">(</span><span class="nx">item</span><span class="p">)</span>
+            <span class="nx">$</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s2">&quot;{{ url_for(&#39;NODE-server-group.delete&#39;) }}&quot;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">id</span><span class="o">:</span> <span class="nx">id</span> <span class="p">})</span>
+                <span class="p">.</span><span class="nx">done</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">success</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="nx">report_error</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">errormsg</span><span class="p">,</span> <span class="nx">data</span><span class="p">.</span><span class="nx">info</span><span class="p">);</span>
+                    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                        <span class="kd">var</span> <span class="nx">next</span> <span class="o">=</span> <span class="nx">tree</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="nx">item</span><span class="p">);</span>
+                        <span class="kd">var</span> <span class="nx">prev</span> <span class="o">=</span> <span class="nx">tree</span><span class="p">.</span><span class="nx">prev</span><span class="p">(</span><span class="nx">item</span><span class="p">);</span>
+                        <span class="nx">tree</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="nx">item</span><span class="p">);</span>
+                        <span class="k">if</span> <span class="p">(</span><span class="nx">next</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="p">{</span>
+                            <span class="nx">tree</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="nx">next</span><span class="p">);</span>
+                        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">prev</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="p">{</span>
+                            <span class="nx">tree</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="nx">prev</span><span class="p">);</span>
+                        <span class="p">}</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">)</span>
+        <span class="p">},</span>
+        <span class="kc">null</span>
+    <span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Note the use of a descriptive function name, using the underscore character to
+separate words in all lower case, and short but descriptive lower case variable
+names.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>From version 3.0 onwards, new or refactored code should be written using
+ES6 features and conventions.</p>
+</div>
+</div>
+<div class="section" id="c">
+<h2>C++<a class="headerlink" href="#c" title="Permalink to this headline">¶</a></h2>
+<p>C++ code is used in the desktop runtime for the application, primarily with the
+QT framework and an embedded Python interpreter. Note the use of hanging braces,
+which may be omitted if on a single statement is present:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// Ping the application server to see if it&#39;s alive</span>
+<span class="kt">bool</span> <span class="nf">PingServer</span><span class="p">(</span><span class="n">QUrl</span> <span class="n">url</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">QNetworkAccessManager</span> <span class="n">manager</span><span class="p">;</span>
+    <span class="n">QEventLoop</span> <span class="n">loop</span><span class="p">;</span>
+    <span class="n">QNetworkReply</span> <span class="o">*</span><span class="n">reply</span><span class="p">;</span>
+    <span class="n">QVariant</span> <span class="n">redirectUrl</span><span class="p">;</span>
+
+    <span class="n">url</span><span class="p">.</span><span class="n">setPath</span><span class="p">(</span><span class="s">&quot;/utils/ping&quot;</span><span class="p">);</span>
+
+    <span class="k">do</span>
+    <span class="p">{</span>
+        <span class="n">reply</span> <span class="o">=</span> <span class="n">manager</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">QNetworkRequest</span><span class="p">(</span><span class="n">url</span><span class="p">));</span>
+
+        <span class="n">QObject</span><span class="o">::</span><span class="n">connect</span><span class="p">(</span><span class="n">reply</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="n">finished</span><span class="p">()),</span> <span class="o">&amp;</span><span class="n">loop</span><span class="p">,</span> <span class="n">SLOT</span><span class="p">(</span><span class="n">quit</span><span class="p">()));</span>
+        <span class="n">loop</span><span class="p">.</span><span class="n">exec</span><span class="p">();</span>
+
+        <span class="n">redirectUrl</span> <span class="o">=</span> <span class="n">reply</span><span class="o">-&gt;</span><span class="n">attribute</span><span class="p">(</span><span class="n">QNetworkRequest</span><span class="o">::</span><span class="n">RedirectionTargetAttribute</span><span class="p">);</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">redirectUrl</span><span class="p">.</span><span class="n">toUrl</span><span class="p">();</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">redirectUrl</span><span class="p">.</span><span class="n">isNull</span><span class="p">())</span>
+            <span class="k">delete</span> <span class="n">reply</span><span class="p">;</span>
+
+    <span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">redirectUrl</span><span class="p">.</span><span class="n">isNull</span><span class="p">());</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">reply</span><span class="o">-&gt;</span><span class="n">error</span><span class="p">()</span> <span class="o">!=</span> <span class="n">QNetworkReply</span><span class="o">::</span><span class="n">NoError</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+
+    <span class="n">QString</span> <span class="n">response</span> <span class="o">=</span> <span class="n">reply</span><span class="o">-&gt;</span><span class="n">readAll</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">response</span> <span class="o">!=</span> <span class="s">&quot;PING&quot;</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">qDebug</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Failed to connect, server response: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">response</span><span class="p">;</span>
+        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="python">
+<h2>Python<a class="headerlink" href="#python" title="Permalink to this headline">¶</a></h2>
+<p>Python is used for the backend web server. All code must be compatible with
+Python 2.7 and should include PyDoc comments whilst following the official
+Python coding standards defined in
+<a class="reference external" href="https://www.python.org/dev/peps/pep-0008/">PEP 8</a>. An example function along
+with the required file header is shown below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">##########################################################################</span>
+<span class="c1">#</span>
+<span class="c1"># pgAdmin 4 - PostgreSQL Tools</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright (C) 2013 - 2020, The pgAdmin Development Team</span>
+<span class="c1"># This software is released under the PostgreSQL Licence</span>
+<span class="c1">#</span>
+<span class="c1">##########################################################################</span>
+
+<span class="sd">&quot;&quot;&quot;Integration hooks for server groups.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">render_template</span><span class="p">,</span> <span class="n">url_for</span>
+<span class="kn">from</span> <span class="nn">flask.ext.security</span> <span class="kn">import</span> <span class="n">current_user</span>
+
+<span class="kn">from</span> <span class="nn">pgadmin.settings.settings_model</span> <span class="kn">import</span> <span class="n">db</span><span class="p">,</span> <span class="n">ServerGroup</span>
+
+<span class="k">def</span> <span class="nf">get_nodes</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Return a JSON document listing the server groups for the user&quot;&quot;&quot;</span>
+    <span class="n">groups</span> <span class="o">=</span> <span class="n">ServerGroup</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">user_id</span><span class="o">=</span><span class="n">current_user</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+
+    <span class="n">value</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">groups</span><span class="p">:</span>
+        <span class="n">value</span> <span class="o">+=</span> <span class="s1">&#39;{&quot;id&quot;:</span><span class="si">%d</span><span class="s1">,&quot;label&quot;:&quot;</span><span class="si">%s</span><span class="s1">&quot;,&quot;icon&quot;:&quot;icon-server-group&quot;,&quot;inode&quot;:true},&#39;</span> \
+                 <span class="o">%</span> <span class="p">(</span><span class="n">group</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">group</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">value</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Coding Standards</a><ul>
+<li><a class="reference internal" href="#general">General</a></li>
+<li><a class="reference internal" href="#css-3">CSS 3</a></li>
+<li><a class="reference internal" href="#html-5">HTML 5</a></li>
+<li><a class="reference internal" href="#javascript">Javascript</a></li>
+<li><a class="reference internal" href="#c">C++</a></li>
+<li><a class="reference internal" href="#python">Python</a></li>
+</ul>
+</li>
+</ul>
+
+<h3><a href="index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="connecting.html">Connecting To A Server</a></li>
+<li class="toctree-l1"><a class="reference internal" href="managing_cluster_objects.html">Managing Cluster Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="managing_database_objects.html">Managing Database Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modifying_tables.html">Creating or Modifying a Table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="management_basics.html">Management Basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backup_and_restore.html">Backup and Restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developer_tools.html">Developer Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pgagent.html">pgAgent</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contributions.html">pgAdmin Project Contributions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="submitting_patches.html">Submitting Patches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="code_overview.html">Code Overview</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Coding Standards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="code_review.html">Code Review Notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="translations.html">Translations</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="licence.html">Licence</a></li>
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="code_review.html" title="Code Review Notes"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="code_overview.html" title="Code Overview"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pgAdmin 4 4.19 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="contributions.html" >pgAdmin Project Contributions</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        <div class="related" role="navigation" aria-label="related navigation">
+          <ul>
+              <li class="left" style="margin-left: 10px">&#169; Copyright (C) 2013 - 2020, The pgAdmin Development Team.</li>
+            <li class="right" style="margin-right: 10px"><a href="genindex.html" title="General Index" accesskey="I">index</a></li>
+            <li class="right" ><a href="code_review.html" title="Code Review Notes" accesskey="N">next</a> |</li>
+            <li class="right" ><a href="code_overview.html" title="Code Overview" accesskey="P">previous</a> |</li>
+          </ul>
+        </div>
+    </div>
+  </body>
+</html>

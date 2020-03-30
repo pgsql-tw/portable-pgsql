@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>9.5. Binary String Functions and Operators</title><link rel="stylesheet" type="text/css" href="stylesheet.css" /><link rev="made" href="pgsql-docs@lists.postgresql.org" /><meta name="generator" content="DocBook XSL Stylesheets V1.79.1" /><link rel="prev" href="functions-string.html" title="9.4. String Functions and Operators" /><link rel="next" href="functions-bitstring.html" title="9.6. Bit String Functions and Operators" /></head><body><div xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="5" align="center">9.5. Binary String Functions and Operators</th></tr><tr><td width="10%" align="left"><a accesskey="p" href="functions-string.html" title="9.4. String Functions and Operators">Prev</a> </td><td width="10%" align="left"><a accesskey="u" href="functions.html" title="Chapter 9. Functions and Operators">Up</a></td><th width="60%" align="center">Chapter 9. Functions and Operators</th><td width="10%" align="right"><a accesskey="h" href="index.html" title="PostgreSQL 12.2 Documentation">Home</a></td><td width="10%" align="right"> <a accesskey="n" href="functions-bitstring.html" title="9.6. Bit String Functions and Operators">Next</a></td></tr></table><hr></hr></div><div class="sect1" id="FUNCTIONS-BINARYSTRING"><div class="titlepage"><div><div><h2 class="title" style="clear: both">9.5. Binary String Functions and Operators</h2></div></div></div><a id="id-1.5.8.10.2" class="indexterm"></a><p>
+    This section describes functions and operators for examining and
+    manipulating values of type <code class="type">bytea</code>.
+   </p><p>
+    <acronym class="acronym">SQL</acronym> defines some string functions that use
+    key words, rather than commas, to separate
+    arguments.  Details are in
+    <a class="xref" href="functions-binarystring.html#FUNCTIONS-BINARYSTRING-SQL" title="Table 9.12. SQL Binary String Functions and Operators">Table 9.12</a>.
+    <span class="productname">PostgreSQL</span> also provides versions of these functions
+    that use the regular function invocation syntax
+    (see <a class="xref" href="functions-binarystring.html#FUNCTIONS-BINARYSTRING-OTHER" title="Table 9.13. Other Binary String Functions">Table 9.13</a>).
+   </p><div class="note"><h3 class="title">Note</h3><p>
+     The sample results shown on this page assume that the server parameter
+     <a class="link" href="runtime-config-client.html#GUC-BYTEA-OUTPUT"><code class="varname">bytea_output</code></a> is set
+     to <code class="literal">escape</code> (the traditional PostgreSQL format).
+    </p></div><div class="table" id="FUNCTIONS-BINARYSTRING-SQL"><p class="title"><strong>Table 9.12. <acronym class="acronym">SQL</acronym> Binary String Functions and Operators</strong></p><div class="table-contents"><table class="table" summary="SQL Binary String Functions and Operators" border="1"><colgroup><col /><col /><col /><col /><col /></colgroup><thead><tr><th>Function</th><th>Return Type</th><th>Description</th><th>Example</th><th>Result</th></tr></thead><tbody><tr><td><code class="literal"><em class="parameter"><code>string</code></em> <code class="literal">||</code>
+        <em class="parameter"><code>string</code></em></code></td><td> <code class="type">bytea</code> </td><td>
+        String concatenation
+        <a id="id-1.5.8.10.6.2.2.1.3.1" class="indexterm"></a>
+       </td><td><code class="literal">'\\Post'::bytea || '\047gres\000'::bytea</code></td><td><code class="literal">\\Post'gres\000</code></td></tr><tr><td>
+        <a id="id-1.5.8.10.6.2.2.2.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">octet_length(<em class="parameter"><code>string</code></em>)</code></code>
+       </td><td><code class="type">int</code></td><td>Number of bytes in binary string</td><td><code class="literal">octet_length('jo\000se'::bytea)</code></td><td><code class="literal">5</code></td></tr><tr><td>
+        <a id="id-1.5.8.10.6.2.2.3.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">overlay(<em class="parameter"><code>string</code></em> placing <em class="parameter"><code>string</code></em> from <code class="type">int</code> [<span class="optional">for <code class="type">int</code></span>])</code></code>
+       </td><td><code class="type">bytea</code></td><td>
+        Replace substring
+       </td><td><code class="literal">overlay('Th\000omas'::bytea placing '\002\003'::bytea from 2 for 3)</code></td><td><code class="literal">T\\002\\003mas</code></td></tr><tr><td>
+        <a id="id-1.5.8.10.6.2.2.4.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">position(<em class="parameter"><code>substring</code></em> in <em class="parameter"><code>string</code></em>)</code></code>
+       </td><td><code class="type">int</code></td><td>Location of specified substring</td><td><code class="literal">position('\000om'::bytea in 'Th\000omas'::bytea)</code></td><td><code class="literal">3</code></td></tr><tr><td>
+        <a id="id-1.5.8.10.6.2.2.5.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">substring(<em class="parameter"><code>string</code></em> [<span class="optional">from <code class="type">int</code></span>] [<span class="optional">for <code class="type">int</code></span>])</code></code>
+       </td><td><code class="type">bytea</code></td><td>
+        Extract substring
+       </td><td><code class="literal">substring('Th\000omas'::bytea from 2 for 3)</code></td><td><code class="literal">h\000o</code></td></tr><tr><td>
+        <a id="id-1.5.8.10.6.2.2.6.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">trim([<span class="optional">both</span>]
+        <em class="parameter"><code>bytes</code></em> from
+        <em class="parameter"><code>string</code></em>)</code></code>
+       </td><td><code class="type">bytea</code></td><td>
+        Remove the longest string containing only bytes appearing in
+        <em class="parameter"><code>bytes</code></em> from the start
+        and end of <em class="parameter"><code>string</code></em>
+       </td><td><code class="literal">trim('\000\001'::bytea from '\000Tom\001'::bytea)</code></td><td><code class="literal">Tom</code></td></tr></tbody></table></div></div><br class="table-break" /><p>
+    Additional binary string manipulation functions are available and
+    are listed in <a class="xref" href="functions-binarystring.html#FUNCTIONS-BINARYSTRING-OTHER" title="Table 9.13. Other Binary String Functions">Table 9.13</a>.  Some
+    of them are used internally to implement the
+    <acronym class="acronym">SQL</acronym>-standard string functions listed in <a class="xref" href="functions-binarystring.html#FUNCTIONS-BINARYSTRING-SQL" title="Table 9.12. SQL Binary String Functions and Operators">Table 9.12</a>.
+   </p><div class="table" id="FUNCTIONS-BINARYSTRING-OTHER"><p class="title"><strong>Table 9.13. Other Binary String Functions</strong></p><div class="table-contents"><table class="table" summary="Other Binary String Functions" border="1"><colgroup><col /><col /><col /><col /><col /></colgroup><thead><tr><th>Function</th><th>Return Type</th><th>Description</th><th>Example</th><th>Result</th></tr></thead><tbody><tr><td>
+        <a id="id-1.5.8.10.8.2.2.1.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">btrim(<em class="parameter"><code>string</code></em>
+        <code class="type">bytea</code>, <em class="parameter"><code>bytes</code></em> <code class="type">bytea</code>)</code></code>
+       </td><td><code class="type">bytea</code></td><td>
+        Remove the longest string containing only bytes appearing in
+        <em class="parameter"><code>bytes</code></em> from the start and end of
+        <em class="parameter"><code>string</code></em>
+      </td><td><code class="literal">btrim('\000trim\001'::bytea, '\000\001'::bytea)</code></td><td><code class="literal">trim</code></td></tr><tr><td>
+        <a id="id-1.5.8.10.8.2.2.2.1.1" class="indexterm"></a>
+       <code class="literal"><code class="function">decode(<em class="parameter"><code>string</code></em> <code class="type">text</code>,
+       <em class="parameter"><code>format</code></em> <code class="type">text</code>)</code></code>
+      </td><td><code class="type">bytea</code></td><td>
+       Decode binary data from textual representation in <em class="parameter"><code>string</code></em>.
+       Options for <em class="parameter"><code>format</code></em> are same as in <code class="function">encode</code>.
+      </td><td><code class="literal">decode('123\000456', 'escape')</code></td><td><code class="literal">123\000456</code></td></tr><tr><td>
+        <a id="id-1.5.8.10.8.2.2.3.1.1" class="indexterm"></a>
+       <code class="literal"><code class="function">encode(<em class="parameter"><code>data</code></em> <code class="type">bytea</code>,
+       <em class="parameter"><code>format</code></em> <code class="type">text</code>)</code></code>
+      </td><td><code class="type">text</code></td><td>
+       Encode binary data into a textual representation.  Supported
+       formats are: <code class="literal">base64</code>, <code class="literal">hex</code>, <code class="literal">escape</code>.
+       <code class="literal">escape</code> converts zero bytes and high-bit-set bytes to
+       octal sequences (<code class="literal">\</code><em class="replaceable"><code>nnn</code></em>) and
+       doubles backslashes.
+      </td><td><code class="literal">encode('123\000456'::bytea, 'escape')</code></td><td><code class="literal">123\000456</code></td></tr><tr><td>
+        <a id="id-1.5.8.10.8.2.2.4.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">get_bit(<em class="parameter"><code>string</code></em>, <em class="parameter"><code>offset</code></em>)</code></code>
+       </td><td><code class="type">int</code></td><td>
+        Extract bit from string
+       </td><td><code class="literal">get_bit('Th\000omas'::bytea, 45)</code></td><td><code class="literal">1</code></td></tr><tr><td>
+        <a id="id-1.5.8.10.8.2.2.5.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">get_byte(<em class="parameter"><code>string</code></em>, <em class="parameter"><code>offset</code></em>)</code></code>
+       </td><td><code class="type">int</code></td><td>
+        Extract byte from string
+       </td><td><code class="literal">get_byte('Th\000omas'::bytea, 4)</code></td><td><code class="literal">109</code></td></tr><tr><td>
+       <a id="id-1.5.8.10.8.2.2.6.1.1" class="indexterm"></a>
+       <code class="literal"><code class="function">length(<em class="parameter"><code>string</code></em>)</code></code>
+      </td><td><code class="type">int</code></td><td>
+       Length of binary string
+       <a id="id-1.5.8.10.8.2.2.6.3.1" class="indexterm"></a>
+       <a id="id-1.5.8.10.8.2.2.6.3.2" class="indexterm"></a>
+      </td><td><code class="literal">length('jo\000se'::bytea)</code></td><td><code class="literal">5</code></td></tr><tr><td>
+       <a id="id-1.5.8.10.8.2.2.7.1.1" class="indexterm"></a>
+       <code class="literal"><code class="function">md5(<em class="parameter"><code>string</code></em>)</code></code>
+      </td><td><code class="type">text</code></td><td>
+       Calculates the MD5 hash of <em class="parameter"><code>string</code></em>,
+       returning the result in hexadecimal
+      </td><td><code class="literal">md5('Th\000omas'::bytea)</code></td><td><code class="literal">8ab2d3c9689aaf18​b4958c334c82d8b1</code></td></tr><tr><td>
+        <a id="id-1.5.8.10.8.2.2.8.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">set_bit(<em class="parameter"><code>string</code></em>,
+        <em class="parameter"><code>offset</code></em>, <em class="parameter"><code>newvalue</code></em>)</code></code>
+       </td><td><code class="type">bytea</code></td><td>
+        Set bit in string
+       </td><td><code class="literal">set_bit('Th\000omas'::bytea, 45, 0)</code></td><td><code class="literal">Th\000omAs</code></td></tr><tr><td>
+        <a id="id-1.5.8.10.8.2.2.9.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">set_byte(<em class="parameter"><code>string</code></em>,
+        <em class="parameter"><code>offset</code></em>, <em class="parameter"><code>newvalue</code></em>)</code></code>
+       </td><td><code class="type">bytea</code></td><td>
+        Set byte in string
+       </td><td><code class="literal">set_byte('Th\000omas'::bytea, 4, 64)</code></td><td><code class="literal">Th\000o@as</code></td></tr><tr><td>
+        <a id="id-1.5.8.10.8.2.2.10.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">sha224(<code class="type">bytea</code>)</code></code>
+       </td><td><code class="type">bytea</code></td><td>
+        SHA-224 hash
+       </td><td><code class="literal">sha224('abc')</code></td><td><code class="literal">\x23097d223405d8228642a477bda2​55b32aadbce4bda0b3f7e36c9da7</code></td></tr><tr><td>
+        <a id="id-1.5.8.10.8.2.2.11.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">sha256(<code class="type">bytea</code>)</code></code>
+       </td><td><code class="type">bytea</code></td><td>
+        SHA-256 hash
+       </td><td><code class="literal">sha256('abc')</code></td><td><code class="literal">\xba7816bf8f01cfea414140de5dae2223​b00361a396177a9cb410ff61f20015ad</code></td></tr><tr><td>
+        <a id="id-1.5.8.10.8.2.2.12.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">sha384(<code class="type">bytea</code>)</code></code>
+       </td><td><code class="type">bytea</code></td><td>
+        SHA-384 hash
+       </td><td><code class="literal">sha384('abc')</code></td><td><code class="literal">\xcb00753f45a35e8bb5a03d699ac65007​272c32ab0eded1631a8b605a43ff5bed​8086072ba1e7cc2358baeca134c825a7</code></td></tr><tr><td>
+        <a id="id-1.5.8.10.8.2.2.13.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">sha512(<code class="type">bytea</code>)</code></code>
+       </td><td><code class="type">bytea</code></td><td>
+        SHA-512 hash
+       </td><td><code class="literal">sha512('abc')</code></td><td><code class="literal">\xddaf35a193617abacc417349ae204131​12e6fa4e89a97ea20a9eeee64b55d39a​2192992a274fc1a836ba3c23a3feebbd​454d4423643ce80e2a9ac94fa54ca49f</code></td></tr></tbody></table></div></div><br class="table-break" /><p>
+   <code class="function">get_byte</code> and <code class="function">set_byte</code> number the first byte
+   of a binary string as byte 0.
+   <code class="function">get_bit</code> and <code class="function">set_bit</code> number bits from the
+   right within each byte; for example bit 0 is the least significant bit of
+   the first byte, and bit 15 is the most significant bit of the second byte.
+  </p><p>
+   Note that for historic reasons, the function <code class="function">md5</code>
+   returns a hex-encoded value of type <code class="type">text</code> whereas the SHA-2
+   functions return type <code class="type">bytea</code>.  Use the functions
+   <code class="function">encode</code> and <code class="function">decode</code> to convert
+   between the two, for example <code class="literal">encode(sha256('abc'),
+   'hex')</code> to get a hex-encoded text representation.
+  </p><p>
+   See also the aggregate function <code class="function">string_agg</code> in
+   <a class="xref" href="functions-aggregate.html" title="9.20. Aggregate Functions">Section 9.20</a> and the large object functions
+   in <a class="xref" href="lo-funcs.html" title="34.4. Server-Side Functions">Section 34.4</a>.
+  </p></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="functions-string.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="functions.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="functions-bitstring.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">9.4. String Functions and Operators </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 9.6. Bit String Functions and Operators</td></tr></table></div></body></html>

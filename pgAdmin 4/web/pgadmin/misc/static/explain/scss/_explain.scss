@@ -1,0 +1,146 @@
+.pgadmin-explain-tooltip {
+  position: absolute;
+  opacity: 0;
+  color: $popover-body-color;
+  background-color: $popover-bg;
+  border-color: $popover-border-color;
+  box-shadow: $popover-box-shadow;
+}
+
+.sql-editor-explain {
+  .backform-tab {
+    .tab-content {
+      bottom: 0.5rem;
+      background-color: $color-bg;
+
+      div[data-explain-tabpanel=graphical] {
+        .btn-group {
+          position: absolute;
+          top: 4px;
+          margin-left: 4px;
+          opacity: 0.5;
+
+          &.pg-explain-download-area.btn-group {
+            left: 90px;
+          }
+
+          &.pg-explain-stats-area {
+            right: 4px;
+          }
+
+          .btn {
+            font-size: 0.75rem;
+          }
+
+          *:hover {
+            opacity: 1;
+          }
+        }
+      }
+    }
+  }
+}
+
+div.tab-pane[data-explain-tabpanel=table] {
+
+   border-bottom: $panel-border;
+
+  .pga-ex-exclusive-1,
+  .pga-ex-inclusive-1,
+  .pga-ex-rowsx-1 {}
+
+  td.pga-ex-exclusive-2,
+  td.pga-ex-inclusive-2,
+  td.pga-ex-rowsx-2 {
+    background-color: $explain-sev-2-bg;
+  }
+
+  td.pga-ex-exclusive-3,
+  td.pga-ex-inclusive-3,
+  td.pga-ex-rowsx-3 {
+    background-color: $explain-sev-3-bg;
+    color: $explain-sev-3-color;
+  }
+
+  td.pga-ex-exclusive-4,
+  td.pga-ex-inclusive-4,
+  td.pga-ex-rowsx-4 {
+    background-color: $explain-sev-4-bg;
+    color: $explain-sev-4-color;
+  }
+
+  .pg-ex-subplans {
+    position: absolute;
+    margin-left: -20px;
+    margin-top: 3px;
+    font-weight: bold;
+  }
+
+  table {
+    tr {
+      &[data-collapsed=true] {
+        td {
+          border-bottom: $table-hover-border;
+          border-bottom-style: dotted !important;
+          border-bottom-width: medium !important;
+        }
+      }
+      td {
+        li {
+          font-size: small;
+          opacity: 0.75;
+          overflow-wrap: break-word;
+          word-break: break-all;
+          overflow: visible;
+          white-space: -moz-pre-wrap !important;
+          white-space: -pre-wrap;
+          white-space: -o-pre-wrap;
+          white-space: pre-wrap;
+          word-wrap: break-word;
+          white-space: -webkit-pre-wrap;
+          word-break: break-all;
+          white-space: normal;
+        }
+        &.pg-ex-highlighter {
+          color: $color-primary;
+        }
+      }
+      &.pga-ex-collapsible {
+        td {
+          &.clickable {
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
+}
+
+div.tab-pane[data-explain-tabpanel=statistics] {
+  .badge {
+    cursor: initial;
+  }
+  table[for=per_table] {
+    tr {
+      &.table {
+        background-color: $color-gray-lighter;
+
+        td:first-child {
+          font-weight: bold !important;
+        }
+      }
+      &.node {
+        td.name {
+          padding-left: 30px;
+        }
+      }
+    }
+  }
+}
+
+/* Setting it to hardcoded white as the SVG generated is having white bg
+ * Need to check what can be done.
+ */
+.pgadmin-explain-container {
+  background-color: #fff;
+}

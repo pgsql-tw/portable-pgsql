@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>51.78. pg_prepared_xacts</title><link rel="stylesheet" type="text/css" href="stylesheet.css" /><link rev="made" href="pgsql-docs@lists.postgresql.org" /><meta name="generator" content="DocBook XSL Stylesheets V1.79.1" /><link rel="prev" href="view-pg-prepared-statements.html" title="51.77. pg_prepared_statements" /><link rel="next" href="view-pg-publication-tables.html" title="51.79. pg_publication_tables" /></head><body><div xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="5" align="center">51.78. <code xmlns="http://www.w3.org/1999/xhtml" class="structname">pg_prepared_xacts</code></th></tr><tr><td width="10%" align="left"><a accesskey="p" href="view-pg-prepared-statements.html" title="51.77. pg_prepared_statements">Prev</a> </td><td width="10%" align="left"><a accesskey="u" href="catalogs.html" title="Chapter 51. System Catalogs">Up</a></td><th width="60%" align="center">Chapter 51. System Catalogs</th><td width="10%" align="right"><a accesskey="h" href="index.html" title="PostgreSQL 12.2 Documentation">Home</a></td><td width="10%" align="right"> <a accesskey="n" href="view-pg-publication-tables.html" title="51.79. pg_publication_tables">Next</a></td></tr></table><hr></hr></div><div class="sect1" id="VIEW-PG-PREPARED-XACTS"><div class="titlepage"><div><div><h2 class="title" style="clear: both">51.78. <code class="structname">pg_prepared_xacts</code></h2></div></div></div><a id="id-1.10.4.80.2" class="indexterm"></a><p>
+   The view <code class="structname">pg_prepared_xacts</code> displays
+   information about transactions that are currently prepared for two-phase
+   commit (see <a class="xref" href="sql-prepare-transaction.html" title="PREPARE TRANSACTION"><span class="refentrytitle">PREPARE TRANSACTION</span></a> for details).
+  </p><p>
+   <code class="structname">pg_prepared_xacts</code> contains one row per prepared
+   transaction.  An entry is removed when the transaction is committed or
+   rolled back.
+  </p><div class="table" id="id-1.10.4.80.5"><p class="title"><strong>Table 51.79. <code class="structname">pg_prepared_xacts</code> Columns</strong></p><div class="table-contents"><table class="table" summary="pg_prepared_xacts Columns" border="1"><colgroup><col /><col /><col /><col /></colgroup><thead><tr><th>Name</th><th>Type</th><th>References</th><th>Description</th></tr></thead><tbody><tr><td><code class="structfield">transaction</code></td><td><code class="type">xid</code></td><td> </td><td>
+       Numeric transaction identifier of the prepared transaction
+      </td></tr><tr><td><code class="structfield">gid</code></td><td><code class="type">text</code></td><td> </td><td>
+       Global transaction identifier that was assigned to the transaction
+      </td></tr><tr><td><code class="structfield">prepared</code></td><td><code class="type">timestamp with time zone</code></td><td> </td><td>
+       Time at which the transaction was prepared for commit
+      </td></tr><tr><td><code class="structfield">owner</code></td><td><code class="type">name</code></td><td><code class="literal"><a class="link" href="catalog-pg-authid.html" title="51.8. pg_authid"><code class="structname">pg_authid</code></a>.rolname</code></td><td>
+       Name of the user that executed the transaction
+      </td></tr><tr><td><code class="structfield">database</code></td><td><code class="type">name</code></td><td><code class="literal"><a class="link" href="catalog-pg-database.html" title="51.15. pg_database"><code class="structname">pg_database</code></a>.datname</code></td><td>
+       Name of the database in which the transaction was executed
+      </td></tr></tbody></table></div></div><br class="table-break" /><p>
+   When the <code class="structname">pg_prepared_xacts</code> view is accessed, the
+   internal transaction manager data structures are momentarily locked, and
+   a copy is made for the view to display.  This ensures that the
+   view produces a consistent set of results, while not blocking
+   normal operations longer than necessary.  Nonetheless
+   there could be some impact on database performance if this view is
+   frequently accessed.
+  </p></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="view-pg-prepared-statements.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="catalogs.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="view-pg-publication-tables.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">51.77. <code class="structname">pg_prepared_statements</code> </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 51.79. <code class="structname">pg_publication_tables</code></td></tr></table></div></body></html>

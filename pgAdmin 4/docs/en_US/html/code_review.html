@@ -1,0 +1,166 @@
+
+
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Code Review Notes &#8212; pgAdmin 4 4.19 documentation</title>
+    <link rel="stylesheet" href="_static/style.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    
+    <script src="_static/sidebar.js"></script>
+    
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Translations" href="translations.html" />
+    <link rel="prev" title="Coding Standards" href="coding_standards.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="translations.html" title="Translations"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="coding_standards.html" title="Coding Standards"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pgAdmin 4 4.19 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="contributions.html" accesskey="U">pgAdmin Project Contributions</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="code-review-notes">
+<span id="code-review"></span><h1><span class="target" id="index-0"></span>Code Review Notes<a class="headerlink" href="#code-review-notes" title="Permalink to this headline">¶</a></h1>
+<p>This document lists a number of standard items that will be checked during the
+review process for any patches submitted for inclusion in pgAdmin.</p>
+<ul>
+<li><p>Ensure all code follows the pgAdmin <a class="reference internal" href="coding_standards.html"><span class="doc">Coding Standards</span></a>.</p></li>
+<li><p>Ensure all code has unit test coverage and API/feature test coverage where
+appropriate.</p></li>
+<li><p>Copyright years must be correct and properly formatted (to make it easy to make
+bulk updates every year). The start date should always be 2013, and the end year
+the current year, e.g.</p>
+<blockquote>
+<div><p>Copyright (C) 2013 - 2020, The pgAdmin Development Team</p>
+</div></blockquote>
+</li>
+<li><p>Ensure there’s a blank line immediately following any copyright headers.</p></li>
+<li><p>Include PyDoc comments for functions, classes and modules. Node modules should
+be “””Implements the XXXX node”””.</p></li>
+<li><p>Ensure that any generated SQL does not have any leading or trailing blank lines
+and consistently uses 4 space indents for nice formatting.</p></li>
+<li><p>Don’t special-case any Slony objects. pgAdmin 4 will have no direct knowledge
+of Slony, unlike pgAdmin 3.</p></li>
+<li><p>If you copy/paste modules, please ensure any comments are properly updated.</p></li>
+<li><p>Read all comments, and ensure they make sense and provide useful commentary on
+the code.</p></li>
+<li><p>Ensure that field labels both use PostgreSQL parlance, but also are descriptive.
+A good example is the “Init” field on an FTS Template - Init is the PG term, but
+adding the word “Function” after it makes it much more descriptive.</p></li>
+<li><p>Re-use code whereever possible, but factor it out into a suitably central
+location - don’t copy and paste it unless modifications are required!</p></li>
+<li><p>Format code nicely to make it readable. Break up logical chunks of code with
+blank lines, and comment well to describe what different sections of code are
+for or pertain to.</p></li>
+<li><p>Ensure that form validation works correctly and is consistent with other
+dialogues in the way errors are displayed.</p></li>
+<li><p>On dialogues with Schema or Owner fields, pre-set the default values to the
+current schema/user as appropriate. In general, if there are common or sensible
+default values available, put them in the fields for the user.</p></li>
+<li><p>1 patch == 1 feature. If you need to fix/update existing infrastructure in
+your patch, it’s usually easier if it’s in a separate patch. Patches containing
+multiple new features or unrelated changes are likely to be rejected.</p></li>
+<li><p>Ensure the patch is fully functional, and works! If a patch is being sent as
+a work in progress, not intended for commit, clearly state that it’s a WIP,
+and note what does or does not yet work.</p></li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="connecting.html">Connecting To A Server</a></li>
+<li class="toctree-l1"><a class="reference internal" href="managing_cluster_objects.html">Managing Cluster Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="managing_database_objects.html">Managing Database Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modifying_tables.html">Creating or Modifying a Table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="management_basics.html">Management Basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backup_and_restore.html">Backup and Restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developer_tools.html">Developer Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pgagent.html">pgAgent</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contributions.html">pgAdmin Project Contributions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="submitting_patches.html">Submitting Patches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="code_overview.html">Code Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="coding_standards.html">Coding Standards</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Code Review Notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="translations.html">Translations</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="licence.html">Licence</a></li>
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="translations.html" title="Translations"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="coding_standards.html" title="Coding Standards"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pgAdmin 4 4.19 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="contributions.html" >pgAdmin Project Contributions</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        <div class="related" role="navigation" aria-label="related navigation">
+          <ul>
+              <li class="left" style="margin-left: 10px">&#169; Copyright (C) 2013 - 2020, The pgAdmin Development Team.</li>
+            <li class="right" style="margin-right: 10px"><a href="genindex.html" title="General Index" accesskey="I">index</a></li>
+            <li class="right" ><a href="translations.html" title="Translations" accesskey="N">next</a> |</li>
+            <li class="right" ><a href="coding_standards.html" title="Coding Standards" accesskey="P">previous</a> |</li>
+          </ul>
+        </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,591 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>9.4. String Functions and Operators</title><link rel="stylesheet" type="text/css" href="stylesheet.css" /><link rev="made" href="pgsql-docs@lists.postgresql.org" /><meta name="generator" content="DocBook XSL Stylesheets V1.79.1" /><link rel="prev" href="functions-math.html" title="9.3. Mathematical Functions and Operators" /><link rel="next" href="functions-binarystring.html" title="9.5. Binary String Functions and Operators" /></head><body><div xmlns="http://www.w3.org/TR/xhtml1/transitional" class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="5" align="center">9.4. String Functions and Operators</th></tr><tr><td width="10%" align="left"><a accesskey="p" href="functions-math.html" title="9.3. Mathematical Functions and Operators">Prev</a> </td><td width="10%" align="left"><a accesskey="u" href="functions.html" title="Chapter 9. Functions and Operators">Up</a></td><th width="60%" align="center">Chapter 9. Functions and Operators</th><td width="10%" align="right"><a accesskey="h" href="index.html" title="PostgreSQL 12.2 Documentation">Home</a></td><td width="10%" align="right"> <a accesskey="n" href="functions-binarystring.html" title="9.5. Binary String Functions and Operators">Next</a></td></tr></table><hr></hr></div><div class="sect1" id="FUNCTIONS-STRING"><div class="titlepage"><div><div><h2 class="title" style="clear: both">9.4. String Functions and Operators</h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="functions-string.html#FUNCTIONS-STRING-FORMAT">9.4.1. <code class="function">format</code></a></span></dt></dl></div><p>
+    This section describes functions and operators for examining and
+    manipulating string values.  Strings in this context include values
+    of the types <code class="type">character</code>, <code class="type">character varying</code>,
+    and <code class="type">text</code>.  Unless otherwise noted, all
+    of the functions listed below work on all of these types, but be
+    wary of potential effects of automatic space-padding when using the
+    <code class="type">character</code> type.  Some functions also exist
+    natively for the bit-string types.
+   </p><p>
+    <acronym class="acronym">SQL</acronym> defines some string functions that use
+    key words, rather than commas, to separate
+    arguments.  Details are in
+    <a class="xref" href="functions-string.html#FUNCTIONS-STRING-SQL" title="Table 9.9. SQL String Functions and Operators">Table 9.9</a>.
+    <span class="productname">PostgreSQL</span> also provides versions of these functions
+    that use the regular function invocation syntax
+    (see <a class="xref" href="functions-string.html#FUNCTIONS-STRING-OTHER" title="Table 9.10. Other String Functions">Table 9.10</a>).
+   </p><div class="note"><h3 class="title">Note</h3><p>
+     Before <span class="productname">PostgreSQL</span> 8.3, these functions would
+     silently accept values of several non-string data types as well, due to
+     the presence of implicit coercions from those data types to
+     <code class="type">text</code>.  Those coercions have been removed because they frequently
+     caused surprising behaviors.  However, the string concatenation operator
+     (<code class="literal">||</code>) still accepts non-string input, so long as at least one
+     input is of a string type, as shown in <a class="xref" href="functions-string.html#FUNCTIONS-STRING-SQL" title="Table 9.9. SQL String Functions and Operators">Table 9.9</a>.  For other cases, insert an explicit
+     coercion to <code class="type">text</code> if you need to duplicate the previous behavior.
+    </p></div><div class="table" id="FUNCTIONS-STRING-SQL"><p class="title"><strong>Table 9.9. <acronym class="acronym">SQL</acronym> String Functions and Operators</strong></p><div class="table-contents"><table class="table" summary="SQL String Functions and Operators" border="1"><colgroup><col /><col /><col /><col /><col /></colgroup><thead><tr><th>Function</th><th>Return Type</th><th>Description</th><th>Example</th><th>Result</th></tr></thead><tbody><tr><td><code class="literal"><em class="parameter"><code>string</code></em> <code class="literal">||</code>
+        <em class="parameter"><code>string</code></em></code></td><td> <code class="type">text</code> </td><td>
+        String concatenation
+        <a id="id-1.5.8.9.5.2.2.1.3.1" class="indexterm"></a>
+       </td><td><code class="literal">'Post' || 'greSQL'</code></td><td><code class="literal">PostgreSQL</code></td></tr><tr><td>
+        <code class="literal"><em class="parameter"><code>string</code></em> <code class="literal">||</code>
+        <em class="parameter"><code>non-string</code></em></code>
+        or
+        <code class="literal"><em class="parameter"><code>non-string</code></em> <code class="literal">||</code>
+        <em class="parameter"><code>string</code></em></code>
+       </td><td> <code class="type">text</code> </td><td>
+        String concatenation with one non-string input
+       </td><td><code class="literal">'Value: ' || 42</code></td><td><code class="literal">Value: 42</code></td></tr><tr><td>
+        <a id="id-1.5.8.9.5.2.2.3.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">bit_length(<em class="parameter"><code>string</code></em>)</code></code>
+       </td><td><code class="type">int</code></td><td>Number of bits in string</td><td><code class="literal">bit_length('jose')</code></td><td><code class="literal">32</code></td></tr><tr><td>
+        <a id="id-1.5.8.9.5.2.2.4.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">char_length(<em class="parameter"><code>string</code></em>)</code></code> or <code class="literal"><code class="function">character_length(<em class="parameter"><code>string</code></em>)</code></code>
+       </td><td><code class="type">int</code></td><td>
+        Number of characters in string
+        <a id="id-1.5.8.9.5.2.2.4.3.1" class="indexterm"></a>
+        <a id="id-1.5.8.9.5.2.2.4.3.2" class="indexterm"></a>
+       </td><td><code class="literal">char_length('jose')</code></td><td><code class="literal">4</code></td></tr><tr><td>
+        <a id="id-1.5.8.9.5.2.2.5.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">lower(<em class="parameter"><code>string</code></em>)</code></code>
+       </td><td><code class="type">text</code></td><td>Convert string to lower case</td><td><code class="literal">lower('TOM')</code></td><td><code class="literal">tom</code></td></tr><tr><td>
+        <a id="id-1.5.8.9.5.2.2.6.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">octet_length(<em class="parameter"><code>string</code></em>)</code></code>
+       </td><td><code class="type">int</code></td><td>Number of bytes in string</td><td><code class="literal">octet_length('jose')</code></td><td><code class="literal">4</code></td></tr><tr><td>
+        <a id="id-1.5.8.9.5.2.2.7.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">overlay(<em class="parameter"><code>string</code></em> placing <em class="parameter"><code>string</code></em> from <code class="type">int</code> [<span class="optional">for <code class="type">int</code></span>])</code></code>
+       </td><td><code class="type">text</code></td><td>
+        Replace substring
+       </td><td><code class="literal">overlay('Txxxxas' placing 'hom' from 2 for 4)</code></td><td><code class="literal">Thomas</code></td></tr><tr><td>
+        <a id="id-1.5.8.9.5.2.2.8.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">position(<em class="parameter"><code>substring</code></em> in <em class="parameter"><code>string</code></em>)</code></code>
+       </td><td><code class="type">int</code></td><td>Location of specified substring</td><td><code class="literal">position('om' in 'Thomas')</code></td><td><code class="literal">3</code></td></tr><tr><td>
+        <a id="id-1.5.8.9.5.2.2.9.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">substring(<em class="parameter"><code>string</code></em> [<span class="optional">from <code class="type">int</code></span>] [<span class="optional">for <code class="type">int</code></span>])</code></code>
+       </td><td><code class="type">text</code></td><td>
+        Extract substring
+       </td><td><code class="literal">substring('Thomas' from 2 for 3)</code></td><td><code class="literal">hom</code></td></tr><tr><td><code class="literal"><code class="function">substring(<em class="parameter"><code>string</code></em> from <em class="replaceable"><code>pattern</code></em>)</code></code></td><td><code class="type">text</code></td><td>
+        Extract substring matching POSIX regular expression. See
+        <a class="xref" href="functions-matching.html" title="9.7. Pattern Matching">Section 9.7</a> for more information on pattern
+        matching.
+       </td><td><code class="literal">substring('Thomas' from '...$')</code></td><td><code class="literal">mas</code></td></tr><tr><td><code class="literal"><code class="function">substring(<em class="parameter"><code>string</code></em> from <em class="replaceable"><code>pattern</code></em> for <em class="replaceable"><code>escape</code></em>)</code></code></td><td><code class="type">text</code></td><td>
+        Extract substring matching <acronym class="acronym">SQL</acronym> regular expression.
+        See <a class="xref" href="functions-matching.html" title="9.7. Pattern Matching">Section 9.7</a> for more information on
+        pattern matching.
+       </td><td><code class="literal">substring('Thomas' from '%#"o_a#"_' for '#')</code></td><td><code class="literal">oma</code></td></tr><tr><td>
+        <a id="id-1.5.8.9.5.2.2.12.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">trim([<span class="optional">leading | trailing | both</span>]
+        [<span class="optional"><em class="parameter"><code>characters</code></em></span>] from
+        <em class="parameter"><code>string</code></em>)</code></code>
+       </td><td><code class="type">text</code></td><td>
+        Remove the longest string containing only characters from
+        <em class="parameter"><code>characters</code></em> (a space by default) from the
+        start, end, or both ends (<code class="literal">both</code> is the default)
+        of <em class="parameter"><code>string</code></em>
+       </td><td><code class="literal">trim(both 'xyz' from 'yxTomxx')</code></td><td><code class="literal">Tom</code></td></tr><tr><td>
+        <code class="literal"><code class="function">trim([<span class="optional">leading | trailing
+        | both</span>] [<span class="optional">from</span>]
+        <em class="parameter"><code>string</code></em>
+        [<span class="optional">, <em class="parameter"><code>characters</code></em></span>]
+        )</code></code>
+       </td><td><code class="type">text</code></td><td>
+        Non-standard syntax for <code class="function">trim()</code>
+       </td><td><code class="literal">trim(both from 'yxTomxx', 'xyz')</code></td><td><code class="literal">Tom</code></td></tr><tr><td>
+        <a id="id-1.5.8.9.5.2.2.14.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">upper(<em class="parameter"><code>string</code></em>)</code></code>
+       </td><td><code class="type">text</code></td><td>Convert string to upper case</td><td><code class="literal">upper('tom')</code></td><td><code class="literal">TOM</code></td></tr></tbody></table></div></div><br class="table-break" /><p>
+    Additional string manipulation functions are available and are
+    listed in <a class="xref" href="functions-string.html#FUNCTIONS-STRING-OTHER" title="Table 9.10. Other String Functions">Table 9.10</a>.  Some of them are used internally to implement the
+    <acronym class="acronym">SQL</acronym>-standard string functions listed in <a class="xref" href="functions-string.html#FUNCTIONS-STRING-SQL" title="Table 9.9. SQL String Functions and Operators">Table 9.9</a>.
+   </p><div class="table" id="FUNCTIONS-STRING-OTHER"><p class="title"><strong>Table 9.10. Other String Functions</strong></p><div class="table-contents"><table class="table" summary="Other String Functions" border="1"><colgroup><col /><col /><col /><col /><col /></colgroup><thead><tr><th>Function</th><th>Return Type</th><th>Description</th><th>Example</th><th>Result</th></tr></thead><tbody><tr><td>
+        <a id="id-1.5.8.9.7.2.2.1.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">ascii(<em class="parameter"><code>string</code></em>)</code></code>
+       </td><td><code class="type">int</code></td><td>
+        <acronym class="acronym">ASCII</acronym> code of the first character of the
+        argument.  For <acronym class="acronym">UTF8</acronym> returns the Unicode code
+        point of the character.  For other multibyte encodings, the
+        argument must be an <acronym class="acronym">ASCII</acronym> character.
+       </td><td><code class="literal">ascii('x')</code></td><td><code class="literal">120</code></td></tr><tr><td>
+        <a id="id-1.5.8.9.7.2.2.2.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">btrim(<em class="parameter"><code>string</code></em> <code class="type">text</code>
+        [<span class="optional">, <em class="parameter"><code>characters</code></em> <code class="type">text</code></span>])</code></code>
+       </td><td><code class="type">text</code></td><td>
+        Remove the longest string consisting only of characters
+        in <em class="parameter"><code>characters</code></em> (a space by default)
+        from the start and end of <em class="parameter"><code>string</code></em>
+       </td><td><code class="literal">btrim('xyxtrimyyx', 'xyz')</code></td><td><code class="literal">trim</code></td></tr><tr><td>
+        <a id="id-1.5.8.9.7.2.2.3.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">chr(<code class="type">int</code>)</code></code>
+       </td><td><code class="type">text</code></td><td>
+        Character with the given code. For <acronym class="acronym">UTF8</acronym> the
+        argument is treated as a Unicode code point. For other multibyte
+        encodings the argument must designate an
+        <acronym class="acronym">ASCII</acronym> character.  The NULL (0) character is not
+        allowed because text data types cannot store such bytes.
+       </td><td><code class="literal">chr(65)</code></td><td><code class="literal">A</code></td></tr><tr><td>
+        <a id="id-1.5.8.9.7.2.2.4.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">concat(<em class="parameter"><code>str</code></em> <code class="type">"any"</code>
+         [, <em class="parameter"><code>str</code></em> <code class="type">"any"</code> [, ...] ])</code></code>
+       </td><td><code class="type">text</code></td><td>
+        Concatenate the text representations of all the arguments.
+        NULL arguments are ignored.
+       </td><td><code class="literal">concat('abcde', 2, NULL, 22)</code></td><td><code class="literal">abcde222</code></td></tr><tr><td>
+        <a id="id-1.5.8.9.7.2.2.5.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">concat_ws(<em class="parameter"><code>sep</code></em> <code class="type">text</code>,
+        <em class="parameter"><code>str</code></em> <code class="type">"any"</code>
+        [, <em class="parameter"><code>str</code></em> <code class="type">"any"</code> [, ...] ])</code></code>
+       </td><td><code class="type">text</code></td><td>
+        Concatenate all but the first argument with separators. The first
+        argument is used as the separator string. NULL arguments are ignored.
+       </td><td><code class="literal">concat_ws(',', 'abcde', 2, NULL, 22)</code></td><td><code class="literal">abcde,2,22</code></td></tr><tr><td>
+        <a id="id-1.5.8.9.7.2.2.6.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">convert(<em class="parameter"><code>string</code></em> <code class="type">bytea</code>,
+        <em class="parameter"><code>src_encoding</code></em> <code class="type">name</code>,
+        <em class="parameter"><code>dest_encoding</code></em> <code class="type">name</code>)</code></code>
+       </td><td><code class="type">bytea</code></td><td>
+        Convert string to <em class="parameter"><code>dest_encoding</code></em>.  The
+        original encoding is specified by
+        <em class="parameter"><code>src_encoding</code></em>. The
+        <em class="parameter"><code>string</code></em> must be valid in this encoding.
+        Conversions can be defined by <code class="command">CREATE CONVERSION</code>.
+        Also there are some predefined conversions. See <a class="xref" href="functions-string.html#CONVERSION-NAMES" title="Table 9.11. Built-in Conversions">Table 9.11</a> for available conversions.
+       </td><td><code class="literal">convert('text_in_utf8', 'UTF8', 'LATIN1')</code></td><td><code class="literal">text_in_utf8</code> represented in Latin-1
+       encoding (ISO 8859-1)</td></tr><tr><td>
+        <a id="id-1.5.8.9.7.2.2.7.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">convert_from(<em class="parameter"><code>string</code></em> <code class="type">bytea</code>,
+        <em class="parameter"><code>src_encoding</code></em> <code class="type">name</code>)</code></code>
+       </td><td><code class="type">text</code></td><td>
+        Convert string to the database encoding.  The original encoding
+        is specified by <em class="parameter"><code>src_encoding</code></em>. The
+        <em class="parameter"><code>string</code></em> must be valid in this encoding.
+       </td><td><code class="literal">convert_from('text_in_utf8', 'UTF8')</code></td><td><code class="literal">text_in_utf8</code> represented in the current database encoding</td></tr><tr><td>
+        <a id="id-1.5.8.9.7.2.2.8.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">convert_to(<em class="parameter"><code>string</code></em> <code class="type">text</code>,
+        <em class="parameter"><code>dest_encoding</code></em> <code class="type">name</code>)</code></code>
+       </td><td><code class="type">bytea</code></td><td>
+        Convert string to <em class="parameter"><code>dest_encoding</code></em>.
+       </td><td><code class="literal">convert_to('some text', 'UTF8')</code></td><td><code class="literal">some text</code> represented in the UTF8 encoding</td></tr><tr><td>
+        <a id="id-1.5.8.9.7.2.2.9.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">decode(<em class="parameter"><code>string</code></em> <code class="type">text</code>,
+        <em class="parameter"><code>format</code></em> <code class="type">text</code>)</code></code>
+       </td><td><code class="type">bytea</code></td><td>
+        Decode binary data from textual representation in <em class="parameter"><code>string</code></em>.
+        Options for <em class="parameter"><code>format</code></em> are same as in <code class="function">encode</code>.
+       </td><td><code class="literal">decode('MTIzAAE=', 'base64')</code></td><td><code class="literal">\x3132330001</code></td></tr><tr><td>
+        <a id="id-1.5.8.9.7.2.2.10.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">encode(<em class="parameter"><code>data</code></em> <code class="type">bytea</code>,
+        <em class="parameter"><code>format</code></em> <code class="type">text</code>)</code></code>
+       </td><td><code class="type">text</code></td><td>
+        Encode binary data into a textual representation.  Supported
+        formats are: <code class="literal">base64</code>, <code class="literal">hex</code>, <code class="literal">escape</code>.
+        <code class="literal">escape</code> converts zero bytes and high-bit-set bytes to
+        octal sequences (<code class="literal">\</code><em class="replaceable"><code>nnn</code></em>) and
+        doubles backslashes.
+       </td><td><code class="literal">encode('123\000\001', 'base64')</code></td><td><code class="literal">MTIzAAE=</code></td></tr><tr><td id="FORMAT">
+        <a id="id-1.5.8.9.7.2.2.11.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">format</code>(<em class="parameter"><code>formatstr</code></em> <code class="type">text</code>
+        [, <em class="parameter"><code>formatarg</code></em> <code class="type">"any"</code> [, ...] ])</code>
+       </td><td><code class="type">text</code></td><td>
+         Format arguments according to a format string.
+         This function is similar to the C function <code class="function">sprintf</code>.
+         See <a class="xref" href="functions-string.html#FUNCTIONS-STRING-FORMAT" title="9.4.1. format">Section 9.4.1</a>.
+       </td><td><code class="literal">format('Hello %s, %1$s', 'World')</code></td><td><code class="literal">Hello World, World</code></td></tr><tr><td>
+        <a id="id-1.5.8.9.7.2.2.12.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">initcap(<em class="parameter"><code>string</code></em>)</code></code>
+       </td><td><code class="type">text</code></td><td>
+        Convert the first letter of each word to upper case and the
+        rest to lower case. Words are sequences of alphanumeric
+        characters separated by non-alphanumeric characters.
+       </td><td><code class="literal">initcap('hi THOMAS')</code></td><td><code class="literal">Hi Thomas</code></td></tr><tr><td>
+        <a id="id-1.5.8.9.7.2.2.13.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">left(<em class="parameter"><code>str</code></em> <code class="type">text</code>,
+        <em class="parameter"><code>n</code></em> <code class="type">int</code>)</code></code>
+       </td><td><code class="type">text</code></td><td>
+        Return first <em class="replaceable"><code>n</code></em> characters in the string. When <em class="replaceable"><code>n</code></em>
+        is negative, return all but last |<em class="replaceable"><code>n</code></em>| characters.
+        </td><td><code class="literal">left('abcde', 2)</code></td><td><code class="literal">ab</code></td></tr><tr><td>
+        <a id="id-1.5.8.9.7.2.2.14.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">length(<em class="parameter"><code>string</code></em>)</code></code>
+       </td><td><code class="type">int</code></td><td>
+        Number of characters in <em class="parameter"><code>string</code></em>
+       </td><td><code class="literal">length('jose')</code></td><td><code class="literal">4</code></td></tr><tr><td><code class="literal"><code class="function">length(<em class="parameter"><code>string</code></em> <code class="type">bytea</code>,
+        <em class="parameter"><code>encoding</code></em> <code class="type">name</code> )</code></code></td><td><code class="type">int</code></td><td>
+        Number of characters in <em class="parameter"><code>string</code></em> in the given
+        <em class="parameter"><code>encoding</code></em>. The <em class="parameter"><code>string</code></em>
+        must be valid in this encoding.
+       </td><td><code class="literal">length('jose', 'UTF8')</code></td><td><code class="literal">4</code></td></tr><tr><td>
+        <a id="id-1.5.8.9.7.2.2.16.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">lpad(<em class="parameter"><code>string</code></em> <code class="type">text</code>,
+        <em class="parameter"><code>length</code></em> <code class="type">int</code>
+        [<span class="optional">, <em class="parameter"><code>fill</code></em> <code class="type">text</code></span>])</code></code>
+       </td><td><code class="type">text</code></td><td>
+        Fill up the <em class="parameter"><code>string</code></em> to length
+        <em class="parameter"><code>length</code></em> by prepending the characters
+        <em class="parameter"><code>fill</code></em> (a space by default).  If the
+        <em class="parameter"><code>string</code></em> is already longer than
+        <em class="parameter"><code>length</code></em> then it is truncated (on the
+        right).
+       </td><td><code class="literal">lpad('hi', 5, 'xy')</code></td><td><code class="literal">xyxhi</code></td></tr><tr><td>
+        <a id="id-1.5.8.9.7.2.2.17.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">ltrim(<em class="parameter"><code>string</code></em> <code class="type">text</code>
+        [<span class="optional">, <em class="parameter"><code>characters</code></em> <code class="type">text</code></span>])</code></code>
+       </td><td><code class="type">text</code></td><td>
+        Remove the longest string containing only characters from
+        <em class="parameter"><code>characters</code></em> (a space by default) from the start of
+        <em class="parameter"><code>string</code></em>
+       </td><td><code class="literal">ltrim('zzzytest', 'xyz')</code></td><td><code class="literal">test</code></td></tr><tr><td>
+        <a id="id-1.5.8.9.7.2.2.18.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">md5(<em class="parameter"><code>string</code></em>)</code></code>
+       </td><td><code class="type">text</code></td><td>
+        Calculates the MD5 hash of <em class="parameter"><code>string</code></em>,
+        returning the result in hexadecimal
+       </td><td><code class="literal">md5('abc')</code></td><td><code class="literal">900150983cd24fb0 d6963f7d28e17f72</code></td></tr><tr><td>
+        <a id="id-1.5.8.9.7.2.2.19.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">parse_ident(<em class="parameter"><code>qualified_identifier</code></em> <code class="type">text</code>
+           [, <em class="parameter"><code>strictmode</code></em> <code class="type">boolean</code> DEFAULT true ] )</code></code>
+       </td><td><code class="type">text[]</code></td><td>
+        Split <em class="parameter"><code>qualified_identifier</code></em> into an array of
+        identifiers, removing any quoting of individual identifiers.  By
+        default, extra characters after the last identifier are considered an
+        error; but if the second parameter is <code class="literal">false</code>, then such
+        extra characters are ignored. (This behavior is useful for parsing
+        names for objects like functions.) Note that this function does not
+        truncate over-length identifiers. If you want truncation you can cast
+        the result to <code class="type">name[]</code>.
+       </td><td><code class="literal">parse_ident('"SomeSchema".someTable')</code></td><td><code class="literal">{SomeSchema,sometable}</code></td></tr><tr><td>
+        <a id="id-1.5.8.9.7.2.2.20.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">pg_client_encoding()</code></code>
+       </td><td><code class="type">name</code></td><td>
+        Current client encoding name
+       </td><td><code class="literal">pg_client_encoding()</code></td><td><code class="literal">SQL_ASCII</code></td></tr><tr><td>
+        <a id="id-1.5.8.9.7.2.2.21.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">quote_ident(<em class="parameter"><code>string</code></em> <code class="type">text</code>)</code></code>
+       </td><td><code class="type">text</code></td><td>
+        Return the given string suitably quoted to be used as an identifier
+        in an <acronym class="acronym">SQL</acronym> statement string.
+        Quotes are added only if necessary (i.e., if the string contains
+        non-identifier characters or would be case-folded).
+        Embedded quotes are properly doubled.
+        See also <a class="xref" href="plpgsql-statements.html#PLPGSQL-QUOTE-LITERAL-EXAMPLE" title="Example 42.1. Quoting Values in Dynamic Queries">Example 42.1</a>.
+       </td><td><code class="literal">quote_ident('Foo bar')</code></td><td><code class="literal">"Foo bar"</code></td></tr><tr><td>
+        <a id="id-1.5.8.9.7.2.2.22.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">quote_literal(<em class="parameter"><code>string</code></em> <code class="type">text</code>)</code></code>
+       </td><td><code class="type">text</code></td><td>
+        Return the given string suitably quoted to be used as a string literal
+        in an <acronym class="acronym">SQL</acronym> statement string.
+        Embedded single-quotes and backslashes are properly doubled.
+        Note that <code class="function">quote_literal</code> returns null on null
+        input; if the argument might be null,
+        <code class="function">quote_nullable</code> is often more suitable.
+        See also <a class="xref" href="plpgsql-statements.html#PLPGSQL-QUOTE-LITERAL-EXAMPLE" title="Example 42.1. Quoting Values in Dynamic Queries">Example 42.1</a>.
+       </td><td><code class="literal">quote_literal(E'O\'Reilly')</code></td><td><code class="literal">'O''Reilly'</code></td></tr><tr><td><code class="literal"><code class="function">quote_literal(<em class="parameter"><code>value</code></em> <code class="type">anyelement</code>)</code></code></td><td><code class="type">text</code></td><td>
+        Coerce the given value to text and then quote it as a literal.
+        Embedded single-quotes and backslashes are properly doubled.
+       </td><td><code class="literal">quote_literal(42.5)</code></td><td><code class="literal">'42.5'</code></td></tr><tr><td>
+        <a id="id-1.5.8.9.7.2.2.24.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">quote_nullable(<em class="parameter"><code>string</code></em> <code class="type">text</code>)</code></code>
+       </td><td><code class="type">text</code></td><td>
+        Return the given string suitably quoted to be used as a string literal
+        in an <acronym class="acronym">SQL</acronym> statement string; or, if the argument
+        is null, return <code class="literal">NULL</code>.
+        Embedded single-quotes and backslashes are properly doubled.
+        See also <a class="xref" href="plpgsql-statements.html#PLPGSQL-QUOTE-LITERAL-EXAMPLE" title="Example 42.1. Quoting Values in Dynamic Queries">Example 42.1</a>.
+       </td><td><code class="literal">quote_nullable(NULL)</code></td><td><code class="literal">NULL</code></td></tr><tr><td><code class="literal"><code class="function">quote_nullable(<em class="parameter"><code>value</code></em> <code class="type">anyelement</code>)</code></code></td><td><code class="type">text</code></td><td>
+        Coerce the given value to text and then quote it as a literal;
+        or, if the argument is null, return <code class="literal">NULL</code>.
+        Embedded single-quotes and backslashes are properly doubled.
+       </td><td><code class="literal">quote_nullable(42.5)</code></td><td><code class="literal">'42.5'</code></td></tr><tr><td>
+        <a id="id-1.5.8.9.7.2.2.26.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">regexp_match(<em class="parameter"><code>string</code></em> <code class="type">text</code>, <em class="parameter"><code>pattern</code></em> <code class="type">text</code> [, <em class="parameter"><code>flags</code></em> <code class="type">text</code>])</code></code>
+       </td><td><code class="type">text[]</code></td><td>
+        Return captured substring(s) resulting from the first match of a POSIX
+        regular expression to the <em class="parameter"><code>string</code></em>. See
+        <a class="xref" href="functions-matching.html#FUNCTIONS-POSIX-REGEXP" title="9.7.3. POSIX Regular Expressions">Section 9.7.3</a> for more information.
+       </td><td><code class="literal">regexp_match('foobarbequebaz', '(bar)(beque)')</code></td><td><code class="literal">{bar,beque}</code></td></tr><tr><td>
+        <a id="id-1.5.8.9.7.2.2.27.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">regexp_matches(<em class="parameter"><code>string</code></em> <code class="type">text</code>, <em class="parameter"><code>pattern</code></em> <code class="type">text</code> [, <em class="parameter"><code>flags</code></em> <code class="type">text</code>])</code></code>
+       </td><td><code class="type">setof text[]</code></td><td>
+        Return captured substring(s) resulting from matching a POSIX regular
+        expression to the <em class="parameter"><code>string</code></em>. See
+        <a class="xref" href="functions-matching.html#FUNCTIONS-POSIX-REGEXP" title="9.7.3. POSIX Regular Expressions">Section 9.7.3</a> for more information.
+       </td><td><code class="literal">regexp_matches('foobarbequebaz', 'ba.', 'g')</code></td><td><code class="literal">{bar}</code><p><code class="literal">{baz}</code></p> (2 rows)</td></tr><tr><td>
+        <a id="id-1.5.8.9.7.2.2.28.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">regexp_replace(<em class="parameter"><code>string</code></em> <code class="type">text</code>, <em class="parameter"><code>pattern</code></em> <code class="type">text</code>, <em class="parameter"><code>replacement</code></em> <code class="type">text</code> [, <em class="parameter"><code>flags</code></em> <code class="type">text</code>])</code></code>
+       </td><td><code class="type">text</code></td><td>
+        Replace substring(s) matching a POSIX regular expression. See
+        <a class="xref" href="functions-matching.html#FUNCTIONS-POSIX-REGEXP" title="9.7.3. POSIX Regular Expressions">Section 9.7.3</a> for more information.
+       </td><td><code class="literal">regexp_replace('Thomas', '.[mN]a.', 'M')</code></td><td><code class="literal">ThM</code></td></tr><tr><td>
+        <a id="id-1.5.8.9.7.2.2.29.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">regexp_split_to_array(<em class="parameter"><code>string</code></em> <code class="type">text</code>, <em class="parameter"><code>pattern</code></em> <code class="type">text</code> [, <em class="parameter"><code>flags</code></em> <code class="type">text</code> ])</code></code>
+       </td><td><code class="type">text[]</code></td><td>
+        Split <em class="parameter"><code>string</code></em> using a POSIX regular expression as
+        the delimiter.  See <a class="xref" href="functions-matching.html#FUNCTIONS-POSIX-REGEXP" title="9.7.3. POSIX Regular Expressions">Section 9.7.3</a> for more
+        information.
+       </td><td><code class="literal">regexp_split_to_array('hello world', '\s+')</code></td><td><code class="literal">{hello,world}</code></td></tr><tr><td>
+        <a id="id-1.5.8.9.7.2.2.30.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">regexp_split_to_table(<em class="parameter"><code>string</code></em> <code class="type">text</code>, <em class="parameter"><code>pattern</code></em> <code class="type">text</code> [, <em class="parameter"><code>flags</code></em> <code class="type">text</code>])</code></code>
+       </td><td><code class="type">setof text</code></td><td>
+        Split <em class="parameter"><code>string</code></em> using a POSIX regular expression as
+        the delimiter.  See <a class="xref" href="functions-matching.html#FUNCTIONS-POSIX-REGEXP" title="9.7.3. POSIX Regular Expressions">Section 9.7.3</a> for more
+        information.
+       </td><td><code class="literal">regexp_split_to_table('hello world', '\s+')</code></td><td><code class="literal">hello</code><p><code class="literal">world</code></p> (2 rows)</td></tr><tr><td>
+        <a id="id-1.5.8.9.7.2.2.31.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">repeat(<em class="parameter"><code>string</code></em> <code class="type">text</code>, <em class="parameter"><code>number</code></em> <code class="type">int</code>)</code></code>
+       </td><td><code class="type">text</code></td><td>Repeat <em class="parameter"><code>string</code></em> the specified
+       <em class="parameter"><code>number</code></em> of times</td><td><code class="literal">repeat('Pg', 4)</code></td><td><code class="literal">PgPgPgPg</code></td></tr><tr><td>
+        <a id="id-1.5.8.9.7.2.2.32.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">replace(<em class="parameter"><code>string</code></em> <code class="type">text</code>,
+        <em class="parameter"><code>from</code></em> <code class="type">text</code>,
+        <em class="parameter"><code>to</code></em> <code class="type">text</code>)</code></code>
+       </td><td><code class="type">text</code></td><td>Replace all occurrences in <em class="parameter"><code>string</code></em> of substring
+        <em class="parameter"><code>from</code></em> with substring <em class="parameter"><code>to</code></em>
+       </td><td><code class="literal">replace('abcdefabcdef', 'cd', 'XX')</code></td><td><code class="literal">abXXefabXXef</code></td></tr><tr><td>
+        <a id="id-1.5.8.9.7.2.2.33.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">reverse(<em class="parameter"><code>str</code></em>)</code></code>
+       </td><td><code class="type">text</code></td><td>
+        Return reversed string.
+       </td><td><code class="literal">reverse('abcde')</code></td><td><code class="literal">edcba</code></td></tr><tr><td>
+        <a id="id-1.5.8.9.7.2.2.34.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">right(<em class="parameter"><code>str</code></em> <code class="type">text</code>,
+         <em class="parameter"><code>n</code></em> <code class="type">int</code>)</code></code>
+       </td><td><code class="type">text</code></td><td>
+        Return last <em class="replaceable"><code>n</code></em> characters in the string. When <em class="replaceable"><code>n</code></em>
+        is negative, return all but first |<em class="replaceable"><code>n</code></em>| characters.
+       </td><td><code class="literal">right('abcde', 2)</code></td><td><code class="literal">de</code></td></tr><tr><td>
+        <a id="id-1.5.8.9.7.2.2.35.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">rpad(<em class="parameter"><code>string</code></em> <code class="type">text</code>,
+        <em class="parameter"><code>length</code></em> <code class="type">int</code>
+        [<span class="optional">, <em class="parameter"><code>fill</code></em> <code class="type">text</code></span>])</code></code>
+       </td><td><code class="type">text</code></td><td>
+        Fill up the <em class="parameter"><code>string</code></em> to length
+        <em class="parameter"><code>length</code></em> by appending the characters
+        <em class="parameter"><code>fill</code></em> (a space by default).  If the
+        <em class="parameter"><code>string</code></em> is already longer than
+        <em class="parameter"><code>length</code></em> then it is truncated.
+       </td><td><code class="literal">rpad('hi', 5, 'xy')</code></td><td><code class="literal">hixyx</code></td></tr><tr><td>
+        <a id="id-1.5.8.9.7.2.2.36.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">rtrim(<em class="parameter"><code>string</code></em> <code class="type">text</code>
+         [<span class="optional">, <em class="parameter"><code>characters</code></em> <code class="type">text</code></span>])</code></code>
+       </td><td><code class="type">text</code></td><td>
+        Remove the longest string containing only characters from
+        <em class="parameter"><code>characters</code></em> (a space by default) from the end of
+        <em class="parameter"><code>string</code></em>
+       </td><td><code class="literal">rtrim('testxxzx', 'xyz')</code></td><td><code class="literal">test</code></td></tr><tr><td>
+        <a id="id-1.5.8.9.7.2.2.37.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">split_part(<em class="parameter"><code>string</code></em> <code class="type">text</code>,
+        <em class="parameter"><code>delimiter</code></em> <code class="type">text</code>,
+        <em class="parameter"><code>field</code></em> <code class="type">int</code>)</code></code>
+       </td><td><code class="type">text</code></td><td>Split <em class="parameter"><code>string</code></em> on <em class="parameter"><code>delimiter</code></em>
+        and return the given field (counting from one)
+       </td><td><code class="literal">split_part('abc~@~def~@~ghi', '~@~', 2)</code></td><td><code class="literal">def</code></td></tr><tr><td>
+        <a id="id-1.5.8.9.7.2.2.38.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">strpos(<em class="parameter"><code>string</code></em>, <em class="parameter"><code>substring</code></em>)</code></code>
+       </td><td><code class="type">int</code></td><td>
+        Location of specified substring (same as
+        <code class="literal">position(<em class="parameter"><code>substring</code></em> in
+         <em class="parameter"><code>string</code></em>)</code>, but note the reversed
+        argument order)
+       </td><td><code class="literal">strpos('high', 'ig')</code></td><td><code class="literal">2</code></td></tr><tr><td>
+        <a id="id-1.5.8.9.7.2.2.39.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">substr(<em class="parameter"><code>string</code></em>, <em class="parameter"><code>from</code></em> [<span class="optional">, <em class="parameter"><code>count</code></em></span>])</code></code>
+       </td><td><code class="type">text</code></td><td>
+        Extract substring (same as
+        <code class="literal">substring(<em class="parameter"><code>string</code></em> from <em class="parameter"><code>from</code></em> for <em class="parameter"><code>count</code></em>)</code>)
+       </td><td><code class="literal">substr('alphabet', 3, 2)</code></td><td><code class="literal">ph</code></td></tr><tr><td>
+        <a id="id-1.5.8.9.7.2.2.40.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">starts_with(<em class="parameter"><code>string</code></em>, <em class="parameter"><code>prefix</code></em>)</code></code>
+       </td><td><code class="type">bool</code></td><td>
+        Returns true if <em class="parameter"><code>string</code></em> starts with <em class="parameter"><code>prefix</code></em>.
+       </td><td><code class="literal">starts_with('alphabet', 'alph')</code></td><td><code class="literal">t</code></td></tr><tr><td>
+        <a id="id-1.5.8.9.7.2.2.41.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">to_ascii(<em class="parameter"><code>string</code></em> <code class="type">text</code>
+        [<span class="optional">, <em class="parameter"><code>encoding</code></em> <code class="type">text</code></span>])</code></code>
+       </td><td><code class="type">text</code></td><td>
+       Convert <em class="parameter"><code>string</code></em> to <acronym class="acronym">ASCII</acronym> from another encoding
+       (only supports conversion from  <code class="literal">LATIN1</code>, <code class="literal">LATIN2</code>, <code class="literal">LATIN9</code>,
+       and <code class="literal">WIN1250</code> encodings)
+       </td><td><code class="literal">to_ascii('Karel')</code></td><td><code class="literal">Karel</code></td></tr><tr><td>
+        <a id="id-1.5.8.9.7.2.2.42.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">to_hex(<em class="parameter"><code>number</code></em> <code class="type">int</code>
+        or <code class="type">bigint</code>)</code></code>
+       </td><td><code class="type">text</code></td><td>Convert <em class="parameter"><code>number</code></em> to its equivalent hexadecimal
+        representation
+       </td><td><code class="literal">to_hex(2147483647)</code></td><td><code class="literal">7fffffff</code></td></tr><tr><td>
+        <a id="id-1.5.8.9.7.2.2.43.1.1" class="indexterm"></a>
+        <code class="literal"><code class="function">translate(<em class="parameter"><code>string</code></em> <code class="type">text</code>,
+        <em class="parameter"><code>from</code></em> <code class="type">text</code>,
+        <em class="parameter"><code>to</code></em> <code class="type">text</code>)</code></code>
+       </td><td><code class="type">text</code></td><td>
+        Any character in <em class="parameter"><code>string</code></em> that matches a
+        character in the <em class="parameter"><code>from</code></em> set is replaced by
+        the corresponding character in the <em class="parameter"><code>to</code></em>
+        set. If <em class="parameter"><code>from</code></em> is longer than
+        <em class="parameter"><code>to</code></em>, occurrences of the extra characters in
+        <em class="parameter"><code>from</code></em> are removed.
+       </td><td><code class="literal">translate('12345', '143', 'ax')</code></td><td><code class="literal">a2x5</code></td></tr></tbody></table></div></div><br class="table-break" /><p>
+    The <code class="function">concat</code>, <code class="function">concat_ws</code> and
+    <code class="function">format</code> functions are variadic, so it is possible to
+    pass the values to be concatenated or formatted as an array marked with
+    the <code class="literal">VARIADIC</code> keyword (see <a class="xref" href="xfunc-sql.html#XFUNC-SQL-VARIADIC-FUNCTIONS" title="37.5.5. SQL Functions with Variable Numbers of Arguments">Section 37.5.5</a>).  The array's elements are
+    treated as if they were separate ordinary arguments to the function.
+    If the variadic array argument is NULL, <code class="function">concat</code>
+    and <code class="function">concat_ws</code> return NULL, but
+    <code class="function">format</code> treats a NULL as a zero-element array.
+   </p><p>
+   See also the aggregate function <code class="function">string_agg</code> in
+   <a class="xref" href="functions-aggregate.html" title="9.20. Aggregate Functions">Section 9.20</a>.
+   </p><div class="table" id="CONVERSION-NAMES"><p class="title"><strong>Table 9.11. Built-in Conversions</strong></p><div class="table-contents"><table class="table" summary="Built-in Conversions" border="1"><colgroup><col /><col /><col /></colgroup><thead><tr><th>Conversion Name
+        <a href="#ftn.id-1.5.8.9.10.2.1.1.1.1" class="footnote"><sup class="footnote" id="id-1.5.8.9.10.2.1.1.1.1">[a]</sup></a>
+       </th><th>Source Encoding</th><th>Destination Encoding</th></tr></thead><tbody><tr><td><code class="literal">ascii_to_mic</code></td><td><code class="literal">SQL_ASCII</code></td><td><code class="literal">MULE_INTERNAL</code></td></tr><tr><td><code class="literal">ascii_to_utf8</code></td><td><code class="literal">SQL_ASCII</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">big5_to_euc_tw</code></td><td><code class="literal">BIG5</code></td><td><code class="literal">EUC_TW</code></td></tr><tr><td><code class="literal">big5_to_mic</code></td><td><code class="literal">BIG5</code></td><td><code class="literal">MULE_INTERNAL</code></td></tr><tr><td><code class="literal">big5_to_utf8</code></td><td><code class="literal">BIG5</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">euc_cn_to_mic</code></td><td><code class="literal">EUC_CN</code></td><td><code class="literal">MULE_INTERNAL</code></td></tr><tr><td><code class="literal">euc_cn_to_utf8</code></td><td><code class="literal">EUC_CN</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">euc_jp_to_mic</code></td><td><code class="literal">EUC_JP</code></td><td><code class="literal">MULE_INTERNAL</code></td></tr><tr><td><code class="literal">euc_jp_to_sjis</code></td><td><code class="literal">EUC_JP</code></td><td><code class="literal">SJIS</code></td></tr><tr><td><code class="literal">euc_jp_to_utf8</code></td><td><code class="literal">EUC_JP</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">euc_kr_to_mic</code></td><td><code class="literal">EUC_KR</code></td><td><code class="literal">MULE_INTERNAL</code></td></tr><tr><td><code class="literal">euc_kr_to_utf8</code></td><td><code class="literal">EUC_KR</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">euc_tw_to_big5</code></td><td><code class="literal">EUC_TW</code></td><td><code class="literal">BIG5</code></td></tr><tr><td><code class="literal">euc_tw_to_mic</code></td><td><code class="literal">EUC_TW</code></td><td><code class="literal">MULE_INTERNAL</code></td></tr><tr><td><code class="literal">euc_tw_to_utf8</code></td><td><code class="literal">EUC_TW</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">gb18030_to_utf8</code></td><td><code class="literal">GB18030</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">gbk_to_utf8</code></td><td><code class="literal">GBK</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">iso_8859_10_to_utf8</code></td><td><code class="literal">LATIN6</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">iso_8859_13_to_utf8</code></td><td><code class="literal">LATIN7</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">iso_8859_14_to_utf8</code></td><td><code class="literal">LATIN8</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">iso_8859_15_to_utf8</code></td><td><code class="literal">LATIN9</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">iso_8859_16_to_utf8</code></td><td><code class="literal">LATIN10</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">iso_8859_1_to_mic</code></td><td><code class="literal">LATIN1</code></td><td><code class="literal">MULE_INTERNAL</code></td></tr><tr><td><code class="literal">iso_8859_1_to_utf8</code></td><td><code class="literal">LATIN1</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">iso_8859_2_to_mic</code></td><td><code class="literal">LATIN2</code></td><td><code class="literal">MULE_INTERNAL</code></td></tr><tr><td><code class="literal">iso_8859_2_to_utf8</code></td><td><code class="literal">LATIN2</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">iso_8859_2_to_windows_1250</code></td><td><code class="literal">LATIN2</code></td><td><code class="literal">WIN1250</code></td></tr><tr><td><code class="literal">iso_8859_3_to_mic</code></td><td><code class="literal">LATIN3</code></td><td><code class="literal">MULE_INTERNAL</code></td></tr><tr><td><code class="literal">iso_8859_3_to_utf8</code></td><td><code class="literal">LATIN3</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">iso_8859_4_to_mic</code></td><td><code class="literal">LATIN4</code></td><td><code class="literal">MULE_INTERNAL</code></td></tr><tr><td><code class="literal">iso_8859_4_to_utf8</code></td><td><code class="literal">LATIN4</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">iso_8859_5_to_koi8_r</code></td><td><code class="literal">ISO_8859_5</code></td><td><code class="literal">KOI8R</code></td></tr><tr><td><code class="literal">iso_8859_5_to_mic</code></td><td><code class="literal">ISO_8859_5</code></td><td><code class="literal">MULE_INTERNAL</code></td></tr><tr><td><code class="literal">iso_8859_5_to_utf8</code></td><td><code class="literal">ISO_8859_5</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">iso_8859_5_to_windows_1251</code></td><td><code class="literal">ISO_8859_5</code></td><td><code class="literal">WIN1251</code></td></tr><tr><td><code class="literal">iso_8859_5_to_windows_866</code></td><td><code class="literal">ISO_8859_5</code></td><td><code class="literal">WIN866</code></td></tr><tr><td><code class="literal">iso_8859_6_to_utf8</code></td><td><code class="literal">ISO_8859_6</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">iso_8859_7_to_utf8</code></td><td><code class="literal">ISO_8859_7</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">iso_8859_8_to_utf8</code></td><td><code class="literal">ISO_8859_8</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">iso_8859_9_to_utf8</code></td><td><code class="literal">LATIN5</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">johab_to_utf8</code></td><td><code class="literal">JOHAB</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">koi8_r_to_iso_8859_5</code></td><td><code class="literal">KOI8R</code></td><td><code class="literal">ISO_8859_5</code></td></tr><tr><td><code class="literal">koi8_r_to_mic</code></td><td><code class="literal">KOI8R</code></td><td><code class="literal">MULE_INTERNAL</code></td></tr><tr><td><code class="literal">koi8_r_to_utf8</code></td><td><code class="literal">KOI8R</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">koi8_r_to_windows_1251</code></td><td><code class="literal">KOI8R</code></td><td><code class="literal">WIN1251</code></td></tr><tr><td><code class="literal">koi8_r_to_windows_866</code></td><td><code class="literal">KOI8R</code></td><td><code class="literal">WIN866</code></td></tr><tr><td><code class="literal">koi8_u_to_utf8</code></td><td><code class="literal">KOI8U</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">mic_to_ascii</code></td><td><code class="literal">MULE_INTERNAL</code></td><td><code class="literal">SQL_ASCII</code></td></tr><tr><td><code class="literal">mic_to_big5</code></td><td><code class="literal">MULE_INTERNAL</code></td><td><code class="literal">BIG5</code></td></tr><tr><td><code class="literal">mic_to_euc_cn</code></td><td><code class="literal">MULE_INTERNAL</code></td><td><code class="literal">EUC_CN</code></td></tr><tr><td><code class="literal">mic_to_euc_jp</code></td><td><code class="literal">MULE_INTERNAL</code></td><td><code class="literal">EUC_JP</code></td></tr><tr><td><code class="literal">mic_to_euc_kr</code></td><td><code class="literal">MULE_INTERNAL</code></td><td><code class="literal">EUC_KR</code></td></tr><tr><td><code class="literal">mic_to_euc_tw</code></td><td><code class="literal">MULE_INTERNAL</code></td><td><code class="literal">EUC_TW</code></td></tr><tr><td><code class="literal">mic_to_iso_8859_1</code></td><td><code class="literal">MULE_INTERNAL</code></td><td><code class="literal">LATIN1</code></td></tr><tr><td><code class="literal">mic_to_iso_8859_2</code></td><td><code class="literal">MULE_INTERNAL</code></td><td><code class="literal">LATIN2</code></td></tr><tr><td><code class="literal">mic_to_iso_8859_3</code></td><td><code class="literal">MULE_INTERNAL</code></td><td><code class="literal">LATIN3</code></td></tr><tr><td><code class="literal">mic_to_iso_8859_4</code></td><td><code class="literal">MULE_INTERNAL</code></td><td><code class="literal">LATIN4</code></td></tr><tr><td><code class="literal">mic_to_iso_8859_5</code></td><td><code class="literal">MULE_INTERNAL</code></td><td><code class="literal">ISO_8859_5</code></td></tr><tr><td><code class="literal">mic_to_koi8_r</code></td><td><code class="literal">MULE_INTERNAL</code></td><td><code class="literal">KOI8R</code></td></tr><tr><td><code class="literal">mic_to_sjis</code></td><td><code class="literal">MULE_INTERNAL</code></td><td><code class="literal">SJIS</code></td></tr><tr><td><code class="literal">mic_to_windows_1250</code></td><td><code class="literal">MULE_INTERNAL</code></td><td><code class="literal">WIN1250</code></td></tr><tr><td><code class="literal">mic_to_windows_1251</code></td><td><code class="literal">MULE_INTERNAL</code></td><td><code class="literal">WIN1251</code></td></tr><tr><td><code class="literal">mic_to_windows_866</code></td><td><code class="literal">MULE_INTERNAL</code></td><td><code class="literal">WIN866</code></td></tr><tr><td><code class="literal">sjis_to_euc_jp</code></td><td><code class="literal">SJIS</code></td><td><code class="literal">EUC_JP</code></td></tr><tr><td><code class="literal">sjis_to_mic</code></td><td><code class="literal">SJIS</code></td><td><code class="literal">MULE_INTERNAL</code></td></tr><tr><td><code class="literal">sjis_to_utf8</code></td><td><code class="literal">SJIS</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">windows_1258_to_utf8</code></td><td><code class="literal">WIN1258</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">uhc_to_utf8</code></td><td><code class="literal">UHC</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">utf8_to_ascii</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">SQL_ASCII</code></td></tr><tr><td><code class="literal">utf8_to_big5</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">BIG5</code></td></tr><tr><td><code class="literal">utf8_to_euc_cn</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">EUC_CN</code></td></tr><tr><td><code class="literal">utf8_to_euc_jp</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">EUC_JP</code></td></tr><tr><td><code class="literal">utf8_to_euc_kr</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">EUC_KR</code></td></tr><tr><td><code class="literal">utf8_to_euc_tw</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">EUC_TW</code></td></tr><tr><td><code class="literal">utf8_to_gb18030</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">GB18030</code></td></tr><tr><td><code class="literal">utf8_to_gbk</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">GBK</code></td></tr><tr><td><code class="literal">utf8_to_iso_8859_1</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">LATIN1</code></td></tr><tr><td><code class="literal">utf8_to_iso_8859_10</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">LATIN6</code></td></tr><tr><td><code class="literal">utf8_to_iso_8859_13</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">LATIN7</code></td></tr><tr><td><code class="literal">utf8_to_iso_8859_14</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">LATIN8</code></td></tr><tr><td><code class="literal">utf8_to_iso_8859_15</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">LATIN9</code></td></tr><tr><td><code class="literal">utf8_to_iso_8859_16</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">LATIN10</code></td></tr><tr><td><code class="literal">utf8_to_iso_8859_2</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">LATIN2</code></td></tr><tr><td><code class="literal">utf8_to_iso_8859_3</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">LATIN3</code></td></tr><tr><td><code class="literal">utf8_to_iso_8859_4</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">LATIN4</code></td></tr><tr><td><code class="literal">utf8_to_iso_8859_5</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">ISO_8859_5</code></td></tr><tr><td><code class="literal">utf8_to_iso_8859_6</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">ISO_8859_6</code></td></tr><tr><td><code class="literal">utf8_to_iso_8859_7</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">ISO_8859_7</code></td></tr><tr><td><code class="literal">utf8_to_iso_8859_8</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">ISO_8859_8</code></td></tr><tr><td><code class="literal">utf8_to_iso_8859_9</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">LATIN5</code></td></tr><tr><td><code class="literal">utf8_to_johab</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">JOHAB</code></td></tr><tr><td><code class="literal">utf8_to_koi8_r</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">KOI8R</code></td></tr><tr><td><code class="literal">utf8_to_koi8_u</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">KOI8U</code></td></tr><tr><td><code class="literal">utf8_to_sjis</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">SJIS</code></td></tr><tr><td><code class="literal">utf8_to_windows_1258</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">WIN1258</code></td></tr><tr><td><code class="literal">utf8_to_uhc</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">UHC</code></td></tr><tr><td><code class="literal">utf8_to_windows_1250</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">WIN1250</code></td></tr><tr><td><code class="literal">utf8_to_windows_1251</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">WIN1251</code></td></tr><tr><td><code class="literal">utf8_to_windows_1252</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">WIN1252</code></td></tr><tr><td><code class="literal">utf8_to_windows_1253</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">WIN1253</code></td></tr><tr><td><code class="literal">utf8_to_windows_1254</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">WIN1254</code></td></tr><tr><td><code class="literal">utf8_to_windows_1255</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">WIN1255</code></td></tr><tr><td><code class="literal">utf8_to_windows_1256</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">WIN1256</code></td></tr><tr><td><code class="literal">utf8_to_windows_1257</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">WIN1257</code></td></tr><tr><td><code class="literal">utf8_to_windows_866</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">WIN866</code></td></tr><tr><td><code class="literal">utf8_to_windows_874</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">WIN874</code></td></tr><tr><td><code class="literal">windows_1250_to_iso_8859_2</code></td><td><code class="literal">WIN1250</code></td><td><code class="literal">LATIN2</code></td></tr><tr><td><code class="literal">windows_1250_to_mic</code></td><td><code class="literal">WIN1250</code></td><td><code class="literal">MULE_INTERNAL</code></td></tr><tr><td><code class="literal">windows_1250_to_utf8</code></td><td><code class="literal">WIN1250</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">windows_1251_to_iso_8859_5</code></td><td><code class="literal">WIN1251</code></td><td><code class="literal">ISO_8859_5</code></td></tr><tr><td><code class="literal">windows_1251_to_koi8_r</code></td><td><code class="literal">WIN1251</code></td><td><code class="literal">KOI8R</code></td></tr><tr><td><code class="literal">windows_1251_to_mic</code></td><td><code class="literal">WIN1251</code></td><td><code class="literal">MULE_INTERNAL</code></td></tr><tr><td><code class="literal">windows_1251_to_utf8</code></td><td><code class="literal">WIN1251</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">windows_1251_to_windows_866</code></td><td><code class="literal">WIN1251</code></td><td><code class="literal">WIN866</code></td></tr><tr><td><code class="literal">windows_1252_to_utf8</code></td><td><code class="literal">WIN1252</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">windows_1256_to_utf8</code></td><td><code class="literal">WIN1256</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">windows_866_to_iso_8859_5</code></td><td><code class="literal">WIN866</code></td><td><code class="literal">ISO_8859_5</code></td></tr><tr><td><code class="literal">windows_866_to_koi8_r</code></td><td><code class="literal">WIN866</code></td><td><code class="literal">KOI8R</code></td></tr><tr><td><code class="literal">windows_866_to_mic</code></td><td><code class="literal">WIN866</code></td><td><code class="literal">MULE_INTERNAL</code></td></tr><tr><td><code class="literal">windows_866_to_utf8</code></td><td><code class="literal">WIN866</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">windows_866_to_windows_1251</code></td><td><code class="literal">WIN866</code></td><td><code class="literal">WIN</code></td></tr><tr><td><code class="literal">windows_874_to_utf8</code></td><td><code class="literal">WIN874</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">euc_jis_2004_to_utf8</code></td><td><code class="literal">EUC_JIS_2004</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">utf8_to_euc_jis_2004</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">EUC_JIS_2004</code></td></tr><tr><td><code class="literal">shift_jis_2004_to_utf8</code></td><td><code class="literal">SHIFT_JIS_2004</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">utf8_to_shift_jis_2004</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">SHIFT_JIS_2004</code></td></tr><tr><td><code class="literal">euc_jis_2004_to_shift_jis_2004</code></td><td><code class="literal">EUC_JIS_2004</code></td><td><code class="literal">SHIFT_JIS_2004</code></td></tr><tr><td><code class="literal">shift_jis_2004_to_euc_jis_2004</code></td><td><code class="literal">SHIFT_JIS_2004</code></td><td><code class="literal">EUC_JIS_2004</code></td></tr></tbody><tbody class="footnotes"><tr><td colspan="3"><div id="ftn.id-1.5.8.9.10.2.1.1.1.1" class="footnote"><p><a href="#id-1.5.8.9.10.2.1.1.1.1" class="para"><sup class="para">[a] </sup></a>
+          The conversion names follow a standard naming scheme: The
+          official name of the source encoding with all
+          non-alphanumeric characters replaced by underscores, followed
+          by <code class="literal">_to_</code>, followed by the similarly processed
+          destination encoding name. Therefore, the names might deviate
+          from the customary encoding names.
+         </p></div></td></tr></tbody></table></div></div><br class="table-break" /><div class="sect2" id="FUNCTIONS-STRING-FORMAT"><div class="titlepage"><div><div><h3 class="title">9.4.1. <code class="function">format</code></h3></div></div></div><a id="id-1.5.8.9.11.2" class="indexterm"></a><p>
+     The function <code class="function">format</code> produces output formatted according to
+     a format string, in a style similar to the C function
+     <code class="function">sprintf</code>.
+    </p><p>
+</p><pre class="synopsis">
+<code class="function">format</code>(<em class="parameter"><code>formatstr</code></em> <code class="type">text</code> [, <em class="parameter"><code>formatarg</code></em> <code class="type">"any"</code> [, ...] ])
+</pre><p>
+     <em class="replaceable"><code>formatstr</code></em> is a format string that specifies how the
+     result should be formatted.  Text in the format string is copied
+     directly to the result, except where <em class="firstterm">format specifiers</em> are
+     used.  Format specifiers act as placeholders in the string, defining how
+     subsequent function arguments should be formatted and inserted into the
+     result.  Each <em class="replaceable"><code>formatarg</code></em> argument is converted to text
+     according to the usual output rules for its data type, and then formatted
+     and inserted into the result string according to the format specifier(s).
+    </p><p>
+     Format specifiers are introduced by a <code class="literal">%</code> character and have
+     the form
+</p><pre class="synopsis">
+%[<em class="replaceable"><code>position</code></em>][<em class="replaceable"><code>flags</code></em>][<em class="replaceable"><code>width</code></em>]<em class="replaceable"><code>type</code></em>
+</pre><p>
+     where the component fields are:
+
+     </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><em class="replaceable"><code>position</code></em> (optional)</span></dt><dd><p>
+         A string of the form <code class="literal"><em class="replaceable"><code>n</code></em>$</code> where
+         <em class="replaceable"><code>n</code></em> is the index of the argument to print.
+         Index 1 means the first argument after
+         <em class="replaceable"><code>formatstr</code></em>.  If the <em class="replaceable"><code>position</code></em> is
+         omitted, the default is to use the next argument in sequence.
+        </p></dd><dt><span class="term"><em class="replaceable"><code>flags</code></em> (optional)</span></dt><dd><p>
+         Additional options controlling how the format specifier's output is
+         formatted.  Currently the only supported flag is a minus sign
+         (<code class="literal">-</code>) which will cause the format specifier's output to be
+         left-justified.  This has no effect unless the <em class="replaceable"><code>width</code></em>
+         field is also specified.
+        </p></dd><dt><span class="term"><em class="replaceable"><code>width</code></em> (optional)</span></dt><dd><p>
+         Specifies the <span class="emphasis"><em>minimum</em></span> number of characters to use to
+         display the format specifier's output.  The output is padded on the
+         left or right (depending on the <code class="literal">-</code> flag) with spaces as
+         needed to fill the width.  A too-small width does not cause
+         truncation of the output, but is simply ignored.  The width may be
+         specified using any of the following: a positive integer; an
+         asterisk (<code class="literal">*</code>) to use the next function argument as the
+         width; or a string of the form <code class="literal">*<em class="replaceable"><code>n</code></em>$</code> to
+         use the <em class="replaceable"><code>n</code></em>th function argument as the width.
+        </p><p>
+         If the width comes from a function argument, that argument is
+         consumed before the argument that is used for the format specifier's
+         value.  If the width argument is negative, the result is left
+         aligned (as if the <code class="literal">-</code> flag had been specified) within a
+         field of length <code class="function">abs</code>(<em class="replaceable"><code>width</code></em>).
+        </p></dd><dt><span class="term"><em class="replaceable"><code>type</code></em> (required)</span></dt><dd><p>
+         The type of format conversion to use to produce the format
+         specifier's output.  The following types are supported:
+         </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+            <code class="literal">s</code> formats the argument value as a simple
+            string.  A null value is treated as an empty string.
+           </p></li><li class="listitem"><p>
+            <code class="literal">I</code> treats the argument value as an SQL
+            identifier, double-quoting it if necessary.
+            It is an error for the value to be null (equivalent to
+            <code class="function">quote_ident</code>).
+           </p></li><li class="listitem"><p>
+            <code class="literal">L</code> quotes the argument value as an SQL literal.
+            A null value is displayed as the string <code class="literal">NULL</code>, without
+            quotes (equivalent to <code class="function">quote_nullable</code>).
+           </p></li></ul></div><p>
+        </p></dd></dl></div><p>
+    </p><p>
+     In addition to the format specifiers described above, the special sequence
+     <code class="literal">%%</code> may be used to output a literal <code class="literal">%</code> character.
+    </p><p>
+     Here are some examples of the basic format conversions:
+
+</p><pre class="screen">
+SELECT format('Hello %s', 'World');
+<em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">Hello World</code>
+
+SELECT format('Testing %s, %s, %s, %%', 'one', 'two', 'three');
+<em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">Testing one, two, three, %</code>
+
+SELECT format('INSERT INTO %I VALUES(%L)', 'Foo bar', E'O\'Reilly');
+<em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">INSERT INTO "Foo bar" VALUES('O''Reilly')</code>
+
+SELECT format('INSERT INTO %I VALUES(%L)', 'locations', 'C:\Program Files');
+<em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">INSERT INTO locations VALUES('C:\Program Files')</code>
+</pre><p>
+    </p><p>
+     Here are examples using <em class="replaceable"><code>width</code></em> fields
+     and the <code class="literal">-</code> flag:
+
+</p><pre class="screen">
+SELECT format('|%10s|', 'foo');
+<em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">|       foo|</code>
+
+SELECT format('|%-10s|', 'foo');
+<em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">|foo       |</code>
+
+SELECT format('|%*s|', 10, 'foo');
+<em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">|       foo|</code>
+
+SELECT format('|%*s|', -10, 'foo');
+<em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">|foo       |</code>
+
+SELECT format('|%-*s|', 10, 'foo');
+<em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">|foo       |</code>
+
+SELECT format('|%-*s|', -10, 'foo');
+<em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">|foo       |</code>
+</pre><p>
+    </p><p>
+     These examples show use of <em class="replaceable"><code>position</code></em> fields:
+
+</p><pre class="screen">
+SELECT format('Testing %3$s, %2$s, %1$s', 'one', 'two', 'three');
+<em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">Testing three, two, one</code>
+
+SELECT format('|%*2$s|', 'foo', 10, 'bar');
+<em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">|       bar|</code>
+
+SELECT format('|%1$*2$s|', 'foo', 10, 'bar');
+<em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">|       foo|</code>
+</pre><p>
+    </p><p>
+     Unlike the standard C function <code class="function">sprintf</code>,
+     <span class="productname">PostgreSQL</span>'s <code class="function">format</code> function allows format
+     specifiers with and without <em class="replaceable"><code>position</code></em> fields to be mixed
+     in the same format string.  A format specifier without a
+     <em class="replaceable"><code>position</code></em> field always uses the next argument after the
+     last argument consumed.
+     In addition, the <code class="function">format</code> function does not require all
+     function arguments to be used in the format string.
+     For example:
+
+</p><pre class="screen">
+SELECT format('Testing %3$s, %2$s, %s', 'one', 'two', 'three');
+<em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">Testing three, two, three</code>
+</pre><p>
+    </p><p>
+     The <code class="literal">%I</code> and <code class="literal">%L</code> format specifiers are particularly
+     useful for safely constructing dynamic SQL statements.  See
+     <a class="xref" href="plpgsql-statements.html#PLPGSQL-QUOTE-LITERAL-EXAMPLE" title="Example 42.1. Quoting Values in Dynamic Queries">Example 42.1</a>.
+    </p></div></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="functions-math.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="functions.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="functions-binarystring.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">9.3. Mathematical Functions and Operators </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 9.5. Binary String Functions and Operators</td></tr></table></div></body></html>

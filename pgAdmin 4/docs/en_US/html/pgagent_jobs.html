@@ -1,0 +1,286 @@
+
+
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Creating a pgAgent Job &#8212; pgAdmin 4 4.19 documentation</title>
+    <link rel="stylesheet" href="_static/style.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    
+    <script src="_static/sidebar.js"></script>
+    
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pgAdmin Project Contributions" href="contributions.html" />
+    <link rel="prev" title="Installing pgAgent" href="pgagent_install.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="contributions.html" title="pgAdmin Project Contributions"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="pgagent_install.html" title="Installing pgAgent"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pgAdmin 4 4.19 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="pgagent.html" accesskey="U">pgAgent</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="creating-a-pgagent-job">
+<span id="pgagent-jobs"></span><h1><span class="target" id="index-0"></span>Creating a pgAgent Job<a class="headerlink" href="#creating-a-pgagent-job" title="Permalink to this headline">¶</a></h1>
+<p>pgAgent is a scheduling agent that runs and manages jobs; each job consists of
+steps and schedules.</p>
+<p>To create or manage a job, use the pgAdmin tree control to browse to the server
+on which the pgAgent database objects were created. The tree control will
+display a <em>pgAgent Jobs</em> node, under which currently defined jobs are displayed.
+To add a new job, right click on the <em>pgAgent Jobs</em> node, and select <em>Create
+pgAgent Job…</em> from the context menu.</p>
+<p>When the pgAgent dialog opens, use the tabs on the <em>pgAgent Job</em> dialog to
+define the steps and schedule that make up a pgAgent job.</p>
+<img alt="pgAgent dialog general tab" class="align-center" src="_images/pgagent_general.png" />
+<p>Use the fields on the <em>General</em> tab to provide general information about a job:</p>
+<ul>
+<li><p>Provide a name for the job in the <em>Name</em> field.</p></li>
+<li><p>Move the <em>Enabled</em> switch to the <em>Yes</em> position to enable a job, or <em>No</em> to
+disable a job.</p></li>
+<li><p>Use the <em>Job Class</em> drop-down to select a class (for job categorization).</p></li>
+<li><p>Use the <em>Host Agent</em> field to specify the name of a machine that is running
+pgAgent to indicate that only that machine may execute the job.  Leave the
+field blank to specify that any machine may perform the job.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It is not always obvious what value to specify for the Host Agent
+in order to target a job step to a specific machine. With pgAgent running
+on the required machines and connected to the scheduler database, you can
+use the following query to view the hostnames as reported by each agent:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span> <span class="n">jagstation</span> <span class="k">FROM</span> <span class="n">pgagent</span><span class="p">.</span><span class="n">pga_jobagent</span>
+</pre></div>
+</div>
+<p>Use the hostname exactly as reported by the query in the Host Agent
+field.</p>
+</div>
+</li>
+<li><p>Use the <em>Comment</em> field to store notes about the job.</p></li>
+</ul>
+<img alt="pgAgent dialog steps tab" class="align-center" src="_images/pgagent_steps.png" />
+<p>Use the <em>Steps</em> tab to define and manage the steps that the job will perform.
+Click the Add icon (+) to add a new step; then click the compose icon (located
+at the left side of the header) to open the step definition dialog:</p>
+<img alt="pgAgent dialog definition tab" class="align-center" src="_images/pgagent_step_definition.png" />
+<p>Use fields on the step definition dialog to define the step:</p>
+<ul class="simple">
+<li><p>Provide a name for the step in the <em>Name</em> field; please note that steps will
+be performed in alphanumeric order by name.</p></li>
+<li><p>Use the <em>Enabled</em> switch to include the step when executing the job (<em>True</em>)
+or to disable the step (<em>False</em>).</p></li>
+<li><p>Use the <em>Kind</em> switch to indicate if the job step invokes SQL code (<em>SQL</em>)
+or a batch script (<em>Batch</em>).</p>
+<ul>
+<li><p>If you select <em>SQL</em>, use the <em>Code</em> tab to provide SQL code for the step.</p></li>
+<li><p>If you select <em>Batch</em>, use the <em>Code</em> tab to provide the batch script that
+will be executed during the step.</p></li>
+</ul>
+</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The fields <em>Connection type</em>, <em>Database</em> and <em>Connection string</em> are only
+applicable when <em>SQL</em> is selected because <em>Batch</em> cannot be run on remote servers.</p>
+</div>
+<ul class="simple">
+<li><p>Use the <em>Connection type</em> switch to indicate if the step is performed on a
+local server (<em>Local</em>) or on a remote host (<em>Remote</em>).  If you specify a
+remote connection should be used for the step, the <em>Connection string</em> field
+will be enabled, and you must provide a libpq-style connection string.</p></li>
+<li><p>Use the <em>Database</em> drop-down to select the database on which the job step
+will be performed.</p></li>
+<li><p>Use the <em>Connection string</em> field to specify a libpq-style connection string
+to the remote server on which the step will be performed. For more information
+about writing a connection string, please see the
+<a class="reference external" href="https://www.postgresql.org/docs/current/libpq.html#libpq-connect">PostgreSQL documentation</a>.</p></li>
+<li><p>Use the <em>On error</em> drop-down to specify the behavior of pgAgent if it
+encounters an error while executing the step.  Select from:</p>
+<ul>
+<li><p><em>Fail</em> - Stop the job if you encounter an error while processing this step.</p></li>
+<li><p><em>Success</em> - Mark the step as completing successfully, and continue.</p></li>
+<li><p><em>Ignore</em> - Ignore the error, and continue.</p></li>
+</ul>
+</li>
+<li><p>Use the <em>Comment</em> field to provide a comment about the step.</p></li>
+</ul>
+<img alt="pgAgent dialog step definition code tab" class="align-center" src="_images/pgagent_step_definition_code.png" />
+<p>Use the context-sensitive field on the step definition dialog’s <em>Code</em> tab to
+provide the SQL code or batch script that will be executed during the step:</p>
+<ul class="simple">
+<li><p>If the step invokes SQL code, provide one or more SQL statements in the <em>SQL
+query</em> field.</p></li>
+<li><p>If the step performs a batch script, provide the script in the <em>Script</em> field.
+If you are running on a Windows server, standard batch file syntax must be
+used.  When running on a Linux server, any shell script may be used, provided
+that a suitable interpreter is specified on the first line (e.g. <em>#!/bin/sh</em>).</p></li>
+</ul>
+<p>When you’ve provided all of the information required by the step, click the
+compose icon to close the step definition dialog.  Click the add icon (+) to
+add each additional step, or select the <em>Schedules</em> tab to define the job
+schedule.</p>
+<img alt="pgAgent dialog schedules tab" class="align-center" src="_images/pgagent_schedules.png" />
+<p>Click the Add icon (+) to add a schedule for the job; then click the compose
+icon (located at the left side of the header) to open the schedule definition
+dialog:</p>
+<img alt="pgAgent dialog schedules definition tab" class="align-center" src="_images/pgagent_schedule_definition.png" />
+<p>Use the fields on the schedule definition tab to specify the days and times at
+which the job will execute.</p>
+<ul class="simple">
+<li><p>Provide a name for the schedule in the <em>Name</em> field.</p></li>
+<li><p>Use the <em>Enabled</em> switch to indicate that pgAgent should use the schedule
+(<em>Yes</em>) or to disable the schedule (<em>No</em>).</p></li>
+<li><p>Use the calendar selector in the <em>Start</em> field to specify the starting date
+and time for the schedule.</p></li>
+<li><p>Use the calendar selector in the <em>End</em> field to specify the ending date and
+time for the schedule.</p></li>
+<li><p>Use the <em>Comment</em> field to provide a comment about the schedule.</p></li>
+</ul>
+<p>Select the <em>Repeat</em> tab to define the days on which the schedule will execute.</p>
+<img alt="pgAgent dialog schedule repeat tab" class="align-center" src="_images/pgagent_schedule_repeat.png" />
+<p>Use the fields on the <em>Repeat</em> tab to specify the details about the schedule in
+a cron-style format.  The job will execute on each date or time element selected
+on the <em>Repeat</em> tab.</p>
+<p>Click within a field to open a list of valid values for that field; click on a
+specific value to add that value to the list of selected values for the field.
+To clear the values from a field, click the X located at the right-side of the
+field.</p>
+<p>Use the fields within the <em>Days</em> box to specify the days on which the job will
+execute:</p>
+<ul class="simple">
+<li><p>Use the <em>Week Days</em> field to select the days on which the job will execute.</p></li>
+<li><p>Use the <em>Month Days</em> field to select the numeric days on which the job will
+execute.  Specify the <em>Last Day</em> to indicate that the job should be performed
+on the last day of the month, irregardless of the date.</p></li>
+<li><p>Use the <em>Months</em> field to select the months in which the job will execute.</p></li>
+</ul>
+<p>Use the fields within the <em>Times</em> box to specify the times at which the job will
+execute:</p>
+<ul class="simple">
+<li><p>Use the <em>Hours</em> field to select the hour at which the job will execute.</p></li>
+<li><p>Use the <em>Minutes</em> field to select the minute at which the job will execute.</p></li>
+</ul>
+<p>Select the <em>Exceptions</em> tab to specify any days on which the schedule will <em>not</em>
+execute.</p>
+<img alt="pgAgent dialog schedule exceptions tab" class="align-center" src="_images/pgagent_schedule_exceptions.png" />
+<p>Use the fields on the <em>Exceptions</em> tab to specify days on which you wish the job
+to not execute; for example, you may wish for jobs to not execute on national
+holidays.</p>
+<p>Click the Add icon (+) to add a row to the exception table, then:</p>
+<ul class="simple">
+<li><p>Click within the <em>Date</em> column to open a calendar selector, and select a date
+on which the job will not execute.    Specify <em>&lt;Any&gt;</em> in the <em>Date</em> column to
+indicate that the job should not execute on any day at the time selected.</p></li>
+<li><p>Click within the <em>Time</em> column to open a time selector, and specify a time on
+which the job will not execute.  Specify <em>&lt;Any&gt;</em> in the <em>Time</em> column to
+indicate that the job should not execute at any time on the day selected.</p></li>
+</ul>
+<p>When you’ve finished defining the schedule, you can use the <em>SQL</em> tab to review
+the code that will create or modify your job.</p>
+<img alt="pgAgent dialog sql tab" class="align-center" src="_images/pgagent_sql.png" />
+<p>Click the <em>Save</em> button to save the job definition, or <em>Cancel</em> to exit the job
+without saving.  Use the <em>Reset</em> button to remove your unsaved entries from the
+dialog.</p>
+<p>After saving a job, the job will be listed under the <em>pgAgent Jobs</em> node of the
+pgAdmin tree control of the server on which it was defined.  The <em>Properties</em>
+tab in the main pgAdmin window will display a high-level overview of the
+selected job, and the <em>Statistics</em> tab will show the details of each run of the
+job.</p>
+<img alt="pgAgent object properties" class="align-center" src="_images/pgagent_properties.png" />
+<p>To modify an existing job or to review detailed information about a job,
+right-click on a job name, and select <em>Properties</em> from the context menu.</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="connecting.html">Connecting To A Server</a></li>
+<li class="toctree-l1"><a class="reference internal" href="managing_cluster_objects.html">Managing Cluster Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="managing_database_objects.html">Managing Database Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modifying_tables.html">Creating or Modifying a Table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="management_basics.html">Management Basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backup_and_restore.html">Backup and Restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developer_tools.html">Developer Tools</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="pgagent.html">pgAgent</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="using_pgagent.html">Using pgAgent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pgagent_install.html">Installing pgAgent</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Creating a pgAgent Job</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contributions.html">pgAdmin Project Contributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="licence.html">Licence</a></li>
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="contributions.html" title="pgAdmin Project Contributions"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="pgagent_install.html" title="Installing pgAgent"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pgAdmin 4 4.19 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="pgagent.html" >pgAgent</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        <div class="related" role="navigation" aria-label="related navigation">
+          <ul>
+              <li class="left" style="margin-left: 10px">&#169; Copyright (C) 2013 - 2020, The pgAdmin Development Team.</li>
+            <li class="right" style="margin-right: 10px"><a href="genindex.html" title="General Index" accesskey="I">index</a></li>
+            <li class="right" ><a href="contributions.html" title="pgAdmin Project Contributions" accesskey="N">next</a> |</li>
+            <li class="right" ><a href="pgagent_install.html" title="Installing pgAgent" accesskey="P">previous</a> |</li>
+          </ul>
+        </div>
+    </div>
+  </body>
+</html>
