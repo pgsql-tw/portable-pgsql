@@ -44,7 +44,8 @@ stop.bat
 - 直接執行 "pgAdmin 4\bin\pgAdmin4.exe"
 
 ## 其他
-1. "data" 目錄是可以搬移的，在停止服務的狀態，放置到你需要的路徑，然後修改 start.bat 和 stop.bat 的內容。
-2. start.bat 和 stop.bat 指向的資料目錄(-D directory)必須相同。
-3. 請參閱： [pg_ctl](https://www.postgresql.org/docs/current/app-pg-ctl.html)、[initdb](https://www.postgresql.org/docs/current/app-initdb.html)、[postgres](https://www.postgresql.org/docs/current/app-postgres.html)
+1. 使用後會新產生一個 logfile.txt 記錄檔，供除錯之用。
+2. "data" 目錄是可以搬移的，在停止服務的狀態，放置到你需要的路徑，然後修改 start.bat 和 stop.bat 的內容。
+3. start.bat 和 stop.bat 指向的資料目錄(-D directory)必須相同。
+4. 請參閱： [pg_ctl](https://www.postgresql.org/docs/current/app-pg-ctl.html)、[initdb](https://www.postgresql.org/docs/current/app-initdb.html)、[postgres](https://www.postgresql.org/docs/current/app-postgres.html)
 
