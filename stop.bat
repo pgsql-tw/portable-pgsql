@@ -1,3 +1,3 @@
 @echo off
 cd %~dp0
-bin\pg_ctl -D "data\postgres" -l logfile.txt stop
+bin\pg_ctl -D data -l logfile.txt stop
