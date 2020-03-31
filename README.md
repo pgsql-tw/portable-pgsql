@@ -48,4 +48,3 @@ stop.bat
 2. "data" 目錄是可以搬移的，在停止服務的狀態，放置到你需要的路徑，然後修改 start.bat 和 stop.bat 的內容。
 3. start.bat 和 stop.bat 指向的資料目錄(-D directory)必須相同。
 4. 請參閱： [pg_ctl](https://www.postgresql.org/docs/current/app-pg-ctl.html)、[initdb](https://www.postgresql.org/docs/current/app-initdb.html)、[postgres](https://www.postgresql.org/docs/current/app-postgres.html)
-
