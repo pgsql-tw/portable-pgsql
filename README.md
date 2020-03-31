@@ -16,7 +16,8 @@ PostgreSQL 免安裝版，其實 PostgreSQL 不一定需要安裝程序，就可
 
 ## Usages
 
-Clone or Download this repository.
+1. Clone 或 Download 此專案。
+2. 第一次使用請先執行 init.bat。
 
 ### 查看版本
 ```
