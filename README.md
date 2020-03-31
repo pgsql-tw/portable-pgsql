@@ -18,6 +18,7 @@ PostgreSQL 免安裝版，其實 PostgreSQL 不一定需要安裝程序，就可
 
 1. Clone 或 Download 此專案。
 2. 第一次使用請先執行 init.bat。
+3. 不要忘了自己輸入的密碼。
 
 ### 查看版本
 ```
@@ -34,7 +35,7 @@ stop.bat
 ### 測試
 1. 啓動服務
 2. 打開命令提示字元，%portable-pgsql%請替換成你的下載目錄
-3. 預設密碼: 00000000
+3. 預設密碼: 在執行 init.bat 時輸入的密碼
 
 ```
 > cd %portable-pgsql%
