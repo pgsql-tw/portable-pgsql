@@ -17,33 +17,34 @@ PostgreSQL 免安裝版，其實 PostgreSQL 不一定需要安裝程序，就可
 ## Usages
 
 1. Clone 或 Download 此專案。
-2. 第一次使用請先執行 init.bat。
-3. 不要忘了自己輸入的密碼。
+2. 修改 PGDATA.txt，設定資料庫資料檔案的路徑。
+3. 第一次使用請先執行 init.bat。
+4. 密碼就是 postgres 的密碼，不要忘記自己輸入的密碼。
 
 ### 查看版本
 ```
 version.bat
 ```
 ### 啓動服務
+- 視窗不要關掉，關掉視窗就會停止服務。
+- Port 是預設的 5432。
 ```
 start.bat
 ```
 ### 停止服務
+- 如果你要從別的視窗關服務的話
 ```
 stop.bat
 ```
 ### 測試
 1. 啓動服務
-2. 打開命令提示字元，%portable-pgsql%請替換成你的下載目錄
+2. 打開命令提示字元，%portable-pgsql% 請替換成你的下載目錄
 3. 預設密碼: 在執行 init.bat 時輸入的密碼
 
 ```
 > cd %portable-pgsql%
 > bin\psql -U postgres -h localhost -p 5432 postgres
 ```
-
-### pgAdmin 4
-- 直接執行 "pgAdmin 4\bin\pgAdmin4.exe"
 
 ## 其他
 1. 使用後會新產生一個 logfile.txt 記錄檔，供除錯之用。
