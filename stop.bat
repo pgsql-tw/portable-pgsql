@@ -1,3 +1,4 @@
 @echo off
+set /p DATA=<PGDATA.txt
 cd %~dp0
-bin\pg_ctl -D data -l logfile.txt stop
+bin\pg_ctl -D %DATA% -l logfile.txt stop

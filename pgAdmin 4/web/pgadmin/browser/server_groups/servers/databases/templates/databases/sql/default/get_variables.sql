@@ -1,2 +1,0 @@
-SELECT NULL
-WHERE false

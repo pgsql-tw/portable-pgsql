@@ -2,7 +2,7 @@
  * SQL Information Schema
  * as defined in ISO/IEC 9075-11:2016
  *
- * Copyright (c) 2003-2019, PostgreSQL Global Development Group
+ * Copyright (c) 2003-2020, PostgreSQL Global Development Group
  *
  * src/backend/catalog/information_schema.sql
  *
@@ -47,10 +47,6 @@ CREATE FUNCTION _pg_expandarray(IN anyarray, OUT x anyelement, OUT n int)
         from pg_catalog.generate_series(pg_catalog.array_lower($1,1),
                                         pg_catalog.array_upper($1,1),
                                         1) as g(s)';
-
-CREATE FUNCTION _pg_keysequal(smallint[], smallint[]) RETURNS boolean
-    LANGUAGE sql IMMUTABLE PARALLEL SAFE  -- intentionally not STRICT, to allow inlining
-    AS 'select $1 operator(pg_catalog.<@) $2 and $2 operator(pg_catalog.<@) $1';
 
 /* Given an index's OID and an underlying-table column number, return the
  * column's position in the index (NULL if not there) */
@@ -1653,56 +1649,6 @@ GRANT SELECT ON sql_implementation_info TO PUBLIC;
 
 
 /*
- * SQL_LANGUAGES table
- * apparently removed in SQL:2008
- */
-
-CREATE TABLE sql_languages (
-    sql_language_source         character_data,
-    sql_language_year           character_data,
-    sql_language_conformance    character_data,
-    sql_language_integrity      character_data,
-    sql_language_implementation character_data,
-    sql_language_binding_style  character_data,
-    sql_language_programming_language character_data
-);
-
-INSERT INTO sql_languages VALUES ('ISO 9075', '1999', 'CORE', NULL, NULL, 'DIRECT', NULL);
-INSERT INTO sql_languages VALUES ('ISO 9075', '1999', 'CORE', NULL, NULL, 'EMBEDDED', 'C');
-INSERT INTO sql_languages VALUES ('ISO 9075', '2003', 'CORE', NULL, NULL, 'DIRECT', NULL);
-INSERT INTO sql_languages VALUES ('ISO 9075', '2003', 'CORE', NULL, NULL, 'EMBEDDED', 'C');
-
-GRANT SELECT ON sql_languages TO PUBLIC;
-
-
-/*
- * SQL_PACKAGES table
- * removed in SQL:2011
- */
-
-CREATE TABLE sql_packages (
-    feature_id      character_data,
-    feature_name    character_data,
-    is_supported    yes_or_no,
-    is_verified_by  character_data,
-    comments        character_data
-);
-
-INSERT INTO sql_packages VALUES ('PKG000', 'Core', 'NO', NULL, '');
-INSERT INTO sql_packages VALUES ('PKG001', 'Enhanced datetime facilities', 'YES', NULL, '');
-INSERT INTO sql_packages VALUES ('PKG002', 'Enhanced integrity management', 'NO', NULL, '');
-INSERT INTO sql_packages VALUES ('PKG003', 'OLAP facilities', 'NO', NULL, '');
-INSERT INTO sql_packages VALUES ('PKG004', 'PSM', 'NO', NULL, 'PL/pgSQL is similar.');
-INSERT INTO sql_packages VALUES ('PKG005', 'CLI', 'NO', NULL, 'ODBC is similar.');
-INSERT INTO sql_packages VALUES ('PKG006', 'Basic object support', 'NO', NULL, '');
-INSERT INTO sql_packages VALUES ('PKG007', 'Enhanced object support', 'NO', NULL, '');
-INSERT INTO sql_packages VALUES ('PKG008', 'Active database', 'NO', NULL, '');
-INSERT INTO sql_packages VALUES ('PKG010', 'OLAP', 'NO', NULL, 'NO');
-
-GRANT SELECT ON sql_packages TO PUBLIC;
-
-
-/*
  * 5.59
  * SQL_PARTS table
  */
@@ -1724,6 +1670,7 @@ INSERT INTO sql_parts VALUES ('10', 'Object Language Bindings (SQL/OLB)', 'NO', 
 INSERT INTO sql_parts VALUES ('11', 'Information and Definition Schema (SQL/Schemata)', 'NO', NULL, '');
 INSERT INTO sql_parts VALUES ('13', 'Routines and Types Using the Java Programming Language (SQL/JRT)', 'NO', NULL, '');
 INSERT INTO sql_parts VALUES ('14', 'XML-Related Specifications (SQL/XML)', 'NO', NULL, '');
+INSERT INTO sql_parts VALUES ('15', 'Multi-Dimensional Arrays (SQL/MDA)', 'NO', NULL, '');
 
 
 /*
@@ -1770,26 +1717,6 @@ UPDATE sql_sizing
     WHERE supported_value = 63;
 
 GRANT SELECT ON sql_sizing TO PUBLIC;
-
-
-/*
- * SQL_SIZING_PROFILES table
- * removed in SQL:2011
- */
-
--- The data in this table are defined by various profiles of SQL.
--- Since we don't have any information about such profiles, we provide
--- an empty table.
-
-CREATE TABLE sql_sizing_profiles (
-    sizing_id       cardinal_number,
-    sizing_name     character_data,
-    profile_id      character_data,
-    required_value  cardinal_number,
-    comments        character_data
-);
-
-GRANT SELECT ON sql_sizing_profiles TO PUBLIC;
 
 
 /*
@@ -2119,8 +2046,15 @@ CREATE VIEW triggers AS
            CAST(
              -- To determine action order, partition by schema, table,
              -- event_manipulation (INSERT/DELETE/UPDATE), ROW/STATEMENT (1),
-             -- BEFORE/AFTER (66), then order by trigger name
-             rank() OVER (PARTITION BY n.oid, c.oid, em.num, t.tgtype & 1, t.tgtype & 66 ORDER BY t.tgname)
+             -- BEFORE/AFTER (66), then order by trigger name.  It's preferable
+             -- to partition by view output columns, so that query constraints
+             -- can be pushed down below the window function.
+             rank() OVER (PARTITION BY CAST(n.nspname AS sql_identifier),
+                                       CAST(c.relname AS sql_identifier),
+                                       em.num,
+                                       t.tgtype & 1,
+                                       t.tgtype & 66
+                                       ORDER BY t.tgname)
              AS cardinal_number) AS action_order,
            CAST(
              CASE WHEN pg_has_role(c.relowner, 'USAGE')
